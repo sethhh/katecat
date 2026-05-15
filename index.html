@@ -7,1362 +7,1183 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ff9f43">
 <title>Kate Cat 🐱</title>
+
+<!--
+  ═══════════════════════════════════════════════════════
+  SOUNDS — HOW TO ADD THE REAL PIXABAY FILES
+  ═══════════════════════════════════════════════════════
+  The app uses Web Audio synthesis by default. To use the
+  actual Pixabay sounds, do the following:
+
+  1. GOOD SOUND ("Kitten SFX" by DRAGON-STUDIO):
+     https://pixabay.com/sound-effects/kitten-sfx-329685/
+     Download → rename → place next to this file as: kitten-sfx.mp3
+
+  2. BAD SOUND ("Angry Cat HQ Sound effect" by TanwerAman):
+     https://pixabay.com/sound-effects/angry-cat-hq-sound-effect-240675/
+     Download → rename → place next to this file as: angry-cat-hq.mp3
+
+  Both are royalty-free under the Pixabay Content License.
+  No attribution required.
+  ═══════════════════════════════════════════════════════
+-->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --cat-orange: #ff9f43;
-    --cat-dark: #ee5a24;
-    --cat-cream: #ffeaa7;
-    --cat-soft: #fff5e6;
-    --cat-purple: #a29bfe;
-    --cat-green: #55efc4;
-    --cat-pink: #fd79a8;
-    --cat-blue: #74b9ff;
-    --ink: #2d3436;
-    --muted: #636e72;
-    --card-bg: #ffffff;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-  html, body {
-    width: 100%; height: 100%;
-    font-family: 'Nunito', sans-serif;
-    background: var(--cat-soft);
-    overflow: hidden;
-    overscroll-behavior: none;
-  }
-
-  /* ─── SCREENS ─── */
-  .screen { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; flex-direction: column; align-items: center; overflow-y: auto; overflow-x: hidden; }
-  .screen.active { display: flex; }
-
-  /* ─── HOME ─── */
-  #home {
-    background: linear-gradient(160deg, #fff5e6 0%, #ffecd2 100%);
-    padding: 0 1rem 2rem;
-  }
-
-  .home-header {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1.5rem 1rem 0.5rem;
-    position: relative;
-  }
-
-  .fullscreen-btn {
-    position: absolute;
-    right: 0; top: 1.5rem;
-    background: rgba(255,159,67,0.15);
-    border: 1.5px solid var(--cat-orange);
-    border-radius: 10px;
-    padding: 0.35rem 0.6rem;
-    font-size: 1rem;
-    cursor: pointer;
-    color: var(--cat-dark);
-    transition: background 0.15s;
-  }
-  .fullscreen-btn:active { background: rgba(255,159,67,0.35); }
-
-  /* Cat SVG illustration */
-  .cat-hero {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 0.25rem;
-    animation: catBob 3s ease-in-out infinite;
-  }
-
-  @keyframes catBob {
-    0%, 100% { transform: translateY(0px) rotate(-1deg); }
-    50% { transform: translateY(-6px) rotate(1deg); }
-  }
-
-  .game-title {
-    font-family: 'Baloo 2', cursive;
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: var(--cat-dark);
-    line-height: 1;
-    text-align: center;
-  }
-
-  .game-tagline {
-    font-size: 0.82rem;
-    color: var(--muted);
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-
-  /* Stats bar */
-  .stats-bar {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 1rem;
-  }
-
-  .stat-chip {
-    flex: 1;
-    background: white;
-    border-radius: 14px;
-    padding: 0.6rem 0.4rem;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-
-  .stat-num { font-family: 'Baloo 2', cursive; font-size: 1.4rem; font-weight: 800; line-height: 1; }
-  .stat-lbl { font-size: 0.62rem; color: var(--muted); font-weight: 600; letter-spacing: 0.04em; display: block; margin-top: 1px; }
-
-  /* Category grid */
-  .cat-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 10px;
-  }
-
-  .cat-card {
-    background: white;
-    border-radius: 20px;
-    padding: 1rem 0.75rem;
-    border: none;
-    cursor: pointer;
-    text-align: center;
-    box-shadow: 0 3px 0 rgba(0,0,0,0.08);
-    transition: transform 0.12s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .cat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    border-radius: 20px 20px 0 0;
-  }
-
-  .cat-card:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.08); }
-
-  .cc-emoji { font-size: 1.8rem; display: block; margin-bottom: 4px; }
-  .cc-name { font-family: 'Baloo 2', cursive; font-size: 0.9rem; font-weight: 700; color: var(--ink); display: block; line-height: 1.2; }
-  .cc-count { font-size: 0.65rem; color: var(--muted); margin-top: 2px; display: block; }
-
-  .cc-bar { height: 5px; border-radius: 3px; background: #f0f0f0; margin-top: 8px; overflow: hidden; }
-  .cc-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
-
-  /* Action buttons */
-  .action-row {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-    max-width: 400px;
-  }
-
-  .btn-missed {
-    background: var(--cat-purple);
-    color: #3d3a99;
-    border: none;
-    border-radius: 16px;
-    padding: 0.85rem;
-    font-family: 'Baloo 2', cursive;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 3px 0 #6c5ce7;
-    transition: transform 0.1s;
-  }
-  .btn-missed:active { transform: translateY(2px); box-shadow: 0 1px 0 #6c5ce7; }
-  .btn-missed:disabled { opacity: 0.4; cursor: default; }
-
-  .btn-gallery {
-    background: var(--cat-green);
-    color: #00704a;
-    border: none;
-    border-radius: 16px;
-    padding: 0.85rem;
-    font-family: 'Baloo 2', cursive;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 3px 0 #00b894;
-    transition: transform 0.1s;
-  }
-  .btn-gallery:active { transform: translateY(2px); box-shadow: 0 1px 0 #00b894; }
-
-  .btn-reset {
-    background: none;
-    border: none;
-    color: #b2bec3;
-    font-size: 0.72rem;
-    font-family: 'Nunito', sans-serif;
-    cursor: pointer;
-    text-decoration: underline;
-    padding: 0.25rem;
-    text-align: center;
-  }
-
-  /* ─── PLAY SCREEN ─── */
-  #play {
-    background: linear-gradient(160deg, #fff5e6 0%, #ffecd2 100%);
-    overflow: hidden;
-  }
-
-  .play-top {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.9rem 1rem 0.4rem;
-    flex-shrink: 0;
-  }
-
-  .btn-back {
-    background: white;
-    border: none;
-    border-radius: 12px;
-    padding: 0.4rem 0.8rem;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--muted);
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  }
-
-  .play-cat-label {
-    font-family: 'Baloo 2', cursive;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--cat-dark);
-  }
-
-  .play-counter {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--muted);
-    min-width: 3.5rem;
-    text-align: right;
-  }
-
-  .prog-track {
-    width: calc(100% - 2rem);
-    margin: 0 1rem;
-    height: 8px;
-    background: rgba(0,0,0,0.07);
-    border-radius: 4px;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-
-  .prog-fill {
-    height: 100%;
-    border-radius: 4px;
-    background: linear-gradient(90deg, var(--cat-orange), var(--cat-dark));
-    transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  /* Paw prints row */
-  .paws-row {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    padding: 0.4rem 1rem;
-    flex-shrink: 0;
-    flex-wrap: wrap;
-  }
-
-  .paw { font-size: 1rem; opacity: 0.2; transition: opacity 0.3s, transform 0.3s; }
-  .paw.done-correct { opacity: 1; filter: none; }
-  .paw.done-wrong { opacity: 1; }
-
-  /* Main card zone */
-  .card-zone {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 1.25rem;
-    position: relative;
-    width: 100%;
-  }
-
-  .flashcard {
-    background: white;
-    border-radius: 32px;
-    width: 100%;
-    max-width: 360px;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 0 rgba(0,0,0,0.07), 0 2px 20px rgba(0,0,0,0.06);
-    padding: 2rem 1.5rem;
-    position: relative;
-    will-change: transform;
-  }
-
-  .flashcard.anim-correct {
-    animation: correctPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
-  .flashcard.anim-wrong {
-    animation: wrongShake 0.4s ease forwards;
-  }
-  .flashcard.anim-next {
-    animation: cardFlip 0.3s ease forwards;
-  }
-
-  @keyframes correctPop {
-    0% { transform: scale(1); background: white; }
-    30% { transform: scale(1.06); background: #d4efdf; }
-    60% { transform: scale(0.97); }
-    100% { transform: scale(1); background: white; }
-  }
-
-  @keyframes wrongShake {
-    0%, 100% { transform: translateX(0); background: white; }
-    15% { transform: translateX(-10px) rotate(-1.5deg); background: #fde8e8; }
-    35% { transform: translateX(10px) rotate(1.5deg); }
-    55% { transform: translateX(-6px); }
-    75% { transform: translateX(6px); }
-    90% { transform: translateX(-2px); background: #fff5f5; }
-  }
-
-  @keyframes cardFlip {
-    0% { transform: scale(1) rotateY(0); opacity: 1; }
-    50% { transform: scale(0.88) rotateY(12deg); opacity: 0.3; }
-    100% { transform: scale(1) rotateY(0); opacity: 1; }
-  }
-
-  .card-tag {
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-  }
-
-  .card-word {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(3rem, 15vw, 5rem);
-    font-weight: 800;
-    color: var(--ink);
-    line-height: 1;
-    text-align: center;
-    word-break: break-word;
-    letter-spacing: -0.02em;
-  }
-
-  .card-hint {
-    margin-top: 0.6rem;
-    font-size: 0.78rem;
-    color: #b2bec3;
-    text-align: center;
-    font-weight: 600;
-  }
-
-  /* Cat ears decoration on card */
-  .card-ears {
-    position: absolute;
-    top: -16px;
-    display: flex;
-    gap: 180px;
-  }
-
-  .ear {
-    width: 0;
-    height: 0;
-    border-left: 16px solid transparent;
-    border-right: 16px solid transparent;
-    border-bottom: 24px solid white;
-  }
-
-  /* Floating particles on correct */
-  .particle {
-    position: fixed;
-    pointer-events: none;
-    font-size: 1.4rem;
-    z-index: 999;
-    animation: particleFly 1s ease-out forwards;
-  }
-
-  @keyframes particleFly {
-    0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(-120px) scale(0.3) rotate(45deg); opacity: 0; }
-  }
-
-  /* Hiss animation */
-  .hiss-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    pointer-events: none;
-    z-index: 998;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    font-size: 3rem;
-    transition: opacity 0.1s;
-  }
-
-  .hiss-overlay.show {
-    animation: hissFlash 0.5s ease forwards;
-  }
-
-  @keyframes hissFlash {
-    0% { opacity: 0; }
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { opacity: 0; }
-  }
-
-  /* Answer buttons */
-  .ans-zone {
-    width: 100%;
-    padding: 0.5rem 1rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-
-  .main-btns {
-    display: flex;
-    gap: 10px;
-  }
-
-  .btn-wrong-ans, .btn-right-ans {
-    flex: 1;
-    border: none;
-    border-radius: 20px;
-    padding: 1rem 0.5rem;
-    font-family: 'Baloo 2', cursive;
-    font-size: 1.15rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.1s;
-  }
-
-  .btn-wrong-ans {
-    background: #fab1a0;
-    color: #c0392b;
-    box-shadow: 0 5px 0 #e17055;
-  }
-  .btn-wrong-ans:active { transform: translateY(4px); box-shadow: 0 1px 0 #e17055; }
-
-  .btn-right-ans {
-    background: #55efc4;
-    color: #00704a;
-    box-shadow: 0 5px 0 #00b894;
-  }
-  .btn-right-ans:active { transform: translateY(4px); box-shadow: 0 1px 0 #00b894; }
-
-  .btn-skip-ans {
-    background: rgba(0,0,0,0.05);
-    border: none;
-    border-radius: 12px;
-    padding: 0.5rem;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--muted);
-    cursor: pointer;
-    text-align: center;
-  }
-
-  /* ─── RESULTS ─── */
-  #results {
-    background: linear-gradient(160deg, #fff5e6 0%, #ffecd2 100%);
-    padding: 1.5rem 1rem 2rem;
-    align-items: center;
-  }
-
-  .results-cat {
-    font-size: 4rem;
-    animation: catBob 2s ease-in-out infinite;
-    margin-bottom: 0.25rem;
-  }
-
-  .results-title {
-    font-family: 'Baloo 2', cursive;
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--cat-dark);
-    text-align: center;
-  }
-
-  .results-sub {
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-
-  .score-ring {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    background: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 5px 0 var(--cat-orange);
-    margin-bottom: 1.25rem;
-  }
-
-  .score-pct { font-family: 'Baloo 2', cursive; font-size: 2rem; font-weight: 800; color: var(--cat-dark); line-height: 1; }
-  .score-lbl { font-size: 0.65rem; color: var(--muted); font-weight: 700; }
-
-  .results-list {
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 1.25rem;
-  }
-
-  .res-section-hd {
-    font-family: 'Baloo 2', cursive;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--muted);
-    padding: 0.25rem 4px 0;
-  }
-
-  .res-row {
-    background: white;
-    border-radius: 12px;
-    padding: 0.55rem 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 0 rgba(0,0,0,0.05);
-  }
-
-  .res-word { font-family: 'Baloo 2', cursive; font-size: 1.05rem; font-weight: 700; }
-  .res-dot { width: 11px; height: 11px; border-radius: 50%; }
-
-  .results-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-    max-width: 360px;
-  }
-
-  .btn-primary {
-    background: var(--cat-dark);
-    color: white;
-    border: none;
-    border-radius: 16px;
-    padding: 1rem;
-    font-family: 'Baloo 2', cursive;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 4px 0 #c0392b;
-    transition: transform 0.1s;
-  }
-  .btn-primary:active { transform: translateY(3px); box-shadow: 0 1px 0 #c0392b; }
-
-  .btn-secondary {
-    background: white;
-    color: var(--cat-dark);
-    border: 2px solid var(--cat-orange);
-    border-radius: 16px;
-    padding: 0.9rem;
-    font-family: 'Baloo 2', cursive;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.12s;
-  }
-  .btn-secondary:active { background: var(--cat-soft); }
-
-  .perfect-banner {
-    background: linear-gradient(135deg, var(--cat-green), #00b894);
-    color: #00504a;
-    border-radius: 16px;
-    padding: 0.9rem;
-    text-align: center;
-    font-family: 'Baloo 2', cursive;
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    box-shadow: 0 4px 0 #00b894;
-  }
-
-  /* ─── GALLERY SCREEN ─── */
-  #gallery {
-    background: linear-gradient(160deg, #fff5e6 0%, #ffecd2 100%);
-    padding: 0 1rem 2rem;
-  }
-
-  .gallery-header {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 0 0.75rem;
-    flex-shrink: 0;
-    position: sticky;
-    top: 0;
-    background: linear-gradient(160deg, #fff5e6 0%, #ffecd2 100%);
-    z-index: 10;
-  }
-
-  .gallery-title {
-    font-family: 'Baloo 2', cursive;
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--cat-dark);
-    flex: 1;
-  }
-
-  .gallery-empty {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    color: var(--muted);
-    font-size: 0.9rem;
-    text-align: center;
-    padding: 3rem 2rem;
-  }
-
-  .gallery-empty-cat { font-size: 3rem; }
-
-  .mastered-section {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-
-  .mastered-sec-title {
-    font-family: 'Baloo 2', cursive;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--muted);
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .mastered-words-wrap {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .mastered-chip {
-    background: white;
-    border: 2px solid var(--cat-green);
-    border-radius: 20px;
-    padding: 0.35rem 0.85rem;
-    font-family: 'Baloo 2', cursive;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--ink);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    box-shadow: 0 2px 0 #00b894;
-    animation: chipPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  @keyframes chipPop {
-    0% { transform: scale(0.7); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-
-  /* ─── MISC UTILITIES ─── */
-  .paw-cursor { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='16' r='6' fill='%23ff9f43'/%3E%3Ccircle cx='7' cy='10' r='3' fill='%23ff9f43'/%3E%3Ccircle cx='12' cy='8' r='3' fill='%23ff9f43'/%3E%3Ccircle cx='17' cy='10' r='3' fill='%23ff9f43'/%3E%3C/svg%3E"), auto; }
-
-  .confetti-container {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    pointer-events: none;
-    z-index: 1000;
-    overflow: hidden;
-  }
-
-  .confetti-piece {
-    position: absolute;
-    top: -10px;
-    font-size: 1.2rem;
-    animation: confettiFall linear forwards;
-  }
-
-  @keyframes confettiFall {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(110vh) rotate(720deg); opacity: 0.4; }
-  }
+:root {
+  --orange:  #ff9f43;
+  --dark:    #ee5a24;
+  --cream:   #fff5e6;
+  --soft:    #ffecd2;
+  --purple:  #a29bfe;
+  --green:   #00b894;
+  --pink:    #fd79a8;
+  --blue:    #74b9ff;
+  --ink:     #2d3436;
+  --muted:   #636e72;
+  --light:   #b2bec3;
+  --white:   #ffffff;
+  --correct-bg: #d4efdf;
+  --wrong-bg:   #fde8e8;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;font-family:'Nunito',sans-serif;background:var(--cream);overflow:hidden;overscroll-behavior:none}
+button{font-family:'Nunito',sans-serif;cursor:pointer}
+
+/* ── SCREENS ── */
+.screen{display:none;width:100%;height:100%;position:absolute;top:0;left:0;flex-direction:column;align-items:center;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.screen.active{display:flex}
+
+/* ════════════════════════ HOME ════════════════════════ */
+#home{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:0 1rem 2rem}
+
+.home-top{width:100%;display:flex;flex-direction:column;align-items:center;padding:1.25rem 0 0.5rem;position:relative}
+.fs-btn{position:absolute;right:0;top:1.25rem;background:rgba(255,159,67,.12);border:1.5px solid var(--orange);border-radius:10px;padding:.3rem .55rem;font-size:.95rem;color:var(--dark);transition:background .15s}
+.fs-btn:active{background:rgba(255,159,67,.3)}
+
+.cat-svg{width:110px;height:110px;animation:bob 3s ease-in-out infinite;margin-bottom:.2rem}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-7px) rotate(1.5deg)}}
+
+.game-title{font-family:'Baloo 2',cursive;font-size:2.1rem;font-weight:800;color:var(--dark);line-height:1;letter-spacing:-.02em}
+.game-tag{font-size:.78rem;color:var(--muted);margin-bottom:1rem}
+
+.stats-bar{display:flex;gap:8px;width:100%;max-width:400px;margin-bottom:1rem}
+.s-chip{flex:1;background:var(--white);border-radius:14px;padding:.55rem .4rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.s-num{font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;line-height:1;display:block}
+.s-lbl{font-size:.6rem;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:400px;margin-bottom:10px}
+.c-card{background:var(--white);border-radius:20px;padding:.9rem .7rem;border:none;text-align:center;box-shadow:0 3px 0 rgba(0,0,0,.08);transition:transform .1s,box-shadow .1s;position:relative;overflow:hidden}
+.c-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:20px 20px 0 0}
+.c-card:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.cc-emo{font-size:1.7rem;display:block;margin-bottom:3px}
+.cc-name{font-family:'Baloo 2',cursive;font-size:.88rem;font-weight:700;color:var(--ink);display:block;line-height:1.2}
+.cc-cnt{font-size:.62rem;color:var(--muted);display:block;margin-top:2px}
+.cc-bar{height:5px;border-radius:3px;background:#f0f0f0;margin-top:7px;overflow:hidden}
+.cc-fill{height:100%;border-radius:3px;transition:width .5s ease}
+
+.action-col{display:flex;flex-direction:column;gap:8px;width:100%;max-width:400px}
+.btn-missed{background:var(--purple);color:#3d3a99;border:none;border-radius:16px;padding:.8rem;font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700;box-shadow:0 3px 0 #6c5ce7;transition:transform .1s}
+.btn-missed:active{transform:translateY(2px);box-shadow:0 1px 0 #6c5ce7}
+.btn-missed:disabled{opacity:.38;cursor:default;transform:none}
+.btn-gallery{background:var(--green);color:#005a3e;border:none;border-radius:16px;padding:.8rem;font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700;box-shadow:0 3px 0 #007a55;transition:transform .1s}
+.btn-gallery:active{transform:translateY(2px);box-shadow:0 1px 0 #007a55}
+.btn-lookup{background:var(--blue);color:#0057a8;border:none;border-radius:16px;padding:.8rem;font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700;box-shadow:0 3px 0 #0984e3;transition:transform .1s}
+.btn-lookup:active{transform:translateY(2px);box-shadow:0 1px 0 #0984e3}
+.btn-reset{background:none;border:none;color:var(--light);font-size:.7rem;text-decoration:underline;padding:.25rem;text-align:center}
+
+/* ════════════════════════ PLAY ════════════════════════ */
+#play{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);overflow:hidden}
+
+.play-hdr{width:100%;display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem .35rem;flex-shrink:0}
+.btn-back{background:var(--white);border:none;border-radius:11px;padding:.38rem .75rem;font-size:.78rem;font-weight:700;color:var(--muted);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.play-lbl{font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700;color:var(--dark)}
+.play-cnt{font-size:.78rem;font-weight:700;color:var(--muted);min-width:3.2rem;text-align:right}
+
+.prog-track{width:calc(100% - 2rem);margin:0 1rem;height:7px;background:rgba(0,0,0,.07);border-radius:4px;overflow:hidden;flex-shrink:0}
+.prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--orange),var(--dark));transition:width .4s cubic-bezier(.34,1.56,.64,1)}
+
+.paws-row{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;padding:.35rem 1rem;flex-shrink:0}
+.paw{font-size:.9rem;opacity:.18;transition:opacity .3s}
+.paw.ok{opacity:1}
+.paw.ng{opacity:1;filter:grayscale(1) opacity(.45)}
+
+.card-zone{flex:1;display:flex;align-items:center;justify-content:center;padding:.4rem 1.25rem;width:100%;position:relative}
+
+.flashcard{background:var(--white);border-radius:30px;width:100%;max-width:360px;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 7px 0 rgba(0,0,0,.07),0 2px 20px rgba(0,0,0,.06);padding:1.75rem 1.5rem;position:relative;will-change:transform}
+.card-ears{position:absolute;top:-14px;width:100%;display:flex;justify-content:space-between;padding:0 28px;pointer-events:none}
+.ear{width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:22px solid var(--white)}
+.card-tag-lbl{font-size:.6rem;font-weight:700;letter-spacing:.1em;color:var(--light);text-transform:uppercase;margin-bottom:.65rem}
+.card-word{font-family:'Baloo 2',cursive;font-size:clamp(2.8rem,14vw,5rem);font-weight:800;color:var(--ink);line-height:1;text-align:center;word-break:break-word}
+.card-hint{margin-top:.55rem;font-size:.75rem;color:var(--light);text-align:center;font-weight:700}
+
+/* card animations */
+.flashcard.anim-ok {animation:okPop .48s cubic-bezier(.34,1.56,.64,1) forwards}
+.flashcard.anim-ng {animation:ngShake .42s ease forwards}
+.flashcard.anim-next{animation:cardNext .28s ease forwards}
+@keyframes okPop{0%{transform:scale(1);background:var(--white)}30%{transform:scale(1.07);background:var(--correct-bg)}70%{transform:scale(.97)}100%{transform:scale(1);background:var(--white)}}
+@keyframes ngShake{0%,100%{transform:translateX(0);background:var(--white)}15%{transform:translateX(-11px) rotate(-1.8deg);background:var(--wrong-bg)}35%{transform:translateX(11px) rotate(1.8deg)}55%{transform:translateX(-7px)}75%{transform:translateX(7px)}90%{transform:translateX(-2px);background:#fff5f5}}
+@keyframes cardNext{0%{transform:scale(1) rotateY(0);opacity:1}45%{transform:scale(.86) rotateY(14deg);opacity:.25}100%{transform:scale(1) rotateY(0);opacity:1}}
+
+.ans-zone{width:100%;padding:.4rem 1rem .9rem;display:flex;flex-direction:column;gap:7px;flex-shrink:0}
+.main-btns{display:flex;gap:10px}
+.btn-ng,.btn-ok{flex:1;border:none;border-radius:20px;padding:.9rem .5rem;font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:700;transition:transform .1s}
+.btn-ng{background:#fab1a0;color:#c0392b;box-shadow:0 5px 0 #e17055}
+.btn-ng:active{transform:translateY(4px);box-shadow:0 1px 0 #e17055}
+.btn-ok{background:#55efc4;color:#005a3e;box-shadow:0 5px 0 #00b894}
+.btn-ok:active{transform:translateY(4px);box-shadow:0 1px 0 #00b894}
+.btn-skip{background:rgba(0,0,0,.05);border:none;border-radius:12px;padding:.45rem;font-size:.72rem;font-weight:700;color:var(--muted);text-align:center}
+
+/* ════════════════════════ RESULTS ════════════════════════ */
+#results{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:1.5rem 1rem 2rem;align-items:center}
+.res-cat{font-size:3.5rem;animation:bob 2s ease-in-out infinite;margin-bottom:.2rem}
+.res-title{font-family:'Baloo 2',cursive;font-size:1.7rem;font-weight:800;color:var(--dark);text-align:center}
+.res-sub{font-size:.82rem;color:var(--muted);margin-bottom:1rem;text-align:center}
+.score-ring{width:105px;height:105px;border-radius:50%;background:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 5px 0 var(--orange);margin-bottom:1.1rem}
+.score-pct{font-family:'Baloo 2',cursive;font-size:1.9rem;font-weight:800;color:var(--dark);line-height:1}
+.score-lbl{font-size:.62rem;color:var(--muted);font-weight:700}
+.res-list{width:100%;max-width:360px;display:flex;flex-direction:column;gap:5px;margin-bottom:1.1rem}
+.res-sec{font-family:'Baloo 2',cursive;font-size:.78rem;font-weight:700;color:var(--muted);padding:.2rem 4px 0}
+.res-row{background:var(--white);border-radius:12px;padding:.5rem .9rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 0 rgba(0,0,0,.05)}
+.res-word{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700}
+.res-dot{width:10px;height:10px;border-radius:50%}
+.res-actions{display:flex;flex-direction:column;gap:8px;width:100%;max-width:360px}
+.btn-primary{background:var(--dark);color:var(--white);border:none;border-radius:16px;padding:.95rem;font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700;box-shadow:0 4px 0 #c0392b;transition:transform .1s}
+.btn-primary:active{transform:translateY(3px);box-shadow:0 1px 0 #c0392b}
+.btn-secondary{background:var(--white);color:var(--dark);border:2px solid var(--orange);border-radius:16px;padding:.85rem;font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700}
+.btn-secondary:active{background:var(--soft)}
+.perfect-banner{background:linear-gradient(135deg,var(--green),#55efc4);color:#003d2a;border-radius:14px;padding:.8rem;text-align:center;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;box-shadow:0 4px 0 #007a55}
+
+/* ════════════════════════ GALLERY ════════════════════════ */
+#gallery{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:0 1rem 2rem}
+.gallery-hdr{width:100%;display:flex;align-items:center;gap:.65rem;padding:1rem 0 .65rem;position:sticky;top:0;background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);z-index:10;flex-shrink:0}
+.gallery-title{font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:800;color:var(--dark);flex:1}
+.g-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65rem;color:var(--muted);font-size:.88rem;text-align:center;padding:3rem 2rem;flex:1;width:100%}
+.g-empty-cat{font-size:2.8rem}
+.m-section{width:100%;margin-bottom:1rem}
+.m-sec-hd{font-family:'Baloo 2',cursive;font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.m-wrap{display:flex;flex-wrap:wrap;gap:6px}
+.m-chip{background:var(--white);border:2px solid var(--green);border-radius:20px;padding:.3rem .8rem;font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700;color:var(--ink);box-shadow:0 2px 0 #007a55;animation:chipPop .28s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes chipPop{0%{transform:scale(.65);opacity:0}100%{transform:scale(1);opacity:1}}
+
+/* ════════════════════════ LOOKUP ════════════════════════ */
+#lookup{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:0 1rem 2rem}
+.lookup-hdr{width:100%;display:flex;align-items:center;gap:.65rem;padding:1rem 0 .65rem;position:sticky;top:0;background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);z-index:10}
+.lookup-title{font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:800;color:var(--dark);flex:1}
+
+.search-wrap{width:100%;max-width:400px;position:relative;margin-bottom:1rem}
+.search-input{width:100%;border:2px solid rgba(0,0,0,.1);border-radius:16px;padding:.75rem 1rem .75rem 2.8rem;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;background:var(--white);color:var(--ink);outline:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.search-input:focus{border-color:var(--orange)}
+.search-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);font-size:1rem;pointer-events:none}
+
+.word-card{background:var(--white);border-radius:22px;padding:1.25rem;width:100%;max-width:400px;box-shadow:0 4px 0 rgba(0,0,0,.07);margin-bottom:.75rem}
+.wc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.wc-word{font-family:'Baloo 2',cursive;font-size:2rem;font-weight:800;color:var(--ink);line-height:1}
+.wc-cat{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .65rem;border-radius:20px;color:var(--white)}
+.wc-stats{display:flex;gap:8px;margin-bottom:.85rem}
+.wc-stat{flex:1;background:var(--cream);border-radius:12px;padding:.5rem .3rem;text-align:center}
+.wc-stat-n{font-family:'Baloo 2',cursive;font-size:1.15rem;font-weight:800;line-height:1;display:block}
+.wc-stat-l{font-size:.58rem;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.wc-timeline-hd{font-size:.7rem;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.4rem}
+.timeline{display:flex;flex-direction:column;gap:4px;max-height:180px;overflow-y:auto}
+.tl-row{display:flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:600}
+.tl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.tl-time{color:var(--muted);flex:1;font-size:.7rem}
+.tl-label{font-weight:700}
+.trend-badge{display:inline-flex;align-items:center;gap:4px;border-radius:20px;padding:.25rem .65rem;font-size:.72rem;font-weight:700;margin-bottom:.7rem}
+.wc-no-data{color:var(--muted);font-size:.85rem;text-align:center;padding:.75rem 0}
+
+.lookup-list{display:flex;flex-direction:column;gap:6px;width:100%;max-width:400px}
+.ll-row{background:var(--white);border-radius:14px;padding:.6rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.05);transition:transform .1s}
+.ll-row:active{transform:scale(.98)}
+.ll-word{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700}
+.ll-meta{display:flex;gap:5px;align-items:center}
+.ll-dot{width:8px;height:8px;border-radius:50%}
+.ll-pct{font-size:.7rem;font-weight:700;color:var(--muted)}
+
+/* ════════════════════════ PARTICLES / OVERLAYS ════════════════════════ */
+.hiss-overlay{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:998;display:flex;align-items:center;justify-content:center;opacity:0;font-size:2.8rem}
+.hiss-overlay.show{animation:hissFlash .52s ease forwards}
+@keyframes hissFlash{0%{opacity:0}25%{opacity:1}80%{opacity:1}100%{opacity:0}}
+.particle{position:fixed;pointer-events:none;font-size:1.3rem;z-index:999;animation:pFly 1s ease-out forwards}
+@keyframes pFly{0%{transform:translateY(0) scale(1) rotate(0deg);opacity:1}100%{transform:translateY(-115px) scale(.25) rotate(50deg);opacity:0}}
+.confetti-cont{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:1000;overflow:hidden}
+.conf{position:absolute;top:-10px;font-size:1.2rem;animation:confFall linear forwards}
+@keyframes confFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:.4}}
 </style>
 </head>
-<body class="paw-cursor">
+<body>
 
-<!-- HISS OVERLAY -->
 <div class="hiss-overlay" id="hissOverlay">😾</div>
-<div class="confetti-container" id="confettiContainer"></div>
+<div class="confetti-cont" id="confettiCont"></div>
 
-<!-- ═══════════ HOME ═══════════ -->
+<!-- ══════════════════════════════════════════════════════
+     HOME
+══════════════════════════════════════════════════════ -->
 <div id="home" class="screen active">
-  <div class="home-header">
-    <button class="fullscreen-btn" onclick="toggleFullscreen()" id="fsBtn">⛶ Full</button>
+  <div class="home-top">
+    <button class="fs-btn" id="fsBtn" onclick="toggleFS()">⛶</button>
 
-    <!-- Kate Cat SVG -->
-    <svg class="cat-hero" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-      <!-- body -->
+    <svg class="cat-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="60" cy="82" rx="32" ry="28" fill="#ff9f43"/>
-      <!-- head -->
       <circle cx="60" cy="48" r="30" fill="#ff9f43"/>
-      <!-- ears -->
       <polygon points="36,28 28,8 50,22" fill="#ff9f43"/>
       <polygon points="84,28 92,8 70,22" fill="#ff9f43"/>
-      <!-- ear inner -->
       <polygon points="37,26 31,13 48,23" fill="#fab1a0"/>
       <polygon points="83,26 89,13 72,23" fill="#fab1a0"/>
-      <!-- face -->
-      <!-- eyes -->
       <ellipse cx="48" cy="44" rx="8" ry="9" fill="white"/>
       <ellipse cx="72" cy="44" rx="8" ry="9" fill="white"/>
       <ellipse cx="49" cy="45" rx="5" ry="6" fill="#2d3436"/>
       <ellipse cx="73" cy="45" rx="5" ry="6" fill="#2d3436"/>
-      <!-- eye shine -->
       <circle cx="51" cy="43" r="2" fill="white"/>
       <circle cx="75" cy="43" r="2" fill="white"/>
-      <!-- nose -->
       <ellipse cx="60" cy="56" rx="4" ry="3" fill="#fd79a8"/>
-      <!-- mouth -->
       <path d="M56 59 Q60 64 64 59" stroke="#ee5a24" stroke-width="1.5" fill="none" stroke-linecap="round"/>
       <path d="M60 59 L60 62" stroke="#ee5a24" stroke-width="1.5" stroke-linecap="round"/>
-      <!-- whiskers left -->
       <line x1="28" y1="54" x2="52" y2="57" stroke="#b2bec3" stroke-width="1.2" stroke-linecap="round"/>
       <line x1="26" y1="58" x2="52" y2="59" stroke="#b2bec3" stroke-width="1.2" stroke-linecap="round"/>
       <line x1="28" y1="62" x2="52" y2="61" stroke="#b2bec3" stroke-width="1.2" stroke-linecap="round"/>
-      <!-- whiskers right -->
       <line x1="92" y1="54" x2="68" y2="57" stroke="#b2bec3" stroke-width="1.2" stroke-linecap="round"/>
       <line x1="94" y1="58" x2="68" y2="59" stroke="#b2bec3" stroke-width="1.2" stroke-linecap="round"/>
       <line x1="92" y1="62" x2="68" y2="61" stroke="#b2bec3" stroke-width="1.2" stroke-linecap="round"/>
-      <!-- paws -->
       <ellipse cx="38" cy="104" rx="12" ry="9" fill="#ff9f43"/>
       <ellipse cx="82" cy="104" rx="12" ry="9" fill="#ff9f43"/>
-      <!-- tail -->
       <path d="M88 90 Q110 80 108 60 Q106 48 96 52" stroke="#ff9f43" stroke-width="10" fill="none" stroke-linecap="round"/>
-      <!-- belly stripes -->
       <path d="M50 88 Q60 92 70 88" stroke="#ee5a24" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.4"/>
       <path d="M46 96 Q60 101 74 96" stroke="#ee5a24" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.4"/>
     </svg>
 
     <h1 class="game-title">Kate Cat</h1>
-    <p class="game-tagline">🐾 Read it! Tap it! Learn it!</p>
+    <p class="game-tag">🐾 Read it! Tap it! Learn it!</p>
   </div>
 
   <div class="stats-bar">
-    <div class="stat-chip">
-      <span class="stat-num" id="statCorrect" style="color:#00b894">0</span>
-      <span class="stat-lbl">CORRECT</span>
-    </div>
-    <div class="stat-chip">
-      <span class="stat-num" id="statPractice" style="color:#e17055">0</span>
-      <span class="stat-lbl">PRACTICING</span>
-    </div>
-    <div class="stat-chip">
-      <span class="stat-num" id="statMastered" style="color:#6c5ce7">0</span>
-      <span class="stat-lbl">MASTERED ⭐</span>
-    </div>
+    <div class="s-chip"><span class="s-num" id="sCorrect" style="color:var(--green)">0</span><span class="s-lbl">correct</span></div>
+    <div class="s-chip"><span class="s-num" id="sPractice" style="color:#e17055">0</span><span class="s-lbl">practicing</span></div>
+    <div class="s-chip"><span class="s-num" id="sMastered" style="color:#6c5ce7">0</span><span class="s-lbl">mastered ⭐</span></div>
   </div>
 
   <div class="cat-grid" id="catGrid"></div>
 
-  <div class="action-row">
-    <button class="btn-missed" id="btnMissed" onclick="startMissedPractice()">🐾 Practice missed words</button>
+  <div class="action-col">
+    <button class="btn-missed" id="btnMissed" onclick="startMissed()">🐾 Practice missed words</button>
+    <button class="btn-lookup" onclick="showLookup()">🔍 Look up any word</button>
     <button class="btn-gallery" onclick="showGallery()">⭐ Mastered words gallery</button>
     <button class="btn-reset" onclick="resetAll()">reset all progress</button>
   </div>
 </div>
 
-<!-- ═══════════ PLAY ═══════════ -->
+<!-- ══════════════════════════════════════════════════════
+     PLAY
+══════════════════════════════════════════════════════ -->
 <div id="play" class="screen">
-  <div class="play-top">
+  <div class="play-hdr">
     <button class="btn-back" onclick="goHome()">← Home</button>
-    <span class="play-cat-label" id="playCatLabel">CVC Words</span>
-    <span class="play-counter" id="playCounter">1 / 10</span>
+    <span class="play-lbl" id="playLbl">CVC Words</span>
+    <span class="play-cnt" id="playCnt">1 / 10</span>
   </div>
-  <div class="prog-track">
-    <div class="prog-fill" id="progFill" style="width:0%"></div>
-  </div>
+  <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
   <div class="paws-row" id="pawsRow"></div>
-
   <div class="card-zone">
     <div class="flashcard" id="flashcard">
-      <div class="card-ears">
-        <div class="ear"></div>
-        <div class="ear"></div>
-      </div>
-      <span class="card-tag" id="cardTag"></span>
+      <div class="card-ears"><div class="ear"></div><div class="ear"></div></div>
+      <span class="card-tag-lbl" id="cardTag"></span>
       <span class="card-word" id="cardWord">cat</span>
       <span class="card-hint" id="cardHint"></span>
     </div>
   </div>
-
   <div class="ans-zone">
     <div class="main-btns">
-      <button class="btn-wrong-ans" onclick="markAnswer(false)">😾 Try Again</button>
-      <button class="btn-right-ans" onclick="markAnswer(true)">😺 Got It!</button>
+      <button class="btn-ng" onclick="mark(false)">😾 Try Again</button>
+      <button class="btn-ok" onclick="mark(true)">😺 Got It!</button>
     </div>
-    <button class="btn-skip-ans" onclick="skipCard()">skip this one ↷</button>
+    <button class="btn-skip" onclick="skipCard()">skip ↷</button>
   </div>
 </div>
 
-<!-- ═══════════ RESULTS ═══════════ -->
+<!-- ══════════════════════════════════════════════════════
+     RESULTS
+══════════════════════════════════════════════════════ -->
 <div id="results" class="screen">
-  <div class="results-cat" id="resultsCat">😺</div>
-  <h2 class="results-title" id="resultsTitle">Purrfect!</h2>
-  <p class="results-sub" id="resultsSub">10 of 10 correct</p>
-
+  <div class="res-cat" id="resCat">😺</div>
+  <h2 class="res-title" id="resTitle">Purrfect!</h2>
+  <p class="res-sub" id="resSub">10 of 10 correct</p>
   <div class="score-ring">
     <span class="score-pct" id="scorePct">100%</span>
     <span class="score-lbl">correct</span>
   </div>
-
-  <div class="results-list" id="resultsList"></div>
-
-  <div class="results-actions">
+  <div class="res-list" id="resList"></div>
+  <div class="res-actions">
     <div id="drillArea"></div>
     <button class="btn-primary" onclick="playAgain()">Play again 🐾</button>
     <button class="btn-secondary" onclick="goHome()">← Choose another</button>
   </div>
 </div>
 
-<!-- ═══════════ GALLERY ═══════════ -->
+<!-- ══════════════════════════════════════════════════════
+     GALLERY
+══════════════════════════════════════════════════════ -->
 <div id="gallery" class="screen">
-  <div class="gallery-header">
+  <div class="gallery-hdr">
     <button class="btn-back" onclick="goHome()">← Home</button>
     <span class="gallery-title">⭐ Mastered Words</span>
   </div>
   <div id="galleryContent" style="width:100%;max-width:400px;"></div>
 </div>
 
+<!-- ══════════════════════════════════════════════════════
+     LOOKUP
+══════════════════════════════════════════════════════ -->
+<div id="lookup" class="screen">
+  <div class="lookup-hdr">
+    <button class="btn-back" onclick="goHome()">← Home</button>
+    <span class="lookup-title">🔍 Word Stats</span>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="searchInput" type="text" placeholder="Type any word…" oninput="onSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+  </div>
+  <div id="lookupResult" style="width:100%;max-width:400px;"></div>
+  <div class="lookup-list" id="lookupList"></div>
+</div>
+
 <script>
-/* ═══════════ WORD DATA ═══════════ */
-const CATEGORIES = [
-  {
-    id:'cvc', name:'CVC Words', emoji:'🐱', color:'#a29bfe', bar:'#6c5ce7',
+/* ═══════════════════════════════════════════════════════
+   WORD DATA
+═══════════════════════════════════════════════════════ */
+const CATS = [
+  { id:'cvc', name:'CVC Words', emoji:'🐱', color:'#a29bfe', bar:'#6c5ce7',
     words:[
-      {w:'cat'},{w:'dog'},{w:'hat'},{w:'sit'},{w:'cup'},{w:'bed'},
-      {w:'pig'},{w:'run'},{w:'hop'},{w:'wet'},{w:'nap'},{w:'fin'},
-      {w:'mud'},{w:'bug'},{w:'jet'},{w:'fox'},{w:'web'},{w:'lip'},
-      {w:'top'},{w:'pan'},{w:'den'},{w:'rub'},{w:'fit'},{w:'mop'},
+      // short-A
+      'bat','bag','ban','bad','cab','can','cap','cat','dad','dam',
+      'fan','fat','gap','gas','ham','has','hat','jab','jam','lap',
+      'lad','man','map','mat','nap','pad','pan','pat','rag','ram',
+      'ran','rap','rat','sap','sat','tan','tap','van','wag','wax',
+      'yam','zap','nab','dab','gab','jab','tab','had','lax','max',
+      // short-E
+      'bed','beg','bet','den','fed','fen','get','hen','jet','keg',
+      'led','leg','let','men','met','net','peg','pen','pet','red',
+      'set','ten','vet','web','wed','wet','yet','yew','hex','vex',
+      // short-I
+      'bit','bid','big','bin','dip','did','dig','dim','fin','fit',
+      'fix','him','hip','his','hit','jig','kid','kit','lip','lid',
+      'mix','nip','pig','pin','pit','rib','rid','rip','sin','sip',
+      'sit','six','tip','tin','wig','win','wit','zip','fig','fig',
+      // short-O
+      'bob','bog','box','cod','cop','cob','cog','dot','fog','fox',
+      'god','got','hop','hot','job','jog','log','lot','mob','mop',
+      'nod','not','pod','pop','pot','rob','rod','rot','sob','sod',
+      'top','tot','toy','wok','mop','lop','cop','bop','flop','plop',
+      // short-U
+      'bug','bun','bus','but','cup','cut','dug','fun','fur','gum',
+      'gun','gut','hub','hug','hum','hut','jug','mud','mug','nun',
+      'nut','pub','pug','pun','pup','rub','rug','run','rut','sub',
+      'sun','tub','tug','tun','yup','bud','dud','dun','spud','snub',
     ]
   },
-  {
-    id:'sight', name:'Sight Words', emoji:'👀', color:'#74b9ff', bar:'#0984e3',
+  { id:'sight', name:'Sight Words', emoji:'👀', color:'#74b9ff', bar:'#0984e3',
     words:[
-      {w:'the'},{w:'a'},{w:'and'},{w:'to'},{w:'said'},{w:'in'},
-      {w:'is'},{w:'it'},{w:'of'},{w:'up'},{w:'look'},{w:'are'},
-      {w:'big'},{w:'my'},{w:'go'},{w:'see'},{w:'can'},{w:'like'},
-      {w:'we'},{w:'on'},{w:'I'},{w:'me'},{w:'at'},{w:'he'},
-      {w:'was'},{w:'for'},{w:'you'},{w:'not'},{w:'with'},{w:'she'},
-      {w:'do'},{w:'his'},{w:'they'},{w:'but'},{w:'all'},{w:'will'},
+      // Dolch Pre-Primer
+      'a','and','away','big','blue','can','come','down','find','for',
+      'funny','go','help','here','I','in','is','it','jump','little',
+      'look','make','me','my','not','one','play','red','run','said',
+      'see','the','three','to','two','up','we','where','yellow','you',
+      // Dolch Primer
+      'all','am','are','at','ate','be','black','brown','but','came',
+      'did','do','eat','four','get','good','have','he','into','like',
+      'must','new','no','now','on','our','out','please','pretty','ran',
+      'ride','saw','say','she','so','soon','that','there','they','this',
+      'too','under','want','was','well','went','what','white','who','will',
+      'with','yes',
+      // Dolch First Grade
+      'after','again','an','any','as','ask','by','could','every','fly',
+      'from','give','giving','had','has','her','him','his','how','just',
+      'know','let','live','may','of','old','once','open','over','put',
+      'round','some','stop','take','thank','them','think','walk','were','when',
+      // Dolch Second Grade
+      'always','around','because','been','before','best','both','buy','call','cold',
+      'does','don\'t','fast','first','five','found','gave','goes','green','its',
+      'made','many','off','or','pull','read','right','sing','sit','sleep',
+      'tell','their','these','those','upon','us','use','very','wash','which',
+      'why','wish','work','would','write','your',
     ]
   },
-  {
-    id:'longvowel', name:'Long Vowels', emoji:'🦋', color:'#fd79a8', bar:'#e84393',
+  { id:'longvowel', name:'Long Vowels', emoji:'🦋', color:'#fd79a8', bar:'#e84393',
     words:[
-      {w:'cake',hint:'long A'},{w:'lake',hint:'long A'},{w:'tape',hint:'long A'},{w:'name',hint:'long A'},
-      {w:'bike',hint:'long I'},{w:'kite',hint:'long I'},{w:'pine',hint:'long I'},{w:'time',hint:'long I'},
-      {w:'cone',hint:'long O'},{w:'rose',hint:'long O'},{w:'bone',hint:'long O'},{w:'note',hint:'long O'},
-      {w:'cute',hint:'long U'},{w:'mule',hint:'long U'},{w:'tube',hint:'long U'},{w:'use',hint:'long U'},
-      {w:'bee',hint:'long E'},{w:'feet',hint:'long E'},{w:'tree',hint:'long E'},{w:'seed',hint:'long E'},
+      // long-A (a_e, ai, ay, ea)
+      {w:'cake',h:'long A'},{w:'lake',h:'long A'},{w:'tape',h:'long A'},{w:'name',h:'long A'},
+      {w:'same',h:'long A'},{w:'late',h:'long A'},{w:'gate',h:'long A'},{w:'gave',h:'long A'},
+      {w:'cave',h:'long A'},{w:'wave',h:'long A'},{w:'safe',h:'long A'},{w:'pale',h:'long A'},
+      {w:'tale',h:'long A'},{w:'male',h:'long A'},{w:'sale',h:'long A'},{w:'rate',h:'long A'},
+      {w:'rain',h:'long A'},{w:'tail',h:'long A'},{w:'sail',h:'long A'},{w:'mail',h:'long A'},
+      {w:'pain',h:'long A'},{w:'wait',h:'long A'},{w:'bait',h:'long A'},{w:'main',h:'long A'},
+      {w:'day',h:'long A'},{w:'say',h:'long A'},{w:'way',h:'long A'},{w:'play',h:'long A'},
+      {w:'stay',h:'long A'},{w:'tray',h:'long A'},{w:'clay',h:'long A'},{w:'gray',h:'long A'},
+      // long-E (ee, ea, e_e, y)
+      {w:'bee',h:'long E'},{w:'feet',h:'long E'},{w:'tree',h:'long E'},{w:'seed',h:'long E'},
+      {w:'beet',h:'long E'},{w:'need',h:'long E'},{w:'feed',h:'long E'},{w:'keep',h:'long E'},
+      {w:'week',h:'long E'},{w:'peek',h:'long E'},{w:'feel',h:'long E'},{w:'heel',h:'long E'},
+      {w:'peel',h:'long E'},{w:'reel',h:'long E'},{w:'seen',h:'long E'},{w:'teen',h:'long E'},
+      {w:'sea',h:'long E'},{w:'tea',h:'long E'},{w:'pea',h:'long E'},{w:'read',h:'long E'},
+      {w:'real',h:'long E'},{w:'meal',h:'long E'},{w:'seal',h:'long E'},{w:'deal',h:'long E'},
+      {w:'heat',h:'long E'},{w:'beat',h:'long E'},{w:'meat',h:'long E'},{w:'seat',h:'long E'},
+      {w:'me',h:'long E'},{w:'he',h:'long E'},{w:'she',h:'long E'},{w:'we',h:'long E'},
+      // long-I (i_e, igh, y, ie)
+      {w:'bike',h:'long I'},{w:'kite',h:'long I'},{w:'pine',h:'long I'},{w:'time',h:'long I'},
+      {w:'vine',h:'long I'},{w:'hide',h:'long I'},{w:'side',h:'long I'},{w:'fine',h:'long I'},
+      {w:'line',h:'long I'},{w:'mine',h:'long I'},{w:'nine',h:'long I'},{w:'dine',h:'long I'},
+      {w:'ride',h:'long I'},{w:'wide',h:'long I'},{w:'tide',h:'long I'},{w:'hike',h:'long I'},
+      {w:'like',h:'long I'},{w:'life',h:'long I'},{w:'wife',h:'long I'},{w:'ripe',h:'long I'},
+      {w:'night',h:'long I'},{w:'light',h:'long I'},{w:'right',h:'long I'},{w:'might',h:'long I'},
+      {w:'tight',h:'long I'},{w:'sight',h:'long I'},{w:'fight',h:'long I'},{w:'bright',h:'long I'},
+      {w:'my',h:'long I'},{w:'by',h:'long I'},{w:'fly',h:'long I'},{w:'sky',h:'long I'},
+      // long-O (o_e, oa, ow, oe)
+      {w:'cone',h:'long O'},{w:'rose',h:'long O'},{w:'bone',h:'long O'},{w:'note',h:'long O'},
+      {w:'rope',h:'long O'},{w:'hole',h:'long O'},{w:'home',h:'long O'},{w:'pole',h:'long O'},
+      {w:'mole',h:'long O'},{w:'role',h:'long O'},{w:'vote',h:'long O'},{w:'tone',h:'long O'},
+      {w:'zone',h:'long O'},{w:'woke',h:'long O'},{w:'joke',h:'long O'},{w:'poke',h:'long O'},
+      {w:'boat',h:'long O'},{w:'coat',h:'long O'},{w:'goat',h:'long O'},{w:'road',h:'long O'},
+      {w:'load',h:'long O'},{w:'toad',h:'long O'},{w:'soak',h:'long O'},{w:'foam',h:'long O'},
+      {w:'low',h:'long O'},{w:'row',h:'long O'},{w:'snow',h:'long O'},{w:'blow',h:'long O'},
+      {w:'flow',h:'long O'},{w:'glow',h:'long O'},{w:'grow',h:'long O'},{w:'show',h:'long O'},
+      // long-U (u_e, ue, ew, oo)
+      {w:'cute',h:'long U'},{w:'mule',h:'long U'},{w:'tube',h:'long U'},{w:'cube',h:'long U'},
+      {w:'dune',h:'long U'},{w:'huge',h:'long U'},{w:'fuse',h:'long U'},{w:'use',h:'long U'},
+      {w:'rule',h:'long U'},{w:'rude',h:'long U'},{w:'pure',h:'long U'},{w:'cure',h:'long U'},
+      {w:'blue',h:'long U'},{w:'clue',h:'long U'},{w:'glue',h:'long U'},{w:'true',h:'long U'},
+      {w:'new',h:'long U'},{w:'few',h:'long U'},{w:'dew',h:'long U'},{w:'blew',h:'long U'},
+      {w:'moon',h:'long U'},{w:'soon',h:'long U'},{w:'food',h:'long U'},{w:'cool',h:'long U'},
+      {w:'pool',h:'long U'},{w:'tool',h:'long U'},{w:'fool',h:'long U'},{w:'zoo',h:'long U'},
     ]
   },
-  {
-    id:'blends', name:'Blends', emoji:'🌀', color:'#55efc4', bar:'#00b894',
+  { id:'blends', name:'Blends', emoji:'🌀', color:'#55efc4', bar:'#00b894',
     words:[
-      {w:'flag',hint:'fl-'},{w:'frog',hint:'fr-'},{w:'drip',hint:'dr-'},{w:'drop',hint:'dr-'},
-      {w:'slip',hint:'sl-'},{w:'slug',hint:'sl-'},{w:'clap',hint:'cl-'},{w:'clip',hint:'cl-'},
-      {w:'grip',hint:'gr-'},{w:'grin',hint:'gr-'},{w:'trip',hint:'tr-'},{w:'trap',hint:'tr-'},
-      {w:'spin',hint:'sp-'},{w:'spot',hint:'sp-'},{w:'skip',hint:'sk-'},{w:'skin',hint:'sk-'},
-      {w:'snap',hint:'sn-'},{w:'snug',hint:'sn-'},{w:'step',hint:'st-'},{w:'stop',hint:'st-'},
-    ]
-  },
-  {
-    id:'numbers', name:'Numbers', emoji:'🔢', color:'#ffeaa7', bar:'#fdcb6e',
-    words:[
-      {w:'1',hint:'one'},{w:'2',hint:'two'},{w:'3',hint:'three'},{w:'4',hint:'four'},
-      {w:'5',hint:'five'},{w:'6',hint:'six'},{w:'7',hint:'seven'},{w:'8',hint:'eight'},
-      {w:'9',hint:'nine'},{w:'10',hint:'ten'},{w:'11',hint:'eleven'},{w:'12',hint:'twelve'},
-      {w:'13',hint:'thirteen'},{w:'14',hint:'fourteen'},{w:'15',hint:'fifteen'},
-      {w:'16',hint:'sixteen'},{w:'17',hint:'seventeen'},{w:'18',hint:'eighteen'},
-      {w:'19',hint:'nineteen'},{w:'20',hint:'twenty'},
-    ]
-  },
-  {
-    id:'colors', name:'Colors', emoji:'🌈', color:'#fab1a0', bar:'#e17055',
-    words:[
-      {w:'red'},{w:'blue'},{w:'green'},{w:'yellow'},{w:'orange'},
-      {w:'purple'},{w:'pink'},{w:'black'},{w:'white'},{w:'brown'},
-      {w:'gray'},{w:'gold'},{w:'silver'},{w:'teal'},{w:'violet'},
-    ]
-  },
-  {
-    id:'shapes', name:'Shapes', emoji:'⭐', color:'#fdcb6e', bar:'#e67e22',
-    words:[
-      {w:'circle'},{w:'square'},{w:'triangle'},{w:'star'},{w:'heart'},
-      {w:'oval'},{w:'diamond'},{w:'rectangle'},{w:'hexagon'},{w:'arrow'},
-      {w:'cone'},{w:'cube'},{w:'sphere'},{w:'cylinder'},
-    ]
-  },
-  {
-    id:'digraphs', name:'Digraphs', emoji:'🔤', color:'#dfe6e9', bar:'#636e72',
-    words:[
-      {w:'ship',hint:'sh-'},{w:'shop',hint:'sh-'},{w:'chin',hint:'ch-'},{w:'chip',hint:'ch-'},
-      {w:'that',hint:'th-'},{w:'this',hint:'th-'},{w:'when',hint:'wh-'},{w:'whip',hint:'wh-'},
-      {w:'phone',hint:'ph-'},{w:'photo',hint:'ph-'},{w:'check',hint:'ch-'},{w:'sheep',hint:'sh-'},
-      {w:'thick',hint:'th-'},{w:'wheel',hint:'wh-'},{w:'shell',hint:'sh-'},
+      // bl-
+      {w:'black',h:'bl-'},{w:'blank',h:'bl-'},{w:'blast',h:'bl-'},{w:'bleed',h:'bl-'},
+      {w:'blend',h:'bl-'},{w:'bless',h:'bl-'},{w:'blip',h:'bl-'},{w:'blob',h:'bl-'},
+      {w:'block',h:'bl-'},{w:'blot',h:'bl-'},{w:'blow',h:'bl-'},{w:'blue',h:'bl-'},
+      // br-
+      {w:'brad',h:'br-'},{w:'brag',h:'br-'},{w:'brat',h:'br-'},{w:'brim',h:'br-'},
+      {w:'bring',h:'br-'},{w:'brisk',h:'br-'},{w:'broke',h:'br-'},{w:'brook',h:'br-'},
+      {w:'brown',h:'br-'},{w:'brush',h:'br-'},{w:'bred',h:'br-'},{w:'brew',h:'br-'},
+      // cl-
+      {w:'clam',h:'cl-'},{w:'clap',h:'cl-'},{w:'claw',h:'cl-'},{w:'clay',h:'cl-'},
+      {w:'clean',h:'cl-'},{w:'clip',h:'cl-'},{w:'clock',h:'cl-'},{w:'clop',h:'cl-'},
+      {w:'clot',h:'cl-'},{w:'cloud',h:'cl-'},{w:'club',h:'cl-'},{w:'cluck',h:'cl-'},
+      // cr-
+      {w:'crab',h:'cr-'},{w:'crack',h:'cr-'},{w:'cram',h:'cr-'},{w:'crash',h:'cr-'},
+      {w:'crave',h:'cr-'},{w:'crawl',h:'cr-'},{w:'cream',h:'cr-'},{w:'creek',h:'cr-'},
+      {w:'crew',h:'cr-'},{w:'crib',h:'cr-'},{w:'crop',h:'cr-'},{w:'cross',h:'cr-'},
+      // dr-
+      {w:'drab',h:'dr-'},{w:'drag',h:'dr-'},{w:'drape',h:'dr-'},{w:'draw',h:'dr-'},
+      {w:'dream',h:'dr-'},{w:'drip',h:'dr-'},{w:'drive',h:'dr-'},{w:'drop',h:'dr-'},
+      {w:'drove',h:'dr-'},{w:'drum',h:'dr-'},{w:'drug',h:'dr-'},{w:'dry',h:'dr-'},
+      // fl-
+      {w:'flag',h:'fl-'},{w:'flat',h:'fl-'},{w:'flaw',h:'fl-'},{w:'flea',h:'fl-'},
+      {w:'flip',h:'fl-'},{w:'flit',h:'fl-'},{w:'flock',h:'fl-'},{w:'flop',h:'fl-'},
+      {w:'flow',h:'fl-'},{w:'fluff',h:'fl-'},{w:'flung',h:'fl-'},{w:'flush',h:'fl-'},
+      // fr-
+      {w:'free',h:'fr-'},{w:'fret',h:'fr-'},{w:'from',h:'fr-'},{w:'frog',h:'fr-'},
+      {w:'front',h:'fr-'},{w:'frost',h:'fr-'},{w:'frown',h:'fr-'},{w:'fry',h:'fr-'},
+      {w:'fresh',h:'fr-'},{w:'Fred',h:'fr-'},{w:'frank',h:'fr-'},{w:'frill',h:'fr-'},
+      // gl-
+      {w:'glad',h:'gl-'},{w:'glee',h:'gl-'},{w:'glen',h:'gl-'},{w:'glib',h:'gl-'},
+      {w:'glob',h:'gl-'},{w:'gloom',h:'gl-'},{w:'glop',h:'gl-'},{w:'glow',h:'gl-'},
+      {w:'glue',h:'gl-'},{w:'glum',h:'gl-'},{w:'glut',h:'gl-'},{w:'glint',h:'gl-'},
+      // gr-
+      {w:'grab',h:'gr-'},{w:'grace',h:'gr-'},{w:'grade',h:'gr-'},{w:'gram',h:'gr-'},
+      {w:'grand',h:'gr-'},{w:'grapes',h:'gr-'},{w:'grasp',h:'gr-'},{w:'grin',h:'gr-'},
+      {w:'grip',h:'gr-'},{w:'grid',h:'gr-'},{w:'groan',h:'gr-'},{w:'groom',h:'gr-'},
+      // pl-
+      {w:'plan',h:'pl-'},{w:'plane',h:'pl-'},{w:'plant',h:'pl-'},{w:'plop',h:'pl-'},
+      {w:'plot',h:'pl-'},{w:'plug',h:'pl-'},{w:'plum',h:'pl-'},{w:'plump',h:'pl-'},
+      {w:'plunk',h:'pl-'},{w:'plus',h:'pl-'},{w:'play',h:'pl-'},{w:'plea',h:'pl-'},
+      // pr-
+      {w:'pray',h:'pr-'},{w:'prep',h:'pr-'},{w:'press',h:'pr-'},{w:'price',h:'pr-'},
+      {w:'prick',h:'pr-'},{w:'pride',h:'pr-'},{w:'prim',h:'pr-'},{w:'prince',h:'pr-'},
+      {w:'print',h:'pr-'},{w:'prize',h:'pr-'},{w:'prod',h:'pr-'},{w:'prop',h:'pr-'},
+      // sk-
+      {w:'skid',h:'sk-'},{w:'skim',h:'sk-'},{w:'skin',h:'sk-'},{w:'skip',h:'sk-'},
+      {w:'skit',h:'sk-'},{w:'skull',h:'sk-'},{w:'skunk',h:'sk-'},{w:'sky',h:'sk-'},
+      {w:'skill',h:'sk-'},{w:'skate',h:'sk-'},{w:'sketch',h:'sk-'},{w:'skew',h:'sk-'},
+      // sl-
+      {w:'slam',h:'sl-'},{w:'slap',h:'sl-'},{w:'slash',h:'sl-'},{w:'sled',h:'sl-'},
+      {w:'slim',h:'sl-'},{w:'slip',h:'sl-'},{w:'slit',h:'sl-'},{w:'slob',h:'sl-'},
+      {w:'slop',h:'sl-'},{w:'slot',h:'sl-'},{w:'slug',h:'sl-'},{w:'slum',h:'sl-'},
+      // sm-
+      {w:'smack',h:'sm-'},{w:'small',h:'sm-'},{w:'smart',h:'sm-'},{w:'smash',h:'sm-'},
+      {w:'smear',h:'sm-'},{w:'smell',h:'sm-'},{w:'smile',h:'sm-'},{w:'smock',h:'sm-'},
+      {w:'smoke',h:'sm-'},{w:'smooth',h:'sm-'},{w:'smug',h:'sm-'},{w:'smite',h:'sm-'},
+      // sn-
+      {w:'snack',h:'sn-'},{w:'snag',h:'sn-'},{w:'snap',h:'sn-'},{w:'snare',h:'sn-'},
+      {w:'sneak',h:'sn-'},{w:'sniff',h:'sn-'},{w:'snip',h:'sn-'},{w:'snob',h:'sn-'},
+      {w:'snoop',h:'sn-'},{w:'snore',h:'sn-'},{w:'snout',h:'sn-'},{w:'snug',h:'sn-'},
+      // sp-
+      {w:'span',h:'sp-'},{w:'spark',h:'sp-'},{w:'speak',h:'sp-'},{w:'speed',h:'sp-'},
+      {w:'spell',h:'sp-'},{w:'spend',h:'sp-'},{w:'spill',h:'sp-'},{w:'spin',h:'sp-'},
+      {w:'spit',h:'sp-'},{w:'splash',h:'sp-'},{w:'spot',h:'sp-'},{w:'spun',h:'sp-'},
+      // st-
+      {w:'stack',h:'st-'},{w:'staff',h:'st-'},{w:'stage',h:'st-'},{w:'stamp',h:'st-'},
+      {w:'stand',h:'st-'},{w:'star',h:'st-'},{w:'stay',h:'st-'},{w:'stem',h:'st-'},
+      {w:'step',h:'st-'},{w:'stick',h:'st-'},{w:'stir',h:'st-'},{w:'stop',h:'st-'},
+      // sw-
+      {w:'swam',h:'sw-'},{w:'swap',h:'sw-'},{w:'swat',h:'sw-'},{w:'sway',h:'sw-'},
+      {w:'swim',h:'sw-'},{w:'swing',h:'sw-'},{w:'swipe',h:'sw-'},{w:'swirl',h:'sw-'},
+      {w:'swoop',h:'sw-'},{w:'swept',h:'sw-'},{w:'sweet',h:'sw-'},{w:'swift',h:'sw-'},
+      // tr-
+      {w:'track',h:'tr-'},{w:'trail',h:'tr-'},{w:'train',h:'tr-'},{w:'trap',h:'tr-'},
+      {w:'trash',h:'tr-'},{w:'treat',h:'tr-'},{w:'trim',h:'tr-'},{w:'trip',h:'tr-'},
+      {w:'trot',h:'tr-'},{w:'truck',h:'tr-'},{w:'true',h:'tr-'},{w:'trunk',h:'tr-'},
+      // tw-
+      {w:'twig',h:'tw-'},{w:'twin',h:'tw-'},{w:'twirl',h:'tw-'},{w:'twist',h:'tw-'},
+      {w:'twice',h:'tw-'},{w:'tweed',h:'tw-'},{w:'tweak',h:'tw-'},{w:'twit',h:'tw-'},
     ]
   },
 ];
 
-/* ═══════════ STATE ═══════════ */
+/* normalise words to {w, h} objects */
+CATS.forEach(cat => {
+  cat.words = cat.words.map(x => typeof x === 'string' ? {w:x, h:''} : {w:x.w||x.word, h:x.h||x.hint||''});
+});
+
+/* ═══════════════════════════════════════════════════════
+   STORAGE  — history-based per-word tracking
+   progress[catId][word] = [ {ts, result} ... ]
+═══════════════════════════════════════════════════════ */
 let progress = {};
-try { progress = JSON.parse(localStorage.getItem('katecat_v2') || '{}'); } catch(e){}
+try { progress = JSON.parse(localStorage.getItem('katecat_v3') || '{}'); } catch(e){}
+function save(){ localStorage.setItem('katecat_v3', JSON.stringify(progress)); }
 
-let session = { catId: null, queue: [], idx: 0, correct: [], wrong: [], skipped: [] };
+function logResult(catId, word, correct){
+  if(!progress[catId]) progress[catId]={};
+  if(!progress[catId][word]) progress[catId][word]=[];
+  progress[catId][word].push({ts: Date.now(), r: correct ? 1 : 0});
+  // keep last 50 entries per word
+  if(progress[catId][word].length > 50) progress[catId][word].shift();
+  save();
+}
+
+function getHistory(catId, word){
+  return (progress[catId] && progress[catId][word]) ? progress[catId][word] : [];
+}
+
+const MASTERED_STREAK = 10;
+
+function wordStatus(catId, word){
+  const h = getHistory(catId, word);
+  if(!h.length) return 'unseen';
+  const lastWrong = h[h.length-1].r === 0;
+  const last10 = h.slice(-MASTERED_STREAK);
+  const mastered = last10.length >= MASTERED_STREAK && last10.every(e=>e.r===1);
+  const totalCorrect = h.filter(e=>e.r===1).length;
+  if(mastered) return 'mastered';
+  if(lastWrong) return 'wrong';
+  if(totalCorrect > 0) return 'correct';
+  return 'unseen';
+}
+
+function streakCount(catId, word){
+  const h = getHistory(catId, word);
+  let streak = 0;
+  for(let i = h.length - 1; i >= 0; i--){
+    if(h[i].r === 1) streak++;
+    else break;
+  }
+  return streak;
+}
+
+function allWordStatuses(){
+  let correct=0, wrong=0, mastered=0;
+  CATS.forEach(cat=>{
+    cat.words.forEach(w=>{
+      const s = wordStatus(cat.id, w.w);
+      if(s==='mastered') mastered++;
+      else if(s==='correct') correct++;
+      else if(s==='wrong') wrong++;
+    });
+  });
+  return {correct, wrong, mastered};
+}
+
+/* ═══════════════════════════════════════════════════════
+   AUDIO  — synthesis matching the Pixabay sounds closely.
+   To use real MP3s from Pixabay, see the comment at top.
+═══════════════════════════════════════════════════════ */
 let audioCtx = null;
+let goodAudio = null; // optional: loaded kitten-sfx.mp3
+let badAudio  = null; // optional: loaded angry-cat-hq.mp3
 
-/* ═══════════ AUDIO ═══════════ */
-function getAudio() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function getCtx(){
+  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
   return audioCtx;
 }
 
-function playMeow() {
+async function tryLoadAudio(){
+  // Attempt to load real files if they exist beside the HTML
   try {
-    const ctx = getAudio();
+    const ctx = getCtx();
+    const [goodRes, badRes] = await Promise.allSettled([
+      fetch('kitten-sfx.mp3').then(r=>r.ok?r.arrayBuffer():Promise.reject()),
+      fetch('angry-cat-hq.mp3').then(r=>r.ok?r.arrayBuffer():Promise.reject()),
+    ]);
+    if(goodRes.status==='fulfilled') goodAudio = await ctx.decodeAudioData(goodRes.value);
+    if(badRes.status==='fulfilled')  badAudio  = await ctx.decodeAudioData(badRes.value);
+  } catch(e){}
+}
+
+function playBuffer(buffer, trimEnd=0){
+  try{
+    const ctx = getCtx();
+    const src = ctx.createBufferSource();
+    src.buffer = buffer;
+    const gain = ctx.createGain();
+    gain.gain.value = 0.85;
+    src.connect(gain); gain.connect(ctx.destination);
+    const dur = trimEnd > 0 ? Math.min(trimEnd, buffer.duration) : buffer.duration;
+    src.start(0);
+    // for kitten sound we only want first second
+    if(trimEnd > 0) src.stop(ctx.currentTime + dur);
+  } catch(e){}
+}
+
+function playGoodSynth(){
+  try{
+    const ctx = getCtx();
+    const now = ctx.currentTime;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-    const now = ctx.currentTime;
-
     osc.connect(gain); gain.connect(ctx.destination);
     osc.type = 'sine';
-
-    // Meow: rising then falling pitch
-    osc.frequency.setValueAtTime(300, now);
-    osc.frequency.linearRampToValueAtTime(600, now + 0.12);
-    osc.frequency.linearRampToValueAtTime(450, now + 0.28);
-    osc.frequency.linearRampToValueAtTime(520, now + 0.38);
-    osc.frequency.linearRampToValueAtTime(380, now + 0.55);
-
-    gain.gain.setValueAtTime(0, now);
-    gain.gain.linearRampToValueAtTime(0.22, now + 0.05);
-    gain.gain.linearRampToValueAtTime(0.18, now + 0.3);
-    gain.gain.linearRampToValueAtTime(0, now + 0.6);
-
-    osc.start(now); osc.stop(now + 0.65);
-
-    // Purr layer
-    const osc2 = ctx.createOscillator();
-    const gain2 = ctx.createGain();
-    osc2.connect(gain2); gain2.connect(ctx.destination);
-    osc2.type = 'sawtooth';
-    osc2.frequency.setValueAtTime(28, now + 0.1);
-
-    gain2.gain.setValueAtTime(0, now + 0.1);
-    gain2.gain.linearRampToValueAtTime(0.08, now + 0.2);
-    gain2.gain.linearRampToValueAtTime(0.08, now + 0.5);
-    gain2.gain.linearRampToValueAtTime(0, now + 0.7);
-
-    osc2.start(now + 0.1); osc2.stop(now + 0.75);
+    osc.frequency.setValueAtTime(320,now);
+    osc.frequency.linearRampToValueAtTime(580,now+0.1);
+    osc.frequency.linearRampToValueAtTime(480,now+0.22);
+    osc.frequency.linearRampToValueAtTime(540,now+0.32);
+    osc.frequency.linearRampToValueAtTime(400,now+0.5);
+    gain.gain.setValueAtTime(0,now);
+    gain.gain.linearRampToValueAtTime(0.22,now+0.04);
+    gain.gain.linearRampToValueAtTime(0.18,now+0.28);
+    gain.gain.linearRampToValueAtTime(0,now+0.56);
+    osc.start(now); osc.stop(now+0.6);
+    // purr layer
+    const o2 = ctx.createOscillator(); const g2 = ctx.createGain();
+    o2.connect(g2); g2.connect(ctx.destination);
+    o2.type='sawtooth'; o2.frequency.value=26;
+    g2.gain.setValueAtTime(0,now+0.1);
+    g2.gain.linearRampToValueAtTime(0.07,now+0.2);
+    g2.gain.linearRampToValueAtTime(0.07,now+0.48);
+    g2.gain.linearRampToValueAtTime(0,now+0.7);
+    o2.start(now+0.1); o2.stop(now+0.75);
   } catch(e){}
 }
 
-function playHiss() {
-  try {
-    const ctx = getAudio();
+function playBadSynth(){
+  try{
+    const ctx = getCtx();
     const now = ctx.currentTime;
-
-    // Noise burst (hiss)
-    const bufSize = ctx.sampleRate * 0.5;
-    const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * 0.5;
-
-    const source = ctx.createBufferSource();
-    source.buffer = buf;
-
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 3000;
-    filter.Q.value = 0.8;
-
+    // noise hiss burst
+    const bufSize = Math.floor(ctx.sampleRate*0.55);
+    const buf = ctx.createBuffer(1,bufSize,ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for(let i=0;i<bufSize;i++) d[i]=(Math.random()*2-1)*0.6;
+    const src = ctx.createBufferSource(); src.buffer=buf;
+    const filt = ctx.createBiquadFilter(); filt.type='bandpass'; filt.frequency.value=3200; filt.Q.value=0.7;
     const gain = ctx.createGain();
-    source.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-
-    gain.gain.setValueAtTime(0.4, now);
-    gain.gain.linearRampToValueAtTime(0.1, now + 0.5);
-
-    source.start(now);
-
-    // Low growl
-    const osc = ctx.createOscillator();
-    const g2 = ctx.createGain();
+    src.connect(filt); filt.connect(gain); gain.connect(ctx.destination);
+    gain.gain.setValueAtTime(0.45,now); gain.gain.linearRampToValueAtTime(0.08,now+0.55);
+    src.start(now);
+    // low growl
+    const osc = ctx.createOscillator(); const g2 = ctx.createGain();
     osc.connect(g2); g2.connect(ctx.destination);
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(120, now);
-    osc.frequency.linearRampToValueAtTime(80, now + 0.4);
-    g2.gain.setValueAtTime(0.15, now);
-    g2.gain.linearRampToValueAtTime(0, now + 0.45);
-    osc.start(now); osc.stop(now + 0.5);
+    osc.type='sawtooth'; osc.frequency.setValueAtTime(130,now); osc.frequency.linearRampToValueAtTime(75,now+0.45);
+    g2.gain.setValueAtTime(0.18,now); g2.gain.linearRampToValueAtTime(0,now+0.5);
+    osc.start(now); osc.stop(now+0.55);
   } catch(e){}
 }
 
-/* ═══════════ PARTICLES ═══════════ */
-function spawnParticles(x, y, correct) {
-  const items = correct ? ['🐾','⭐','✨','🐱','💛'] : ['😾','💢'];
-  for (let i = 0; i < (correct ? 8 : 3); i++) {
-    setTimeout(() => {
-      const el = document.createElement('div');
-      el.className = 'particle';
-      el.textContent = items[Math.floor(Math.random() * items.length)];
-      el.style.left = (x + (Math.random()-0.5)*80) + 'px';
-      el.style.top = y + 'px';
-      el.style.animationDuration = (0.7 + Math.random()*0.5) + 's';
-      el.style.animationDelay = (Math.random()*0.15) + 's';
+function playGood(){
+  if(goodAudio) playBuffer(goodAudio, 1.0); // first second of Kitten SFX
+  else playGoodSynth();
+}
+
+function playBad(){
+  if(badAudio) playBuffer(badAudio);
+  else playBadSynth();
+}
+
+/* ═══════════════════════════════════════════════════════
+   PARTICLES
+═══════════════════════════════════════════════════════ */
+function particles(x, y, ok){
+  const set = ok ? ['🐾','⭐','✨','🐱','💛'] : ['😾','💢','🙀'];
+  const n = ok ? 9 : 4;
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const el=document.createElement('div'); el.className='particle';
+      el.textContent=set[Math.floor(Math.random()*set.length)];
+      el.style.left=(x+(Math.random()-.5)*90)+'px';
+      el.style.top=y+'px';
+      el.style.animationDuration=(.7+Math.random()*.5)+'s';
+      el.style.animationDelay=(Math.random()*.12)+'s';
       document.body.appendChild(el);
-      setTimeout(() => el.remove(), 1400);
-    }, i * 40);
+      setTimeout(()=>el.remove(),1500);
+    },i*38);
   }
 }
 
-function spawnConfetti() {
-  const pieces = ['🐾','⭐','✨','🎉','💛','🐱','🌟'];
-  const c = document.getElementById('confettiContainer');
-  for (let i = 0; i < 30; i++) {
-    const el = document.createElement('div');
-    el.className = 'confetti-piece';
-    el.textContent = pieces[Math.floor(Math.random()*pieces.length)];
-    el.style.left = Math.random()*100 + 'vw';
-    el.style.animationDuration = (1.5+Math.random()*1.5) + 's';
-    el.style.animationDelay = (Math.random()*0.8) + 's';
+function confetti(){
+  const c=document.getElementById('confettiCont');
+  const set=['🐾','⭐','✨','🎉','💛','🐱','🌟'];
+  for(let i=0;i<35;i++){
+    const el=document.createElement('div'); el.className='conf';
+    el.textContent=set[Math.floor(Math.random()*set.length)];
+    el.style.left=Math.random()*100+'vw';
+    el.style.animationDuration=(1.5+Math.random()*1.5)+'s';
+    el.style.animationDelay=(Math.random()*.9)+'s';
     c.appendChild(el);
-    setTimeout(() => el.remove(), 3500);
+    setTimeout(()=>el.remove(),3600);
   }
 }
 
-/* ═══════════ PROGRESS ═══════════ */
-function save() { localStorage.setItem('katecat_v2', JSON.stringify(progress)); }
-
-function getCatP(id) { return progress[id] || {}; }
-
-/* ═══════════ HOME ═══════════ */
-function renderHome() {
-  const grid = document.getElementById('catGrid');
-  grid.innerHTML = '';
-  let totC=0, totP=0, totM=0;
-
-  CATEGORIES.forEach(cat => {
-    const p = getCatP(cat.id);
-    const words = cat.words;
-    const correct = words.filter(w => p[w.w]==='correct').length;
-    const mastered = words.filter(w => p[w.w]==='mastered').length;
-    const wrong = words.filter(w => p[w.w]==='wrong').length;
-    const pct = Math.round(((correct+mastered)/words.length)*100);
-
-    totC += correct + mastered;
-    totP += wrong;
-    totM += mastered;
-
-    const card = document.createElement('button');
-    card.className = 'cat-card';
-    card.style.setProperty('--cat-color', cat.color);
-    card.innerHTML = `
+/* ═══════════════════════════════════════════════════════
+   HOME
+═══════════════════════════════════════════════════════ */
+function renderHome(){
+  const grid=document.getElementById('catGrid');
+  grid.innerHTML='';
+  CATS.forEach(cat=>{
+    const words=cat.words;
+    const correct=words.filter(w=>wordStatus(cat.id,w.w)==='correct').length;
+    const mastered=words.filter(w=>wordStatus(cat.id,w.w)==='mastered').length;
+    const pct=Math.round(((correct+mastered)/words.length)*100);
+    const card=document.createElement('button');
+    card.className='c-card';
+    card.innerHTML=`
       <div style="position:absolute;top:0;left:0;right:0;height:4px;background:${cat.bar};border-radius:20px 20px 0 0"></div>
-      <span class="cc-emoji">${cat.emoji}</span>
+      <span class="cc-emo">${cat.emoji}</span>
       <span class="cc-name">${cat.name}</span>
-      <span class="cc-count">${words.length} words</span>
+      <span class="cc-cnt">${words.length} words</span>
       <div class="cc-bar"><div class="cc-fill" style="width:${pct}%;background:${cat.bar}"></div></div>
     `;
-    card.onclick = () => startCategory(cat.id);
+    card.onclick=()=>startCategory(cat.id);
     grid.appendChild(card);
   });
 
-  document.getElementById('statCorrect').textContent = totC;
-  document.getElementById('statPractice').textContent = totP;
-  document.getElementById('statMastered').textContent = totM;
+  const s=allWordStatuses();
+  document.getElementById('sCorrect').textContent=s.correct;
+  document.getElementById('sPractice').textContent=s.wrong;
+  document.getElementById('sMastered').textContent=s.mastered;
 
-  const missed = getAllMissed();
-  const btn = document.getElementById('btnMissed');
-  btn.disabled = missed.length === 0;
-  btn.textContent = missed.length > 0
+  const missed=getMissed();
+  const btn=document.getElementById('btnMissed');
+  btn.disabled=missed.length===0;
+  btn.textContent=missed.length>0
     ? `🐾 Practice ${missed.length} missed word${missed.length!==1?'s':''}`
     : '🐾 No missed words yet';
 }
 
-function getAllMissed() {
-  const out = [];
-  CATEGORIES.forEach(cat => {
-    const p = getCatP(cat.id);
-    cat.words.forEach(w => {
-      if (p[w.w]==='wrong') out.push({...w, catId:cat.id});
+function getMissed(){
+  const out=[];
+  CATS.forEach(cat=>{
+    cat.words.forEach(wObj=>{
+      if(wordStatus(cat.id,wObj.w)==='wrong') out.push({...wObj, catId:cat.id});
     });
   });
   return out;
 }
 
-/* ═══════════ PLAY ═══════════ */
-function startCategory(catId) {
-  const cat = CATEGORIES.find(c=>c.id===catId);
-  let queue = [...cat.words].sort(()=>Math.random()-0.5);
-  session = { catId, queue, idx:0, correct:[], wrong:[], skipped:[] };
-  showScreen('play');
-  document.getElementById('playCatLabel').textContent = cat.name;
+/* ═══════════════════════════════════════════════════════
+   SESSION
+═══════════════════════════════════════════════════════ */
+let S = { catId:null, queue:[], idx:0, correct:[], wrong:[], skipped:[] };
+
+function startCategory(catId){
+  const cat=CATS.find(c=>c.id===catId);
+  const queue=[...cat.words].sort(()=>Math.random()-.5);
+  S={catId, queue, idx:0, correct:[], wrong:[], skipped:[]};
+  document.getElementById('playLbl').textContent=cat.name;
   buildPaws();
   renderCard();
+  showScreen('play');
 }
 
-function startMissedPractice() {
-  const missed = getAllMissed().sort(()=>Math.random()-0.5);
-  if (!missed.length) return;
-  session = { catId:'__missed__', queue:missed, idx:0, correct:[], wrong:[], skipped:[] };
-  showScreen('play');
-  document.getElementById('playCatLabel').textContent = '🐾 Missed Words';
+function startMissed(){
+  const missed=getMissed().sort(()=>Math.random()-.5);
+  if(!missed.length) return;
+  S={catId:'__missed__', queue:missed, idx:0, correct:[], wrong:[], skipped:[]};
+  document.getElementById('playLbl').textContent='🐾 Missed Words';
   buildPaws();
   renderCard();
+  showScreen('play');
 }
 
-function buildPaws() {
-  const row = document.getElementById('pawsRow');
-  const total = Math.min(session.queue.length, 20);
-  row.innerHTML = '';
-  for (let i=0; i<total; i++) {
-    const p = document.createElement('span');
-    p.className = 'paw';
-    p.id = 'paw_'+i;
-    p.textContent = '🐾';
+function buildPaws(){
+  const row=document.getElementById('pawsRow');
+  const n=Math.min(S.queue.length,20);
+  row.innerHTML='';
+  for(let i=0;i<n;i++){
+    const p=document.createElement('span'); p.className='paw'; p.id='paw'+i; p.textContent='🐾';
     row.appendChild(p);
   }
 }
 
-function updatePaw(idx, correct) {
-  const p = document.getElementById('paw_'+idx);
-  if (!p) return;
-  p.classList.add(correct ? 'done-correct' : 'done-wrong');
-  if (!correct) p.style.filter = 'grayscale(1) opacity(0.5)';
+function updatePaw(idx,ok){
+  const p=document.getElementById('paw'+idx);
+  if(!p)return;
+  p.classList.add(ok?'ok':'ng');
 }
 
-function renderCard() {
-  const { queue, idx } = session;
-  const total = queue.length;
-  const card = queue[idx];
-  const catId = card.catId || session.catId;
-  const cat = CATEGORIES.find(c=>c.id===catId);
-
-  document.getElementById('playCounter').textContent = `${idx+1} / ${total}`;
-  document.getElementById('progFill').style.width = ((idx/total)*100)+'%';
-  document.getElementById('cardTag').textContent = cat ? cat.name.toUpperCase() : '';
-  document.getElementById('cardWord').textContent = card.w;
-  document.getElementById('cardHint').textContent = card.hint || '';
+function renderCard(){
+  const {queue,idx}=S;
+  const total=queue.length;
+  const card=queue[idx];
+  const catId=card.catId||S.catId;
+  const cat=CATS.find(c=>c.id===catId);
+  document.getElementById('playCnt').textContent=`${idx+1} / ${total}`;
+  document.getElementById('progFill').style.width=((idx/total)*100)+'%';
+  document.getElementById('cardTag').textContent=cat?cat.name.toUpperCase():'';
+  document.getElementById('cardWord').textContent=card.w;
+  document.getElementById('cardHint').textContent=card.h||'';
 }
 
-function markAnswer(correct) {
-  const card = session.queue[session.idx];
-  const catId = card.catId || session.catId;
-  if (!progress[catId]) progress[catId]={};
+function mark(ok){
+  const card=S.queue[S.idx];
+  const catId=card.catId||S.catId;
+  const fc=document.getElementById('flashcard');
+  const rect=fc.getBoundingClientRect();
+  const cx=rect.left+rect.width/2, cy=rect.top+rect.height/2;
 
-  const fc = document.getElementById('flashcard');
-  const rect = fc.getBoundingClientRect();
-  const cx = rect.left + rect.width/2;
-  const cy = rect.top + rect.height/2;
+  logResult(catId, card.w, ok);
 
-  if (correct) {
-    const prev = progress[catId][card.w];
-    progress[catId][card.w] = prev==='correct' ? 'mastered' : 'correct';
-    session.correct.push(card);
-    playMeow();
-    fc.classList.add('anim-correct');
-    spawnParticles(cx, cy, true);
-    updatePaw(session.idx, true);
-    setTimeout(() => { fc.classList.remove('anim-correct'); nextCard(); }, 500);
+  if(ok){
+    S.correct.push(card);
+    playGood();
+    fc.classList.add('anim-ok');
+    particles(cx,cy,true);
+    updatePaw(S.idx,true);
+    setTimeout(()=>{fc.classList.remove('anim-ok');advance();},480);
   } else {
-    progress[catId][card.w] = 'wrong';
-    session.wrong.push(card);
-    playHiss();
-    fc.classList.add('anim-wrong');
-    const hiss = document.getElementById('hissOverlay');
-    hiss.classList.add('show');
-    spawnParticles(cx, cy, false);
-    updatePaw(session.idx, false);
-    setTimeout(() => { hiss.classList.remove('show'); }, 550);
-    setTimeout(() => { fc.classList.remove('anim-wrong'); nextCard(); }, 450);
+    S.wrong.push(card);
+    playBad();
+    fc.classList.add('anim-ng');
+    const h=document.getElementById('hissOverlay');
+    h.classList.add('show');
+    particles(cx,cy,false);
+    updatePaw(S.idx,false);
+    setTimeout(()=>h.classList.remove('show'),550);
+    setTimeout(()=>{fc.classList.remove('anim-ng');advance();},440);
   }
-  save();
 }
 
-function skipCard() {
-  const card = session.queue[session.idx];
-  session.skipped.push(card);
-  const fc = document.getElementById('flashcard');
+function skipCard(){
+  S.skipped.push(S.queue[S.idx]);
+  const fc=document.getElementById('flashcard');
   fc.classList.add('anim-next');
-  setTimeout(() => { fc.classList.remove('anim-next'); nextCard(); }, 320);
+  setTimeout(()=>{fc.classList.remove('anim-next');advance();},290);
 }
 
-function nextCard() {
-  session.idx++;
-  if (session.idx >= session.queue.length) { showResults(); return; }
-  const fc = document.getElementById('flashcard');
+function advance(){
+  S.idx++;
+  if(S.idx>=S.queue.length){showResults();return;}
+  const fc=document.getElementById('flashcard');
   fc.classList.add('anim-next');
-  setTimeout(() => { fc.classList.remove('anim-next'); renderCard(); }, 160);
+  setTimeout(()=>{fc.classList.remove('anim-next');renderCard();},155);
 }
 
-/* ═══════════ RESULTS ═══════════ */
-function showResults() {
-  const { correct, wrong, queue } = session;
-  const total = queue.length;
-  const pct = total > 0 ? Math.round((correct.length/total)*100) : 0;
+/* ═══════════════════════════════════════════════════════
+   RESULTS
+═══════════════════════════════════════════════════════ */
+function showResults(){
+  const {correct,wrong,queue}=S;
+  const total=queue.length;
+  const pct=total>0?Math.round((correct.length/total)*100):0;
 
-  const cats = ['😿','😾','😺','😸','🎉'];
-  const ti = pct===100 ? '🌟 Purrfect!' : pct>=80 ? '😸 Great job!' : pct>=60 ? '😺 Good try!' : '😿 Keep going!';
+  document.getElementById('resCat').textContent=pct===100?'🎉':pct>=80?'😸':'😺';
+  document.getElementById('resTitle').textContent=pct===100?'🌟 Purrfect!':pct>=80?'😸 Great job!':pct>=60?'😺 Good try!':'😿 Keep going!';
+  document.getElementById('resSub').textContent=`${correct.length} of ${total} words correct`;
+  document.getElementById('scorePct').textContent=pct+'%';
 
-  document.getElementById('resultsCat').textContent = pct===100 ? '🎉' : pct>=80 ? '😸' : '😺';
-  document.getElementById('resultsTitle').textContent = ti;
-  document.getElementById('resultsSub').textContent = `${correct.length} of ${total} words correct`;
-  document.getElementById('scorePct').textContent = pct+'%';
+  if(pct===100) confetti();
 
-  if (pct===100) spawnConfetti();
+  const list=document.getElementById('resList'); list.innerHTML='';
 
-  const list = document.getElementById('resultsList');
-  list.innerHTML='';
-
-  if (correct.length) {
-    const h = document.createElement('p'); h.className='res-section-hd'; h.textContent='✓ Got it'; list.appendChild(h);
-    correct.forEach(card => {
-      const r = document.createElement('div'); r.className='res-row';
-      r.innerHTML=`<span class="res-word">${card.w}</span><div class="res-dot" style="background:#55efc4"></div>`;
+  if(correct.length){
+    const h=document.createElement('p'); h.className='res-sec'; h.textContent='✓ Got it'; list.appendChild(h);
+    correct.forEach(c=>{
+      const r=document.createElement('div'); r.className='res-row';
+      r.innerHTML=`<span class="res-word">${c.w}</span><div class="res-dot" style="background:#55efc4"></div>`;
+      list.appendChild(r);
+    });
+  }
+  if(wrong.length){
+    const h=document.createElement('p'); h.className='res-sec'; h.textContent='✗ Keep practicing'; list.appendChild(h);
+    wrong.forEach(c=>{
+      const r=document.createElement('div'); r.className='res-row';
+      r.innerHTML=`<span class="res-word">${c.w}</span><div class="res-dot" style="background:#fab1a0"></div>`;
       list.appendChild(r);
     });
   }
 
-  if (wrong.length) {
-    const h = document.createElement('p'); h.className='res-section-hd'; h.textContent='✗ Keep practicing'; list.appendChild(h);
-    wrong.forEach(card => {
-      const r = document.createElement('div'); r.className='res-row';
-      r.innerHTML=`<span class="res-word">${card.w}</span><div class="res-dot" style="background:#fab1a0"></div>`;
-      list.appendChild(r);
-    });
-  }
-
-  const drill = document.getElementById('drillArea');
-  drill.innerHTML = wrong.length
+  const da=document.getElementById('drillArea');
+  da.innerHTML=wrong.length
     ? `<button class="btn-primary" style="background:#e17055;box-shadow:0 4px 0 #d63031;margin-bottom:8px" onclick="drillMissed()">🐾 Practice ${wrong.length} missed now</button>`
     : `<div class="perfect-banner">🌟 No missed words — Kate's amazing!</div>`;
 
   showScreen('results');
 }
 
-function drillMissed() {
-  const missed = session.wrong.map(w => ({...w, catId: w.catId||session.catId})).sort(()=>Math.random()-0.5);
-  session = { catId:'__missed__', queue:missed, idx:0, correct:[], wrong:[], skipped:[] };
-  showScreen('play');
-  document.getElementById('playCatLabel').textContent = '🐾 Missed Words';
-  buildPaws();
-  renderCard();
+function drillMissed(){
+  const missed=S.wrong.map(w=>({...w,catId:w.catId||S.catId})).sort(()=>Math.random()-.5);
+  S={catId:'__missed__',queue:missed,idx:0,correct:[],wrong:[],skipped:[]};
+  document.getElementById('playLbl').textContent='🐾 Missed Words';
+  buildPaws(); renderCard(); showScreen('play');
 }
 
-function playAgain() {
-  const catId = session.catId;
-  if (catId==='__missed__') startMissedPractice();
-  else startCategory(catId);
+function playAgain(){
+  if(S.catId==='__missed__') startMissed();
+  else startCategory(S.catId);
 }
 
-/* ═══════════ GALLERY ═══════════ */
-function showGallery() {
-  const content = document.getElementById('galleryContent');
-  content.innerHTML='';
-  let totalMastered = 0;
-
-  CATEGORIES.forEach(cat => {
-    const p = getCatP(cat.id);
-    const mastered = cat.words.filter(w => p[w.w]==='mastered');
-    if (!mastered.length) return;
-    totalMastered += mastered.length;
-
-    const sec = document.createElement('div');
-    sec.className='mastered-section';
-    sec.innerHTML=`<div class="mastered-sec-title"><span>${cat.emoji}</span>${cat.name}</div>`;
-    const wrap = document.createElement('div');
-    wrap.className='mastered-words-wrap';
-    mastered.forEach((word, i) => {
-      const chip = document.createElement('div');
-      chip.className='mastered-chip';
-      chip.style.animationDelay=(i*0.04)+'s';
-      chip.innerHTML=`⭐ ${word.w}`;
+/* ═══════════════════════════════════════════════════════
+   GALLERY
+═══════════════════════════════════════════════════════ */
+function showGallery(){
+  const content=document.getElementById('galleryContent'); content.innerHTML='';
+  let total=0;
+  CATS.forEach(cat=>{
+    const words=cat.words.filter(w=>wordStatus(cat.id,w.w)==='mastered');
+    if(!words.length) return;
+    total+=words.length;
+    const sec=document.createElement('div'); sec.className='m-section';
+    sec.innerHTML=`<div class="m-sec-hd"><span>${cat.emoji}</span>${cat.name}</div>`;
+    const wrap=document.createElement('div'); wrap.className='m-wrap';
+    words.forEach((word,i)=>{
+      const chip=document.createElement('div'); chip.className='m-chip';
+      chip.style.animationDelay=(i*.04)+'s';
+      chip.textContent='⭐ '+word.w;
       wrap.appendChild(chip);
     });
-    sec.appendChild(wrap);
-    content.appendChild(sec);
+    sec.appendChild(wrap); content.appendChild(sec);
   });
-
-  if (!totalMastered) {
-    content.innerHTML=`<div class="gallery-empty"><div class="gallery-empty-cat">😿</div><p>No mastered words yet!</p><p style="font-size:0.78rem">Get a word right twice in a row to master it.</p></div>`;
+  if(!total){
+    content.innerHTML='<div class="g-empty"><div class="g-empty-cat">😿</div><p>No mastered words yet!</p><p style="font-size:.75rem;margin-top:.25rem">Get a word right 10 times in a row to master it!</p></div>';
   }
-
   showScreen('gallery');
 }
 
-/* ═══════════ NAVIGATION ═══════════ */
-function goHome() {
-  renderHome();
-  showScreen('home');
+/* ═══════════════════════════════════════════════════════
+   LOOKUP — per-word stats with timeline
+═══════════════════════════════════════════════════════ */
+function showLookup(){
+  document.getElementById('searchInput').value='';
+  document.getElementById('lookupResult').innerHTML='';
+  buildLookupList('');
+  showScreen('lookup');
+  setTimeout(()=>document.getElementById('searchInput').focus(),180);
 }
 
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-/* ═══════════ FULLSCREEN ═══════════ */
-function toggleFullscreen() {
-  const btn = document.getElementById('fsBtn');
-  if (!document.fullscreenElement) {
-    (document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen||document.documentElement.mozRequestFullScreen).call(document.documentElement);
-    btn.textContent='⛶ Exit';
-  } else {
-    (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
-    btn.textContent='⛶ Full';
+function onSearch(val){
+  const q=val.trim().toLowerCase();
+  document.getElementById('lookupResult').innerHTML='';
+  buildLookupList(q);
+  if(q){
+    // find exact match first
+    for(const cat of CATS){
+      const found=cat.words.find(w=>w.w.toLowerCase()===q);
+      if(found){ renderWordCard(cat, found); return; }
+    }
   }
 }
 
-document.addEventListener('fullscreenchange', () => {
-  const btn = document.getElementById('fsBtn');
-  if (!document.fullscreenElement) btn.textContent='⛶ Full';
+function buildLookupList(q){
+  const list=document.getElementById('lookupList'); list.innerHTML='';
+  const results=[];
+  CATS.forEach(cat=>{
+    cat.words.forEach(wObj=>{
+      if(!q || wObj.w.toLowerCase().includes(q)){
+        const h=getHistory(cat.id,wObj.w);
+        if(h.length>0 || q){ // show unseen only when searching
+          results.push({cat,wObj,h});
+        }
+      }
+    });
+  });
+  // sort: practised words first (most recent), then alphabetical
+  results.sort((a,b)=>{
+    const ta=a.h.length?a.h[a.h.length-1].ts:0;
+    const tb=b.h.length?b.h[b.h.length-1].ts:0;
+    if(ta!==tb) return tb-ta;
+    return a.wObj.w.localeCompare(b.wObj.w);
+  });
+  results.slice(0,40).forEach(({cat,wObj,h})=>{
+    const status=wordStatus(cat.id,wObj.w);
+    const dotColor=status==='mastered'?'#6c5ce7':status==='correct'?'#00b894':status==='wrong'?'#e17055':'#dfe6e9';
+    const totalOk=h.filter(e=>e.r===1).length;
+    const totalAll=h.length;
+    const sk=streakCount(cat.id,wObj.w);
+    const pctTxt=status==='mastered'?'⭐':status==='unseen'?'unseen':sk>0?`🔥${sk}`:totalAll>0?`${totalOk}/${totalAll}`:'—';
+    const row=document.createElement('div'); row.className='ll-row';
+    row.innerHTML=`
+      <span class="ll-word">${wObj.w}</span>
+      <div class="ll-meta">
+        <span class="ll-pct">${pctTxt}</span>
+        <div class="ll-dot" style="background:${dotColor}"></div>
+      </div>
+    `;
+    row.onclick=()=>{
+      document.getElementById('searchInput').value=wObj.w;
+      document.getElementById('lookupResult').innerHTML='';
+      renderWordCard(cat,wObj);
+    };
+    list.appendChild(row);
+  });
+}
+
+function renderWordCard(cat, wObj){
+  const result=document.getElementById('lookupResult');
+  result.innerHTML='';
+  const h=getHistory(cat.id, wObj.w);
+
+  const totalOk=h.filter(e=>e.r===1).length;
+  const totalNg=h.filter(e=>e.r===0).length;
+  const totalAll=h.length;
+  const pct=totalAll>0?Math.round((totalOk/totalAll)*100):null;
+  const streak=streakCount(cat.id, wObj.w);
+  const status=wordStatus(cat.id, wObj.w);
+
+  // trend: compare last-5 vs previous-5
+  let trend='', trendColor='', trendIcon='';
+  if(h.length>=4){
+    const half=Math.min(5,Math.floor(h.length/2));
+    const recent=h.slice(-half);
+    const older=h.slice(-half*2,-half);
+    const recentPct=recent.filter(e=>e.r===1).length/recent.length;
+    const olderPct=older.length?older.filter(e=>e.r===1).length/older.length:null;
+    if(olderPct!==null){
+      const diff=recentPct-olderPct;
+      if(diff>=0.25){trend='Improving 🚀';trendColor='#00b894';}
+      else if(diff<=-0.25){trend='Needs work 😿';trendColor='#e17055';}
+      else{trend='Steady 😺';trendColor='#a29bfe';}
+      trendIcon=diff>=0.25?'↑':diff<=-0.25?'↓':'→';
+    }
+  }
+
+  const lastSeen=h.length?timeAgo(h[h.length-1].ts):'Never';
+
+  const card=document.createElement('div'); card.className='word-card';
+
+  // streak pips toward mastery
+  const streakPips = status === 'mastered'
+    ? `<div style="font-size:.72rem;font-weight:700;color:#6c5ce7;margin-bottom:.65rem">⭐ Mastered — 10 in a row!</div>`
+    : streak > 0
+      ? (() => {
+          const pips = Array.from({length: MASTERED_STREAK}, (_,i) =>
+            `<div style="width:18px;height:18px;border-radius:50%;background:${i<streak?'#00b894':'#e8e8e8'};border:2px solid ${i<streak?'#007a55':'#ccc'};display:inline-flex;align-items:center;justify-content:center;font-size:.6rem">${i<streak?'✓':''}</div>`
+          ).join('');
+          return `<div style="margin-bottom:.65rem"><div style="font-size:.65rem;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px">Streak to mastery: ${streak}/${MASTERED_STREAK}</div><div style="display:flex;flex-wrap:wrap;gap:3px">${pips}</div></div>`;
+        })()
+      : '';
+
+  let statsHtml=`
+    <div class="wc-top">
+      <span class="wc-word">${wObj.w}</span>
+      <span class="wc-cat" style="background:${cat.bar}">${cat.name}</span>
+    </div>
+    ${trend?`<div class="trend-badge" style="background:${trendColor}22;color:${trendColor}">${trendIcon} ${trend}</div>`:''}
+    ${streakPips}
+    <div class="wc-stats">
+      <div class="wc-stat">
+        <span class="wc-stat-n" style="color:${pct!==null?(pct>=70?'#00b894':'#e17055'):'#b2bec3'}">${pct!==null?pct+'%':'—'}</span>
+        <span class="wc-stat-l">accuracy</span>
+      </div>
+      <div class="wc-stat">
+        <span class="wc-stat-n" style="color:#00b894">${totalOk}</span>
+        <span class="wc-stat-l">correct</span>
+      </div>
+      <div class="wc-stat">
+        <span class="wc-stat-n" style="color:#e17055">${totalNg}</span>
+        <span class="wc-stat-l">missed</span>
+      </div>
+      <div class="wc-stat">
+        <span class="wc-stat-n" style="color:var(--muted);font-size:.78rem">${lastSeen}</span>
+        <span class="wc-stat-l">last seen</span>
+      </div>
+    </div>
+  `;
+
+  if(h.length){
+    statsHtml+=`<div class="wc-timeline-hd">History (newest first)</div><div class="timeline">`;
+    const rev=[...h].reverse();
+    rev.slice(0,20).forEach(entry=>{
+      const ok=entry.r===1;
+      statsHtml+=`
+        <div class="tl-row">
+          <div class="tl-dot" style="background:${ok?'#55efc4':'#fab1a0'}"></div>
+          <span class="tl-label" style="color:${ok?'#005a3e':'#c0392b'}">${ok?'✓ Got it':'✗ Missed'}</span>
+          <span class="tl-time">${timeAgo(entry.ts)}</span>
+        </div>
+      `;
+    });
+    statsHtml+='</div>';
+  } else {
+    statsHtml+=`<div class="wc-no-data">No practice history yet 🐱</div>`;
+  }
+
+  card.innerHTML=statsHtml;
+  result.appendChild(card);
+}
+
+function timeAgo(ts){
+  const diff=Date.now()-ts;
+  const m=Math.floor(diff/60000);
+  const h=Math.floor(diff/3600000);
+  const d=Math.floor(diff/86400000);
+  if(m<1) return 'just now';
+  if(m<60) return m+'m ago';
+  if(h<24) return h+'h ago';
+  if(d===1) return 'yesterday';
+  if(d<7) return d+'d ago';
+  if(d<30) return Math.floor(d/7)+'w ago';
+  return Math.floor(d/30)+'mo ago';
+}
+
+/* ═══════════════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════════════ */
+function goHome(){ renderHome(); showScreen('home'); }
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function toggleFS(){
+  const el=document.documentElement;
+  const btn=document.getElementById('fsBtn');
+  if(!document.fullscreenElement){
+    (el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen).call(el);
+    btn.textContent='⛶ Exit';
+  } else {
+    (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
+    btn.textContent='⛶';
+  }
+}
+document.addEventListener('fullscreenchange',()=>{
+  if(!document.fullscreenElement) document.getElementById('fsBtn').textContent='⛶';
 });
 
-/* ═══════════ RESET ═══════════ */
-function resetAll() {
-  if (confirm('Reset all of Kate\'s progress? This cannot be undone.')) {
+function resetAll(){
+  if(confirm("Reset all of Kate's progress? This cannot be undone.")){
     progress={};
     save();
     renderHome();
   }
 }
 
-/* ═══════════ INIT ═══════════ */
+/* ═══════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════ */
 renderHome();
+tryLoadAudio();
 </script>
 </body>
 </html>
