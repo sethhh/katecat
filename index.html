@@ -27,10 +27,10 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{width:100%;height:100%;font-family:'Andika',sans-serif;background:var(--cream);overflow:hidden;overscroll-behavior:none}
 button{font-family:'Andika',sans-serif;cursor:pointer}
- 
+
 .screen{display:none;width:100%;height:100%;position:absolute;top:0;left:0;flex-direction:column;align-items:center;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .screen.active{display:flex}
- 
+
 /* ══ HOME ══ */
 #home{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:0 1rem 2rem}
 .home-top{width:100%;display:flex;flex-direction:column;align-items:center;padding:1.25rem 0 .5rem;position:relative}
@@ -41,12 +41,12 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
 @keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-7px) rotate(1.5deg)}}
 .game-title{font-family:'Baloo 2',cursive;font-size:2.1rem;font-weight:800;color:var(--dark);line-height:1}
 .game-tag{font-size:.78rem;color:var(--muted);margin-bottom:1rem;font-family:'Andika',sans-serif}
- 
+
 .stats-bar{display:flex;gap:8px;width:100%;max-width:400px;margin-bottom:1rem}
 .s-chip{flex:1;background:var(--white);border-radius:14px;padding:.55rem .4rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .s-num{font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;line-height:1;display:block}
 .s-lbl{font-size:.6rem;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
- 
+
 .cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:400px;margin-bottom:10px}
 .c-card{background:var(--white);border-radius:20px;padding:.9rem .7rem;border:none;text-align:center;box-shadow:0 3px 0 rgba(0,0,0,.08);transition:transform .1s,box-shadow .1s;position:relative;overflow:hidden}
 .c-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:20px 20px 0 0}
@@ -56,7 +56,7 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
 .cc-cnt{font-size:.62rem;color:var(--muted);display:block;margin-top:2px}
 .cc-bar{height:5px;border-radius:3px;background:#f0f0f0;margin-top:7px;overflow:hidden}
 .cc-fill{height:100%;border-radius:3px;transition:width .5s ease}
- 
+
 .action-col{display:flex;flex-direction:column;gap:8px;width:100%;max-width:400px}
 .btn-missed{background:var(--purple);color:#3d3a99;border:none;border-radius:16px;padding:.8rem;font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700;box-shadow:0 3px 0 #6c5ce7;transition:transform .1s}
 .btn-missed:active{transform:translateY(2px);box-shadow:0 1px 0 #6c5ce7}
@@ -66,7 +66,7 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
 .btn-lookup{background:var(--blue);color:#0057a8;border:none;border-radius:16px;padding:.8rem;font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700;box-shadow:0 3px 0 #0984e3;transition:transform .1s}
 .btn-lookup:active{transform:translateY(2px);box-shadow:0 1px 0 #0984e3}
 .btn-reset{background:none;border:none;color:var(--light);font-size:.7rem;text-decoration:underline;padding:.25rem;text-align:center}
- 
+
 /* ══ PLAY ══ */
 #play{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);overflow:hidden}
 .play-hdr{width:100%;display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem .35rem;flex-shrink:0}
@@ -88,14 +88,14 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
 .card-hint{margin-top:.55rem;font-size:.75rem;color:var(--light);text-align:center;font-weight:700}
 .card-cat-deco{position:absolute;bottom:10px;right:14px;font-size:1rem;opacity:.2;pointer-events:none;animation:decoWiggle 4s ease-in-out infinite}
 @keyframes decoWiggle{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
- 
+
 .flashcard.anim-ok{animation:okPop .48s cubic-bezier(.34,1.56,.64,1) forwards}
 .flashcard.anim-ng{animation:ngShake .42s ease forwards}
 .flashcard.anim-next{animation:cardNext .28s ease forwards}
 @keyframes okPop{0%{transform:scale(1);background:var(--white)}30%{transform:scale(1.07);background:var(--correct-bg)}70%{transform:scale(.97)}100%{transform:scale(1);background:var(--white)}}
 @keyframes ngShake{0%,100%{transform:translateX(0);background:var(--white)}15%{transform:translateX(-11px) rotate(-1.8deg);background:var(--wrong-bg)}35%{transform:translateX(11px) rotate(1.8deg)}55%{transform:translateX(-7px)}75%{transform:translateX(7px)}90%{transform:translateX(-2px);background:#fff5f5}}
 @keyframes cardNext{0%{transform:scale(1) rotateY(0);opacity:1}45%{transform:scale(.86) rotateY(14deg);opacity:.25}100%{transform:scale(1) rotateY(0);opacity:1}}
- 
+
 .ans-zone{width:100%;padding:.4rem 1rem .9rem;display:flex;flex-direction:column;gap:7px;flex-shrink:0}
 .main-btns{display:flex;gap:10px}
 .btn-ng,.btn-ok{flex:1;border:none;border-radius:20px;padding:.9rem .5rem;font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:700;transition:transform .1s}
@@ -104,7 +104,7 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
 .btn-ok{background:#55efc4;color:#005a3e;box-shadow:0 5px 0 #00b894}
 .btn-ok:active{transform:translateY(4px);box-shadow:0 1px 0 #00b894}
 .btn-skip{background:rgba(0,0,0,.05);border:none;border-radius:12px;padding:.45rem;font-size:.72rem;font-weight:700;color:var(--muted);text-align:center}
- 
+
 /* ══ RESULTS ══ */
 #results{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:1.5rem 1rem 2rem;align-items:center}
 .res-cat{font-size:3.5rem;animation:bob 2s ease-in-out infinite;margin-bottom:.2rem}
@@ -124,7 +124,7 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
 .btn-secondary{background:var(--white);color:var(--dark);border:2px solid var(--orange);border-radius:16px;padding:.85rem;font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700}
 .btn-secondary:active{background:var(--soft)}
 .perfect-banner{background:linear-gradient(135deg,var(--green),#55efc4);color:#003d2a;border-radius:14px;padding:.8rem;text-align:center;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;box-shadow:0 4px 0 #007a55}
- 
+
 /* ══ GALLERY ══ */
 #gallery{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:0 1rem 2rem}
 .gallery-hdr{width:100%;display:flex;align-items:center;gap:.65rem;padding:1rem 0 .65rem;position:sticky;top:0;background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);z-index:10;flex-shrink:0}
@@ -136,7 +136,7 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
 .m-wrap{display:flex;flex-wrap:wrap;gap:6px}
 .m-chip{background:var(--white);border:2px solid var(--green);border-radius:20px;padding:.3rem .8rem;font-family:'Andika',sans-serif;font-size:.95rem;font-weight:700;color:var(--ink);box-shadow:0 2px 0 #007a55;animation:chipPop .28s cubic-bezier(.34,1.56,.64,1) both}
 @keyframes chipPop{0%{transform:scale(.65);opacity:0}100%{transform:scale(1);opacity:1}}
- 
+
 /* ══ LOOKUP ══ */
 #lookup{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:0 1rem 2rem}
 .lookup-hdr{width:100%;display:flex;align-items:center;gap:.65rem;padding:1rem 0 .65rem;position:sticky;top:0;background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);z-index:10}
@@ -168,8 +168,8 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
 .ll-meta{display:flex;gap:5px;align-items:center}
 .ll-dot{width:8px;height:8px;border-radius:50%}
 .ll-pct{font-size:.7rem;font-weight:700;color:var(--muted)}
- 
- 
+
+
 /* ══ OVERLAYS ══ */
 .hiss-overlay{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:998;display:flex;align-items:center;justify-content:center;opacity:0;font-size:2.8rem}
 .hiss-overlay.show{animation:hissFlash .52s ease forwards}
@@ -182,14 +182,14 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
 </style>
 </head>
 <body>
- 
+
 <div class="hiss-overlay" id="hissOverlay">😾</div>
 <div class="confetti-cont" id="confettiCont"></div>
- 
+
 <!-- HOME -->
 <div id="home" class="screen active">
   <div class="home-top">
-    <button class="fs-btn" id="fsBtn" onclick="toggleFS()">⛶</button>
+    <button class="fs-btn" id="fsBtn" onclick="toggleFS()">[ ]</button>
     <svg class="cat-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" onclick="purrHeroCat(this)" style="cursor:pointer">
       <ellipse cx="60" cy="82" rx="32" ry="28" fill="#ff9f43"/>
       <circle cx="60" cy="48" r="30" fill="#ff9f43"/>
@@ -230,7 +230,7 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
     <button class="btn-reset" onclick="resetAll()">reset all progress</button>
   </div>
 </div>
- 
+
 <!-- PLAY -->
 <div id="play" class="screen">
   <div class="play-hdr">
@@ -256,7 +256,7 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
     <button class="btn-skip" onclick="skipCard()">skip ↷</button>
   </div>
 </div>
- 
+
 <!-- RESULTS -->
 <div id="results" class="screen">
   <div class="res-cat" id="resCat">😺</div>
@@ -273,7 +273,7 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
     <button class="btn-secondary" onclick="goHome()">← Choose another</button>
   </div>
 </div>
- 
+
 <!-- GALLERY -->
 <div id="gallery" class="screen">
   <div class="gallery-hdr">
@@ -282,7 +282,7 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
   </div>
   <div id="galleryContent" style="width:100%;max-width:400px;"></div>
 </div>
- 
+
 <!-- LOOKUP -->
 <div id="lookup" class="screen">
   <div class="lookup-hdr">
@@ -296,9 +296,9 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
   <div id="lookupResult" style="width:100%;max-width:400px;"></div>
   <div class="lookup-list" id="lookupList"></div>
 </div>
- 
+
 <script>
- 
+
 const CATS = [
   { id:'cvc', name:'CVC Words', emoji:'\u{1F431}', color:'#a29bfe', bar:'#6c5ce7',
     words:[
@@ -458,16 +458,16 @@ const CATS = [
     ]
   },
 ];
- 
+
 CATS.forEach(cat => {
   cat.words = cat.words.map(x => typeof x === 'string' ? {w:x,h:''} : {w:x.w||x.word,h:x.h||x.hint||''});
 });
- 
+
 /* STORAGE */
 let progress = {};
 try { progress = JSON.parse(localStorage.getItem('katecat_v3')||'{}'); } catch(e){}
 function save(){ localStorage.setItem('katecat_v3', JSON.stringify(progress)); }
- 
+
 function logResult(catId, word, correct){
   if(!progress[catId]) progress[catId]={};
   if(!progress[catId][word]) progress[catId][word]=[];
@@ -503,7 +503,7 @@ function allWordStatuses(){
   }));
   return {correct,wrong,mastered};
 }
- 
+
 /* AUDIO */
 let audioCtx=null, goodAudio=null, badAudio=null;
 function getCtx(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
@@ -563,7 +563,7 @@ function playBadSynth(){
 }
 function playGood(){ if(goodAudio) playBuffer(goodAudio,1); else playGoodSynth(); }
 function playBad(){ if(badAudio) playBuffer(badAudio); else playBadSynth(); }
- 
+
 function purrHeroCat(el){
   // squish animation
   el.classList.remove('squish');
@@ -596,8 +596,8 @@ function purrHeroCat(el){
     }catch(e){}
   }
 }
- 
- 
+
+
 function particles(x,y,ok){
   const set=ok?['\u{1F43E}','\u2B50','\u2728','\u{1F431}','\u{1F49B}']:['\u{1F63E}','\u{1F4A2}','\u{1F640}'];
   const n=ok?9:4;
@@ -624,7 +624,7 @@ function confetti(){
     c.appendChild(el);setTimeout(()=>el.remove(),3600);
   }
 }
- 
+
 /* HOME */
 function renderHome(){
   const grid=document.getElementById('catGrid'); grid.innerHTML='';
@@ -654,7 +654,7 @@ function getMissed(){
   }));
   return out;
 }
- 
+
 /* SESSION */
 let S={catId:null,queue:[],idx:0,correct:[],wrong:[],skipped:[]};
 function startCategory(catId){
@@ -725,7 +725,7 @@ function advance(){
   fc.classList.add('anim-next');
   setTimeout(()=>{fc.classList.remove('anim-next');renderCard();},155);
 }
- 
+
 /* RESULTS */
 function showResults(){
   const {correct,wrong,queue}=S,total=queue.length;
@@ -759,7 +759,7 @@ function drillMissed(){
 function playAgain(){
   if(S.catId==='__missed__') startMissed(); else startCategory(S.catId);
 }
- 
+
 /* GALLERY */
 function showGallery(){
   const content=document.getElementById('galleryContent'); content.innerHTML='';
@@ -780,7 +780,7 @@ function showGallery(){
   if(!total) content.innerHTML='<div class="g-empty"><div class="g-empty-cat">\u{1F63F}</div><p>No mastered words yet!</p><p style="font-size:.75rem;margin-top:.25rem">Get a word right 10 times in a row to master it!</p></div>';
   showScreen('gallery');
 }
- 
+
 /* LOOKUP */
 function showLookup(){
   document.getElementById('searchInput').value='';
@@ -859,7 +859,7 @@ function timeAgo(ts){
   if(dy===1) return 'yesterday';if(dy<7) return dy+'d ago';
   if(dy<30) return Math.floor(dy/7)+'w ago';return Math.floor(dy/30)+'mo ago';
 }
- 
+
 /* NAV */
 function goHome(){renderHome();showScreen('home');}
 function showScreen(id){
@@ -870,17 +870,17 @@ function toggleFS(){
   const el=document.documentElement,btn=document.getElementById('fsBtn');
   if(!document.fullscreenElement){
     (el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen).call(el);
-    btn.textContent='⛶ Exit';
+    btn.textContent='[ ]';
   } else {
     (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
-    btn.textContent='⛶';
+    btn.textContent='[ ]';
   }
 }
-document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement) document.getElementById('fsBtn').textContent='⛶';});
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement) document.getElementById('fsBtn').textContent='[ ]';});
 function resetAll(){
   if(confirm("Reset all of Kate's progress? This cannot be undone.")){progress={};save();renderHome();}
 }
- 
+
 /* INIT */
 renderHome();
 tryLoadAudio();
