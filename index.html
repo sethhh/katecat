@@ -7,66 +7,40 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ff9f43">
 <title>Kate Cat 🐱</title>
-
 <!--
-  ═══════════════════════════════════════════════════════
-  SOUNDS — HOW TO ADD THE REAL PIXABAY FILES
-  ═══════════════════════════════════════════════════════
-  The app uses Web Audio synthesis by default. To use the
-  actual Pixabay sounds, do the following:
-
-  1. GOOD SOUND ("Kitten SFX" by DRAGON-STUDIO):
-     https://pixabay.com/sound-effects/kitten-sfx-329685/
-     Download → rename → place next to this file as: kitten-sfx.mp3
-
-  2. BAD SOUND ("Angry Cat HQ Sound effect" by TanwerAman):
-     https://pixabay.com/sound-effects/angry-cat-hq-sound-effect-240675/
-     Download → rename → place next to this file as: angry-cat-hq.mp3
-
-  Both are royalty-free under the Pixabay Content License.
-  No attribution required.
-  ═══════════════════════════════════════════════════════
+  SOUNDS: place these beside kate-cat.html:
+  1. kitten-sfx.mp3   https://pixabay.com/sound-effects/kitten-sfx-329685/
+  2. angry-cat-hq.mp3 https://pixabay.com/sound-effects/angry-cat-hq-sound-effect-240675/
+  Pixabay Content License — no attribution required.
+  If files missing, synthesized sounds play automatically.
 -->
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --orange:  #ff9f43;
-  --dark:    #ee5a24;
-  --cream:   #fff5e6;
-  --soft:    #ffecd2;
-  --purple:  #a29bfe;
-  --green:   #00b894;
-  --pink:    #fd79a8;
-  --blue:    #74b9ff;
-  --ink:     #2d3436;
-  --muted:   #636e72;
-  --light:   #b2bec3;
-  --white:   #ffffff;
-  --correct-bg: #d4efdf;
-  --wrong-bg:   #fde8e8;
+:root{
+  --orange:#ff9f43;--dark:#ee5a24;--cream:#fff5e6;--soft:#ffecd2;
+  --purple:#a29bfe;--green:#00b894;--pink:#fd79a8;--blue:#74b9ff;
+  --ink:#2d3436;--muted:#636e72;--light:#b2bec3;--white:#ffffff;
+  --correct-bg:#d4efdf;--wrong-bg:#fde8e8;
 }
+/* Andika: single-story a, clear d — perfect for early readers */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{width:100%;height:100%;font-family:'Nunito',sans-serif;background:var(--cream);overflow:hidden;overscroll-behavior:none}
-button{font-family:'Nunito',sans-serif;cursor:pointer}
+html,body{width:100%;height:100%;font-family:'Andika',sans-serif;background:var(--cream);overflow:hidden;overscroll-behavior:none}
+button{font-family:'Andika',sans-serif;cursor:pointer}
 
-/* ── SCREENS ── */
 .screen{display:none;width:100%;height:100%;position:absolute;top:0;left:0;flex-direction:column;align-items:center;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .screen.active{display:flex}
 
-/* ════════════════════════ HOME ════════════════════════ */
+/* ══ HOME ══ */
 #home{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:0 1rem 2rem}
-
-.home-top{width:100%;display:flex;flex-direction:column;align-items:center;padding:1.25rem 0 0.5rem;position:relative}
-.fs-btn{position:absolute;right:0;top:1.25rem;background:rgba(255,159,67,.12);border:1.5px solid var(--orange);border-radius:10px;padding:.3rem .55rem;font-size:.95rem;color:var(--dark);transition:background .15s}
-.fs-btn:active{background:rgba(255,159,67,.3)}
-
-.cat-svg{width:110px;height:110px;animation:bob 3s ease-in-out infinite;margin-bottom:.2rem}
+.home-top{width:100%;display:flex;flex-direction:column;align-items:center;padding:1.25rem 0 .5rem;position:relative}
+.fs-btn{position:absolute;right:0;top:1.25rem;background:rgba(255,159,67,.12);border:1.5px solid var(--orange);border-radius:10px;padding:.3rem .55rem;font-size:.95rem;color:var(--dark)}
+.cat-svg{width:110px;height:110px;animation:bob 3s ease-in-out infinite;margin-bottom:.2rem;touch-action:manipulation}
+.cat-svg.squish{animation:squish .35s cubic-bezier(.36,1.56,.64,1) forwards, bob 3s ease-in-out infinite .35s}
+@keyframes squish{0%{transform:scale(1)}30%{transform:scale(1.3,.75)}65%{transform:scale(.88,1.18)}100%{transform:scale(1)}}
 @keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-7px) rotate(1.5deg)}}
-
-.game-title{font-family:'Baloo 2',cursive;font-size:2.1rem;font-weight:800;color:var(--dark);line-height:1;letter-spacing:-.02em}
-.game-tag{font-size:.78rem;color:var(--muted);margin-bottom:1rem}
+.game-title{font-family:'Baloo 2',cursive;font-size:2.1rem;font-weight:800;color:var(--dark);line-height:1}
+.game-tag{font-size:.78rem;color:var(--muted);margin-bottom:1rem;font-family:'Andika',sans-serif}
 
 .stats-bar{display:flex;gap:8px;width:100%;max-width:400px;margin-bottom:1rem}
 .s-chip{flex:1;background:var(--white);border-radius:14px;padding:.55rem .4rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
@@ -93,34 +67,30 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
 .btn-lookup:active{transform:translateY(2px);box-shadow:0 1px 0 #0984e3}
 .btn-reset{background:none;border:none;color:var(--light);font-size:.7rem;text-decoration:underline;padding:.25rem;text-align:center}
 
-/* ════════════════════════ PLAY ════════════════════════ */
+/* ══ PLAY ══ */
 #play{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);overflow:hidden}
-
 .play-hdr{width:100%;display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem .35rem;flex-shrink:0}
 .btn-back{background:var(--white);border:none;border-radius:11px;padding:.38rem .75rem;font-size:.78rem;font-weight:700;color:var(--muted);box-shadow:0 2px 6px rgba(0,0,0,.08)}
 .play-lbl{font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700;color:var(--dark)}
 .play-cnt{font-size:.78rem;font-weight:700;color:var(--muted);min-width:3.2rem;text-align:right}
-
 .prog-track{width:calc(100% - 2rem);margin:0 1rem;height:7px;background:rgba(0,0,0,.07);border-radius:4px;overflow:hidden;flex-shrink:0}
 .prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--orange),var(--dark));transition:width .4s cubic-bezier(.34,1.56,.64,1)}
-
 .paws-row{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;padding:.35rem 1rem;flex-shrink:0}
 .paw{font-size:.9rem;opacity:.18;transition:opacity .3s}
-.paw.ok{opacity:1}
-.paw.ng{opacity:1;filter:grayscale(1) opacity(.45)}
-
+.paw.ok{opacity:1}.paw.ng{opacity:1;filter:grayscale(1) opacity(.45)}
 .card-zone{flex:1;display:flex;align-items:center;justify-content:center;padding:.4rem 1.25rem;width:100%;position:relative}
-
 .flashcard{background:var(--white);border-radius:30px;width:100%;max-width:360px;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 7px 0 rgba(0,0,0,.07),0 2px 20px rgba(0,0,0,.06);padding:1.75rem 1.5rem;position:relative;will-change:transform}
 .card-ears{position:absolute;top:-14px;width:100%;display:flex;justify-content:space-between;padding:0 28px;pointer-events:none}
 .ear{width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:22px solid var(--white)}
 .card-tag-lbl{font-size:.6rem;font-weight:700;letter-spacing:.1em;color:var(--light);text-transform:uppercase;margin-bottom:.65rem}
-.card-word{font-family:'Baloo 2',cursive;font-size:clamp(2.8rem,14vw,5rem);font-weight:800;color:var(--ink);line-height:1;text-align:center;word-break:break-word}
+/* THE BIG WORD — Andika for literacy-correct letterforms */
+.card-word{font-family:'Andika',sans-serif;font-size:clamp(2.8rem,14vw,5rem);font-weight:700;color:var(--ink);line-height:1;text-align:center;word-break:break-word}
 .card-hint{margin-top:.55rem;font-size:.75rem;color:var(--light);text-align:center;font-weight:700}
+.card-cat-deco{position:absolute;bottom:10px;right:14px;font-size:1rem;opacity:.2;pointer-events:none;animation:decoWiggle 4s ease-in-out infinite}
+@keyframes decoWiggle{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
 
-/* card animations */
-.flashcard.anim-ok {animation:okPop .48s cubic-bezier(.34,1.56,.64,1) forwards}
-.flashcard.anim-ng {animation:ngShake .42s ease forwards}
+.flashcard.anim-ok{animation:okPop .48s cubic-bezier(.34,1.56,.64,1) forwards}
+.flashcard.anim-ng{animation:ngShake .42s ease forwards}
 .flashcard.anim-next{animation:cardNext .28s ease forwards}
 @keyframes okPop{0%{transform:scale(1);background:var(--white)}30%{transform:scale(1.07);background:var(--correct-bg)}70%{transform:scale(.97)}100%{transform:scale(1);background:var(--white)}}
 @keyframes ngShake{0%,100%{transform:translateX(0);background:var(--white)}15%{transform:translateX(-11px) rotate(-1.8deg);background:var(--wrong-bg)}35%{transform:translateX(11px) rotate(1.8deg)}55%{transform:translateX(-7px)}75%{transform:translateX(7px)}90%{transform:translateX(-2px);background:#fff5f5}}
@@ -135,7 +105,7 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
 .btn-ok:active{transform:translateY(4px);box-shadow:0 1px 0 #00b894}
 .btn-skip{background:rgba(0,0,0,.05);border:none;border-radius:12px;padding:.45rem;font-size:.72rem;font-weight:700;color:var(--muted);text-align:center}
 
-/* ════════════════════════ RESULTS ════════════════════════ */
+/* ══ RESULTS ══ */
 #results{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:1.5rem 1rem 2rem;align-items:center}
 .res-cat{font-size:3.5rem;animation:bob 2s ease-in-out infinite;margin-bottom:.2rem}
 .res-title{font-family:'Baloo 2',cursive;font-size:1.7rem;font-weight:800;color:var(--dark);text-align:center}
@@ -146,7 +116,7 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
 .res-list{width:100%;max-width:360px;display:flex;flex-direction:column;gap:5px;margin-bottom:1.1rem}
 .res-sec{font-family:'Baloo 2',cursive;font-size:.78rem;font-weight:700;color:var(--muted);padding:.2rem 4px 0}
 .res-row{background:var(--white);border-radius:12px;padding:.5rem .9rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 0 rgba(0,0,0,.05)}
-.res-word{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700}
+.res-word{font-family:'Andika',sans-serif;font-size:1rem;font-weight:700}
 .res-dot{width:10px;height:10px;border-radius:50%}
 .res-actions{display:flex;flex-direction:column;gap:8px;width:100%;max-width:360px}
 .btn-primary{background:var(--dark);color:var(--white);border:none;border-radius:16px;padding:.95rem;font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700;box-shadow:0 4px 0 #c0392b;transition:transform .1s}
@@ -155,7 +125,7 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
 .btn-secondary:active{background:var(--soft)}
 .perfect-banner{background:linear-gradient(135deg,var(--green),#55efc4);color:#003d2a;border-radius:14px;padding:.8rem;text-align:center;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;box-shadow:0 4px 0 #007a55}
 
-/* ════════════════════════ GALLERY ════════════════════════ */
+/* ══ GALLERY ══ */
 #gallery{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:0 1rem 2rem}
 .gallery-hdr{width:100%;display:flex;align-items:center;gap:.65rem;padding:1rem 0 .65rem;position:sticky;top:0;background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);z-index:10;flex-shrink:0}
 .gallery-title{font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:800;color:var(--dark);flex:1}
@@ -164,22 +134,20 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
 .m-section{width:100%;margin-bottom:1rem}
 .m-sec-hd{font-family:'Baloo 2',cursive;font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:5px;display:flex;align-items:center;gap:5px}
 .m-wrap{display:flex;flex-wrap:wrap;gap:6px}
-.m-chip{background:var(--white);border:2px solid var(--green);border-radius:20px;padding:.3rem .8rem;font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:700;color:var(--ink);box-shadow:0 2px 0 #007a55;animation:chipPop .28s cubic-bezier(.34,1.56,.64,1) both}
+.m-chip{background:var(--white);border:2px solid var(--green);border-radius:20px;padding:.3rem .8rem;font-family:'Andika',sans-serif;font-size:.95rem;font-weight:700;color:var(--ink);box-shadow:0 2px 0 #007a55;animation:chipPop .28s cubic-bezier(.34,1.56,.64,1) both}
 @keyframes chipPop{0%{transform:scale(.65);opacity:0}100%{transform:scale(1);opacity:1}}
 
-/* ════════════════════════ LOOKUP ════════════════════════ */
+/* ══ LOOKUP ══ */
 #lookup{background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);padding:0 1rem 2rem}
 .lookup-hdr{width:100%;display:flex;align-items:center;gap:.65rem;padding:1rem 0 .65rem;position:sticky;top:0;background:linear-gradient(155deg,var(--cream) 0%,var(--soft) 100%);z-index:10}
 .lookup-title{font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:800;color:var(--dark);flex:1}
-
 .search-wrap{width:100%;max-width:400px;position:relative;margin-bottom:1rem}
-.search-input{width:100%;border:2px solid rgba(0,0,0,.1);border-radius:16px;padding:.75rem 1rem .75rem 2.8rem;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;background:var(--white);color:var(--ink);outline:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.search-input{width:100%;border:2px solid rgba(0,0,0,.1);border-radius:16px;padding:.75rem 1rem .75rem 2.8rem;font-family:'Andika',sans-serif;font-size:1rem;font-weight:700;background:var(--white);color:var(--ink);outline:none;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .search-input:focus{border-color:var(--orange)}
 .search-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);font-size:1rem;pointer-events:none}
-
 .word-card{background:var(--white);border-radius:22px;padding:1.25rem;width:100%;max-width:400px;box-shadow:0 4px 0 rgba(0,0,0,.07);margin-bottom:.75rem}
 .wc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
-.wc-word{font-family:'Baloo 2',cursive;font-size:2rem;font-weight:800;color:var(--ink);line-height:1}
+.wc-word{font-family:'Andika',sans-serif;font-size:2rem;font-weight:700;color:var(--ink);line-height:1}
 .wc-cat{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .65rem;border-radius:20px;color:var(--white)}
 .wc-stats{display:flex;gap:8px;margin-bottom:.85rem}
 .wc-stat{flex:1;background:var(--cream);border-radius:12px;padding:.5rem .3rem;text-align:center}
@@ -193,16 +161,27 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
 .tl-label{font-weight:700}
 .trend-badge{display:inline-flex;align-items:center;gap:4px;border-radius:20px;padding:.25rem .65rem;font-size:.72rem;font-weight:700;margin-bottom:.7rem}
 .wc-no-data{color:var(--muted);font-size:.85rem;text-align:center;padding:.75rem 0}
-
 .lookup-list{display:flex;flex-direction:column;gap:6px;width:100%;max-width:400px}
 .ll-row{background:var(--white);border-radius:14px;padding:.6rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.05);transition:transform .1s}
 .ll-row:active{transform:scale(.98)}
-.ll-word{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700}
+.ll-word{font-family:'Andika',sans-serif;font-size:1rem;font-weight:700}
 .ll-meta{display:flex;gap:5px;align-items:center}
 .ll-dot{width:8px;height:8px;border-radius:50%}
 .ll-pct{font-size:.7rem;font-weight:700;color:var(--muted)}
 
-/* ════════════════════════ PARTICLES / OVERLAYS ════════════════════════ */
+/* ══ ROAMING CATS ══ */
+.roam-cat{position:fixed;pointer-events:none;z-index:0;will-change:transform;opacity:.72}
+.roam-cat svg{display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.1))}
+.cat-bubble{position:fixed;pointer-events:none;z-index:0;background:white;border-radius:12px;
+  padding:3px 9px;font-family:'Andika',sans-serif;font-size:.68rem;font-weight:700;
+  color:#ee5a24;box-shadow:0 2px 8px rgba(0,0,0,.12);white-space:nowrap;
+  animation:bubFade 2.8s ease forwards}
+.cat-bubble::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
+  width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;
+  border-top:6px solid white}
+@keyframes bubFade{0%{opacity:0;transform:translateY(-3px)}12%{opacity:1;transform:translateY(0)}75%{opacity:1}100%{opacity:0;transform:translateY(-6px)}}
+
+/* ══ OVERLAYS ══ */
 .hiss-overlay{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:998;display:flex;align-items:center;justify-content:center;opacity:0;font-size:2.8rem}
 .hiss-overlay.show{animation:hissFlash .52s ease forwards}
 @keyframes hissFlash{0%{opacity:0}25%{opacity:1}80%{opacity:1}100%{opacity:0}}
@@ -217,27 +196,22 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
 
 <div class="hiss-overlay" id="hissOverlay">😾</div>
 <div class="confetti-cont" id="confettiCont"></div>
+<div id="roamLayer"></div>
 
-<!-- ══════════════════════════════════════════════════════
-     HOME
-══════════════════════════════════════════════════════ -->
+<!-- HOME -->
 <div id="home" class="screen active">
   <div class="home-top">
-    <button class="fs-btn" id="fsBtn" onclick="toggleFS()">⛶</button>
-
-    <svg class="cat-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <button class="fs-btn" id="fsBtn" onclick="toggleFS()">⧆</button>
+    <svg class="cat-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" onclick="purrHeroCat(this)" style="cursor:pointer">
       <ellipse cx="60" cy="82" rx="32" ry="28" fill="#ff9f43"/>
       <circle cx="60" cy="48" r="30" fill="#ff9f43"/>
       <polygon points="36,28 28,8 50,22" fill="#ff9f43"/>
       <polygon points="84,28 92,8 70,22" fill="#ff9f43"/>
       <polygon points="37,26 31,13 48,23" fill="#fab1a0"/>
       <polygon points="83,26 89,13 72,23" fill="#fab1a0"/>
-      <ellipse cx="48" cy="44" rx="8" ry="9" fill="white"/>
-      <ellipse cx="72" cy="44" rx="8" ry="9" fill="white"/>
-      <ellipse cx="49" cy="45" rx="5" ry="6" fill="#2d3436"/>
-      <ellipse cx="73" cy="45" rx="5" ry="6" fill="#2d3436"/>
-      <circle cx="51" cy="43" r="2" fill="white"/>
-      <circle cx="75" cy="43" r="2" fill="white"/>
+      <ellipse cx="48" cy="44" rx="8" ry="9" fill="white"/><ellipse cx="72" cy="44" rx="8" ry="9" fill="white"/>
+      <ellipse cx="49" cy="45" rx="5" ry="6" fill="#2d3436"/><ellipse cx="73" cy="45" rx="5" ry="6" fill="#2d3436"/>
+      <circle cx="51" cy="43" r="2" fill="white"/><circle cx="75" cy="43" r="2" fill="white"/>
       <ellipse cx="60" cy="56" rx="4" ry="3" fill="#fd79a8"/>
       <path d="M56 59 Q60 64 64 59" stroke="#ee5a24" stroke-width="1.5" fill="none" stroke-linecap="round"/>
       <path d="M60 59 L60 62" stroke="#ee5a24" stroke-width="1.5" stroke-linecap="round"/>
@@ -247,25 +221,20 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
       <line x1="92" y1="54" x2="68" y2="57" stroke="#b2bec3" stroke-width="1.2" stroke-linecap="round"/>
       <line x1="94" y1="58" x2="68" y2="59" stroke="#b2bec3" stroke-width="1.2" stroke-linecap="round"/>
       <line x1="92" y1="62" x2="68" y2="61" stroke="#b2bec3" stroke-width="1.2" stroke-linecap="round"/>
-      <ellipse cx="38" cy="104" rx="12" ry="9" fill="#ff9f43"/>
-      <ellipse cx="82" cy="104" rx="12" ry="9" fill="#ff9f43"/>
+      <ellipse cx="38" cy="104" rx="12" ry="9" fill="#ff9f43"/><ellipse cx="82" cy="104" rx="12" ry="9" fill="#ff9f43"/>
       <path d="M88 90 Q110 80 108 60 Q106 48 96 52" stroke="#ff9f43" stroke-width="10" fill="none" stroke-linecap="round"/>
       <path d="M50 88 Q60 92 70 88" stroke="#ee5a24" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.4"/>
       <path d="M46 96 Q60 101 74 96" stroke="#ee5a24" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.4"/>
     </svg>
-
     <h1 class="game-title">Kate Cat</h1>
     <p class="game-tag">🐾 Read it! Tap it! Learn it!</p>
   </div>
-
   <div class="stats-bar">
     <div class="s-chip"><span class="s-num" id="sCorrect" style="color:var(--green)">0</span><span class="s-lbl">correct</span></div>
     <div class="s-chip"><span class="s-num" id="sPractice" style="color:#e17055">0</span><span class="s-lbl">practicing</span></div>
     <div class="s-chip"><span class="s-num" id="sMastered" style="color:#6c5ce7">0</span><span class="s-lbl">mastered ⭐</span></div>
   </div>
-
   <div class="cat-grid" id="catGrid"></div>
-
   <div class="action-col">
     <button class="btn-missed" id="btnMissed" onclick="startMissed()">🐾 Practice missed words</button>
     <button class="btn-lookup" onclick="showLookup()">🔍 Look up any word</button>
@@ -274,9 +243,7 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     PLAY
-══════════════════════════════════════════════════════ -->
+<!-- PLAY -->
 <div id="play" class="screen">
   <div class="play-hdr">
     <button class="btn-back" onclick="goHome()">← Home</button>
@@ -302,9 +269,7 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     RESULTS
-══════════════════════════════════════════════════════ -->
+<!-- RESULTS -->
 <div id="results" class="screen">
   <div class="res-cat" id="resCat">😺</div>
   <h2 class="res-title" id="resTitle">Purrfect!</h2>
@@ -321,9 +286,7 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     GALLERY
-══════════════════════════════════════════════════════ -->
+<!-- GALLERY -->
 <div id="gallery" class="screen">
   <div class="gallery-hdr">
     <button class="btn-back" onclick="goHome()">← Home</button>
@@ -332,9 +295,7 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
   <div id="galleryContent" style="width:100%;max-width:400px;"></div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     LOOKUP
-══════════════════════════════════════════════════════ -->
+<!-- LOOKUP -->
 <div id="lookup" class="screen">
   <div class="lookup-hdr">
     <button class="btn-back" onclick="goHome()">← Home</button>
@@ -349,87 +310,77 @@ button{font-family:'Nunito',sans-serif;cursor:pointer}
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════════════
-   WORD DATA
-═══════════════════════════════════════════════════════ */
+
 const CATS = [
-  { id:'cvc', name:'CVC Words', emoji:'🐱', color:'#a29bfe', bar:'#6c5ce7',
+  { id:'cvc', name:'CVC Words', emoji:'\u{1F431}', color:'#a29bfe', bar:'#6c5ce7',
     words:[
-      // short-A
       'bat','bag','ban','bad','cab','can','cap','cat','dad','dam',
       'fan','fat','gap','gas','ham','has','hat','jab','jam','lap',
       'lad','man','map','mat','nap','pad','pan','pat','rag','ram',
       'ran','rap','rat','sap','sat','tan','tap','van','wag','wax',
-      'yam','zap','nab','dab','gab','jab','tab','had','lax','max',
-      // short-E
+      'yam','zap','nab','dab','gab','tab','had','lax','max','sack',
       'bed','beg','bet','den','fed','fen','get','hen','jet','keg',
       'led','leg','let','men','met','net','peg','pen','pet','red',
-      'set','ten','vet','web','wed','wet','yet','yew','hex','vex',
-      // short-I
+      'set','ten','vet','web','wed','wet','yet','hex','vex','gem',
       'bit','bid','big','bin','dip','did','dig','dim','fin','fit',
       'fix','him','hip','his','hit','jig','kid','kit','lip','lid',
       'mix','nip','pig','pin','pit','rib','rid','rip','sin','sip',
-      'sit','six','tip','tin','wig','win','wit','zip','fig','fig',
-      // short-O
+      'sit','six','tip','tin','wig','win','wit','zip','fig','kin',
       'bob','bog','box','cod','cop','cob','cog','dot','fog','fox',
       'god','got','hop','hot','job','jog','log','lot','mob','mop',
       'nod','not','pod','pop','pot','rob','rod','rot','sob','sod',
-      'top','tot','toy','wok','mop','lop','cop','bop','flop','plop',
-      // short-U
+      'top','tot','wok','lop','bop','cot','hog','mom','sob','clog',
       'bug','bun','bus','but','cup','cut','dug','fun','fur','gum',
       'gun','gut','hub','hug','hum','hut','jug','mud','mug','nun',
       'nut','pub','pug','pun','pup','rub','rug','run','rut','sub',
-      'sun','tub','tug','tun','yup','bud','dud','dun','spud','snub',
+      'sun','tub','tug','yup','bud','dud','dun','jut','lug','rum',
     ]
   },
-  { id:'sight', name:'Sight Words', emoji:'👀', color:'#74b9ff', bar:'#0984e3',
+  { id:'sight', name:'Sight Words', emoji:'\u{1F440}', color:'#74b9ff', bar:'#0984e3',
     words:[
-      // Dolch Pre-Primer
       'a','and','away','big','blue','can','come','down','find','for',
       'funny','go','help','here','I','in','is','it','jump','little',
       'look','make','me','my','not','one','play','red','run','said',
       'see','the','three','to','two','up','we','where','yellow','you',
-      // Dolch Primer
       'all','am','are','at','ate','be','black','brown','but','came',
       'did','do','eat','four','get','good','have','he','into','like',
       'must','new','no','now','on','our','out','please','pretty','ran',
       'ride','saw','say','she','so','soon','that','there','they','this',
       'too','under','want','was','well','went','what','white','who','will',
       'with','yes',
-      // Dolch First Grade
       'after','again','an','any','as','ask','by','could','every','fly',
-      'from','give','giving','had','has','her','him','his','how','just',
+      'from','give','going','had','has','her','him','his','how','just',
       'know','let','live','may','of','old','once','open','over','put',
-      'round','some','stop','take','thank','them','think','walk','were','when',
-      // Dolch Second Grade
+      'round','some','stop','take','thank','them','then','think','walk','were','when',
       'always','around','because','been','before','best','both','buy','call','cold',
-      'does','don\'t','fast','first','five','found','gave','goes','green','its',
+      "don't",'does','fast','first','five','found','gave','goes','green','its',
       'made','many','off','or','pull','read','right','sing','sit','sleep',
       'tell','their','these','those','upon','us','use','very','wash','which',
       'why','wish','work','would','write','your',
+      'about','better','bring','carry','clean','cut','done','draw','drink','eight',
+      'fall','far','full','got','grow','hold','hot','hurt','if','keep',
+      'kind','laugh','light','long','much','myself','never','only','own','pick',
+      'seven','show','six','small','start','ten','today','together','try','warm',
     ]
   },
-  { id:'longvowel', name:'Long Vowels', emoji:'🦋', color:'#fd79a8', bar:'#e84393',
+  { id:'longvowel', name:'Long Vowels', emoji:'\u{1F98B}', color:'#fd79a8', bar:'#e84393',
     words:[
-      // long-A (a_e, ai, ay, ea)
       {w:'cake',h:'long A'},{w:'lake',h:'long A'},{w:'tape',h:'long A'},{w:'name',h:'long A'},
       {w:'same',h:'long A'},{w:'late',h:'long A'},{w:'gate',h:'long A'},{w:'gave',h:'long A'},
       {w:'cave',h:'long A'},{w:'wave',h:'long A'},{w:'safe',h:'long A'},{w:'pale',h:'long A'},
-      {w:'tale',h:'long A'},{w:'male',h:'long A'},{w:'sale',h:'long A'},{w:'rate',h:'long A'},
+      {w:'tale',h:'long A'},{w:'sale',h:'long A'},{w:'rate',h:'long A'},{w:'plane',h:'long A'},
       {w:'rain',h:'long A'},{w:'tail',h:'long A'},{w:'sail',h:'long A'},{w:'mail',h:'long A'},
       {w:'pain',h:'long A'},{w:'wait',h:'long A'},{w:'bait',h:'long A'},{w:'main',h:'long A'},
       {w:'day',h:'long A'},{w:'say',h:'long A'},{w:'way',h:'long A'},{w:'play',h:'long A'},
       {w:'stay',h:'long A'},{w:'tray',h:'long A'},{w:'clay',h:'long A'},{w:'gray',h:'long A'},
-      // long-E (ee, ea, e_e, y)
       {w:'bee',h:'long E'},{w:'feet',h:'long E'},{w:'tree',h:'long E'},{w:'seed',h:'long E'},
       {w:'beet',h:'long E'},{w:'need',h:'long E'},{w:'feed',h:'long E'},{w:'keep',h:'long E'},
       {w:'week',h:'long E'},{w:'peek',h:'long E'},{w:'feel',h:'long E'},{w:'heel',h:'long E'},
-      {w:'peel',h:'long E'},{w:'reel',h:'long E'},{w:'seen',h:'long E'},{w:'teen',h:'long E'},
+      {w:'peel',h:'long E'},{w:'seen',h:'long E'},{w:'teen',h:'long E'},{w:'deep',h:'long E'},
       {w:'sea',h:'long E'},{w:'tea',h:'long E'},{w:'pea',h:'long E'},{w:'read',h:'long E'},
       {w:'real',h:'long E'},{w:'meal',h:'long E'},{w:'seal',h:'long E'},{w:'deal',h:'long E'},
       {w:'heat',h:'long E'},{w:'beat',h:'long E'},{w:'meat',h:'long E'},{w:'seat',h:'long E'},
       {w:'me',h:'long E'},{w:'he',h:'long E'},{w:'she',h:'long E'},{w:'we',h:'long E'},
-      // long-I (i_e, igh, y, ie)
       {w:'bike',h:'long I'},{w:'kite',h:'long I'},{w:'pine',h:'long I'},{w:'time',h:'long I'},
       {w:'vine',h:'long I'},{w:'hide',h:'long I'},{w:'side',h:'long I'},{w:'fine',h:'long I'},
       {w:'line',h:'long I'},{w:'mine',h:'long I'},{w:'nine',h:'long I'},{w:'dine',h:'long I'},
@@ -438,7 +389,6 @@ const CATS = [
       {w:'night',h:'long I'},{w:'light',h:'long I'},{w:'right',h:'long I'},{w:'might',h:'long I'},
       {w:'tight',h:'long I'},{w:'sight',h:'long I'},{w:'fight',h:'long I'},{w:'bright',h:'long I'},
       {w:'my',h:'long I'},{w:'by',h:'long I'},{w:'fly',h:'long I'},{w:'sky',h:'long I'},
-      // long-O (o_e, oa, ow, oe)
       {w:'cone',h:'long O'},{w:'rose',h:'long O'},{w:'bone',h:'long O'},{w:'note',h:'long O'},
       {w:'rope',h:'long O'},{w:'hole',h:'long O'},{w:'home',h:'long O'},{w:'pole',h:'long O'},
       {w:'mole',h:'long O'},{w:'role',h:'long O'},{w:'vote',h:'long O'},{w:'tone',h:'long O'},
@@ -447,7 +397,6 @@ const CATS = [
       {w:'load',h:'long O'},{w:'toad',h:'long O'},{w:'soak',h:'long O'},{w:'foam',h:'long O'},
       {w:'low',h:'long O'},{w:'row',h:'long O'},{w:'snow',h:'long O'},{w:'blow',h:'long O'},
       {w:'flow',h:'long O'},{w:'glow',h:'long O'},{w:'grow',h:'long O'},{w:'show',h:'long O'},
-      // long-U (u_e, ue, ew, oo)
       {w:'cute',h:'long U'},{w:'mule',h:'long U'},{w:'tube',h:'long U'},{w:'cube',h:'long U'},
       {w:'dune',h:'long U'},{w:'huge',h:'long U'},{w:'fuse',h:'long U'},{w:'use',h:'long U'},
       {w:'rule',h:'long U'},{w:'rude',h:'long U'},{w:'pure',h:'long U'},{w:'cure',h:'long U'},
@@ -457,386 +406,400 @@ const CATS = [
       {w:'pool',h:'long U'},{w:'tool',h:'long U'},{w:'fool',h:'long U'},{w:'zoo',h:'long U'},
     ]
   },
-  { id:'blends', name:'Blends', emoji:'🌀', color:'#55efc4', bar:'#00b894',
+  { id:'blends', name:'Blends', emoji:'\u{1F300}', color:'#55efc4', bar:'#00b894',
     words:[
-      // bl-
       {w:'black',h:'bl-'},{w:'blank',h:'bl-'},{w:'blast',h:'bl-'},{w:'bleed',h:'bl-'},
       {w:'blend',h:'bl-'},{w:'bless',h:'bl-'},{w:'blip',h:'bl-'},{w:'blob',h:'bl-'},
       {w:'block',h:'bl-'},{w:'blot',h:'bl-'},{w:'blow',h:'bl-'},{w:'blue',h:'bl-'},
-      // br-
       {w:'brad',h:'br-'},{w:'brag',h:'br-'},{w:'brat',h:'br-'},{w:'brim',h:'br-'},
       {w:'bring',h:'br-'},{w:'brisk',h:'br-'},{w:'broke',h:'br-'},{w:'brook',h:'br-'},
       {w:'brown',h:'br-'},{w:'brush',h:'br-'},{w:'bred',h:'br-'},{w:'brew',h:'br-'},
-      // cl-
       {w:'clam',h:'cl-'},{w:'clap',h:'cl-'},{w:'claw',h:'cl-'},{w:'clay',h:'cl-'},
       {w:'clean',h:'cl-'},{w:'clip',h:'cl-'},{w:'clock',h:'cl-'},{w:'clop',h:'cl-'},
       {w:'clot',h:'cl-'},{w:'cloud',h:'cl-'},{w:'club',h:'cl-'},{w:'cluck',h:'cl-'},
-      // cr-
       {w:'crab',h:'cr-'},{w:'crack',h:'cr-'},{w:'cram',h:'cr-'},{w:'crash',h:'cr-'},
       {w:'crave',h:'cr-'},{w:'crawl',h:'cr-'},{w:'cream',h:'cr-'},{w:'creek',h:'cr-'},
       {w:'crew',h:'cr-'},{w:'crib',h:'cr-'},{w:'crop',h:'cr-'},{w:'cross',h:'cr-'},
-      // dr-
       {w:'drab',h:'dr-'},{w:'drag',h:'dr-'},{w:'drape',h:'dr-'},{w:'draw',h:'dr-'},
       {w:'dream',h:'dr-'},{w:'drip',h:'dr-'},{w:'drive',h:'dr-'},{w:'drop',h:'dr-'},
       {w:'drove',h:'dr-'},{w:'drum',h:'dr-'},{w:'drug',h:'dr-'},{w:'dry',h:'dr-'},
-      // fl-
       {w:'flag',h:'fl-'},{w:'flat',h:'fl-'},{w:'flaw',h:'fl-'},{w:'flea',h:'fl-'},
       {w:'flip',h:'fl-'},{w:'flit',h:'fl-'},{w:'flock',h:'fl-'},{w:'flop',h:'fl-'},
       {w:'flow',h:'fl-'},{w:'fluff',h:'fl-'},{w:'flung',h:'fl-'},{w:'flush',h:'fl-'},
-      // fr-
       {w:'free',h:'fr-'},{w:'fret',h:'fr-'},{w:'from',h:'fr-'},{w:'frog',h:'fr-'},
       {w:'front',h:'fr-'},{w:'frost',h:'fr-'},{w:'frown',h:'fr-'},{w:'fry',h:'fr-'},
-      {w:'fresh',h:'fr-'},{w:'Fred',h:'fr-'},{w:'frank',h:'fr-'},{w:'frill',h:'fr-'},
-      // gl-
+      {w:'fresh',h:'fr-'},{w:'frank',h:'fr-'},{w:'frill',h:'fr-'},{w:'Fred',h:'fr-'},
       {w:'glad',h:'gl-'},{w:'glee',h:'gl-'},{w:'glen',h:'gl-'},{w:'glib',h:'gl-'},
       {w:'glob',h:'gl-'},{w:'gloom',h:'gl-'},{w:'glop',h:'gl-'},{w:'glow',h:'gl-'},
       {w:'glue',h:'gl-'},{w:'glum',h:'gl-'},{w:'glut',h:'gl-'},{w:'glint',h:'gl-'},
-      // gr-
       {w:'grab',h:'gr-'},{w:'grace',h:'gr-'},{w:'grade',h:'gr-'},{w:'gram',h:'gr-'},
       {w:'grand',h:'gr-'},{w:'grapes',h:'gr-'},{w:'grasp',h:'gr-'},{w:'grin',h:'gr-'},
       {w:'grip',h:'gr-'},{w:'grid',h:'gr-'},{w:'groan',h:'gr-'},{w:'groom',h:'gr-'},
-      // pl-
       {w:'plan',h:'pl-'},{w:'plane',h:'pl-'},{w:'plant',h:'pl-'},{w:'plop',h:'pl-'},
       {w:'plot',h:'pl-'},{w:'plug',h:'pl-'},{w:'plum',h:'pl-'},{w:'plump',h:'pl-'},
       {w:'plunk',h:'pl-'},{w:'plus',h:'pl-'},{w:'play',h:'pl-'},{w:'plea',h:'pl-'},
-      // pr-
       {w:'pray',h:'pr-'},{w:'prep',h:'pr-'},{w:'press',h:'pr-'},{w:'price',h:'pr-'},
       {w:'prick',h:'pr-'},{w:'pride',h:'pr-'},{w:'prim',h:'pr-'},{w:'prince',h:'pr-'},
       {w:'print',h:'pr-'},{w:'prize',h:'pr-'},{w:'prod',h:'pr-'},{w:'prop',h:'pr-'},
-      // sk-
       {w:'skid',h:'sk-'},{w:'skim',h:'sk-'},{w:'skin',h:'sk-'},{w:'skip',h:'sk-'},
       {w:'skit',h:'sk-'},{w:'skull',h:'sk-'},{w:'skunk',h:'sk-'},{w:'sky',h:'sk-'},
       {w:'skill',h:'sk-'},{w:'skate',h:'sk-'},{w:'sketch',h:'sk-'},{w:'skew',h:'sk-'},
-      // sl-
       {w:'slam',h:'sl-'},{w:'slap',h:'sl-'},{w:'slash',h:'sl-'},{w:'sled',h:'sl-'},
       {w:'slim',h:'sl-'},{w:'slip',h:'sl-'},{w:'slit',h:'sl-'},{w:'slob',h:'sl-'},
       {w:'slop',h:'sl-'},{w:'slot',h:'sl-'},{w:'slug',h:'sl-'},{w:'slum',h:'sl-'},
-      // sm-
       {w:'smack',h:'sm-'},{w:'small',h:'sm-'},{w:'smart',h:'sm-'},{w:'smash',h:'sm-'},
       {w:'smear',h:'sm-'},{w:'smell',h:'sm-'},{w:'smile',h:'sm-'},{w:'smock',h:'sm-'},
       {w:'smoke',h:'sm-'},{w:'smooth',h:'sm-'},{w:'smug',h:'sm-'},{w:'smite',h:'sm-'},
-      // sn-
       {w:'snack',h:'sn-'},{w:'snag',h:'sn-'},{w:'snap',h:'sn-'},{w:'snare',h:'sn-'},
       {w:'sneak',h:'sn-'},{w:'sniff',h:'sn-'},{w:'snip',h:'sn-'},{w:'snob',h:'sn-'},
       {w:'snoop',h:'sn-'},{w:'snore',h:'sn-'},{w:'snout',h:'sn-'},{w:'snug',h:'sn-'},
-      // sp-
       {w:'span',h:'sp-'},{w:'spark',h:'sp-'},{w:'speak',h:'sp-'},{w:'speed',h:'sp-'},
       {w:'spell',h:'sp-'},{w:'spend',h:'sp-'},{w:'spill',h:'sp-'},{w:'spin',h:'sp-'},
       {w:'spit',h:'sp-'},{w:'splash',h:'sp-'},{w:'spot',h:'sp-'},{w:'spun',h:'sp-'},
-      // st-
       {w:'stack',h:'st-'},{w:'staff',h:'st-'},{w:'stage',h:'st-'},{w:'stamp',h:'st-'},
       {w:'stand',h:'st-'},{w:'star',h:'st-'},{w:'stay',h:'st-'},{w:'stem',h:'st-'},
       {w:'step',h:'st-'},{w:'stick',h:'st-'},{w:'stir',h:'st-'},{w:'stop',h:'st-'},
-      // sw-
       {w:'swam',h:'sw-'},{w:'swap',h:'sw-'},{w:'swat',h:'sw-'},{w:'sway',h:'sw-'},
       {w:'swim',h:'sw-'},{w:'swing',h:'sw-'},{w:'swipe',h:'sw-'},{w:'swirl',h:'sw-'},
       {w:'swoop',h:'sw-'},{w:'swept',h:'sw-'},{w:'sweet',h:'sw-'},{w:'swift',h:'sw-'},
-      // tr-
       {w:'track',h:'tr-'},{w:'trail',h:'tr-'},{w:'train',h:'tr-'},{w:'trap',h:'tr-'},
       {w:'trash',h:'tr-'},{w:'treat',h:'tr-'},{w:'trim',h:'tr-'},{w:'trip',h:'tr-'},
       {w:'trot',h:'tr-'},{w:'truck',h:'tr-'},{w:'true',h:'tr-'},{w:'trunk',h:'tr-'},
-      // tw-
       {w:'twig',h:'tw-'},{w:'twin',h:'tw-'},{w:'twirl',h:'tw-'},{w:'twist',h:'tw-'},
       {w:'twice',h:'tw-'},{w:'tweed',h:'tw-'},{w:'tweak',h:'tw-'},{w:'twit',h:'tw-'},
     ]
   },
 ];
 
-/* normalise words to {w, h} objects */
 CATS.forEach(cat => {
-  cat.words = cat.words.map(x => typeof x === 'string' ? {w:x, h:''} : {w:x.w||x.word, h:x.h||x.hint||''});
+  cat.words = cat.words.map(x => typeof x === 'string' ? {w:x,h:''} : {w:x.w||x.word,h:x.h||x.hint||''});
 });
 
-/* ═══════════════════════════════════════════════════════
-   STORAGE  — history-based per-word tracking
-   progress[catId][word] = [ {ts, result} ... ]
-═══════════════════════════════════════════════════════ */
+/* STORAGE */
 let progress = {};
-try { progress = JSON.parse(localStorage.getItem('katecat_v3') || '{}'); } catch(e){}
+try { progress = JSON.parse(localStorage.getItem('katecat_v3')||'{}'); } catch(e){}
 function save(){ localStorage.setItem('katecat_v3', JSON.stringify(progress)); }
 
 function logResult(catId, word, correct){
   if(!progress[catId]) progress[catId]={};
   if(!progress[catId][word]) progress[catId][word]=[];
-  progress[catId][word].push({ts: Date.now(), r: correct ? 1 : 0});
-  // keep last 50 entries per word
-  if(progress[catId][word].length > 50) progress[catId][word].shift();
+  progress[catId][word].push({ts:Date.now(), r:correct?1:0});
+  if(progress[catId][word].length>60) progress[catId][word].shift();
   save();
 }
-
 function getHistory(catId, word){
-  return (progress[catId] && progress[catId][word]) ? progress[catId][word] : [];
+  return (progress[catId]&&progress[catId][word]) ? progress[catId][word] : [];
 }
-
 const MASTERED_STREAK = 10;
-
 function wordStatus(catId, word){
-  const h = getHistory(catId, word);
+  const h=getHistory(catId,word);
   if(!h.length) return 'unseen';
-  const lastWrong = h[h.length-1].r === 0;
-  const last10 = h.slice(-MASTERED_STREAK);
-  const mastered = last10.length >= MASTERED_STREAK && last10.every(e=>e.r===1);
-  const totalCorrect = h.filter(e=>e.r===1).length;
-  if(mastered) return 'mastered';
-  if(lastWrong) return 'wrong';
-  if(totalCorrect > 0) return 'correct';
+  if(h[h.length-1].r===0) return 'wrong';
+  const last10=h.slice(-MASTERED_STREAK);
+  if(last10.length>=MASTERED_STREAK && last10.every(e=>e.r===1)) return 'mastered';
+  if(h.filter(e=>e.r===1).length>0) return 'correct';
   return 'unseen';
 }
-
 function streakCount(catId, word){
-  const h = getHistory(catId, word);
-  let streak = 0;
-  for(let i = h.length - 1; i >= 0; i--){
-    if(h[i].r === 1) streak++;
-    else break;
-  }
-  return streak;
+  const h=getHistory(catId,word); let s=0;
+  for(let i=h.length-1;i>=0;i--){ if(h[i].r===1) s++; else break; }
+  return s;
 }
-
 function allWordStatuses(){
-  let correct=0, wrong=0, mastered=0;
-  CATS.forEach(cat=>{
-    cat.words.forEach(w=>{
-      const s = wordStatus(cat.id, w.w);
-      if(s==='mastered') mastered++;
-      else if(s==='correct') correct++;
-      else if(s==='wrong') wrong++;
-    });
-  });
-  return {correct, wrong, mastered};
+  let correct=0,wrong=0,mastered=0;
+  CATS.forEach(cat=>cat.words.forEach(w=>{
+    const s=wordStatus(cat.id,w.w);
+    if(s==='mastered') mastered++;
+    else if(s==='correct') correct++;
+    else if(s==='wrong') wrong++;
+  }));
+  return {correct,wrong,mastered};
 }
 
-/* ═══════════════════════════════════════════════════════
-   AUDIO  — synthesis matching the Pixabay sounds closely.
-   To use real MP3s from Pixabay, see the comment at top.
-═══════════════════════════════════════════════════════ */
-let audioCtx = null;
-let goodAudio = null; // optional: loaded kitten-sfx.mp3
-let badAudio  = null; // optional: loaded angry-cat-hq.mp3
-
-function getCtx(){
-  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-  return audioCtx;
-}
-
+/* AUDIO */
+let audioCtx=null, goodAudio=null, badAudio=null;
+function getCtx(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
 async function tryLoadAudio(){
-  // Attempt to load real files if they exist beside the HTML
-  try {
-    const ctx = getCtx();
-    const [goodRes, badRes] = await Promise.allSettled([
+  try{
+    const ctx=getCtx();
+    const [g,b]=await Promise.allSettled([
       fetch('kitten-sfx.mp3').then(r=>r.ok?r.arrayBuffer():Promise.reject()),
       fetch('angry-cat-hq.mp3').then(r=>r.ok?r.arrayBuffer():Promise.reject()),
     ]);
-    if(goodRes.status==='fulfilled') goodAudio = await ctx.decodeAudioData(goodRes.value);
-    if(badRes.status==='fulfilled')  badAudio  = await ctx.decodeAudioData(badRes.value);
-  } catch(e){}
+    if(g.status==='fulfilled') goodAudio=await ctx.decodeAudioData(g.value);
+    if(b.status==='fulfilled') badAudio=await ctx.decodeAudioData(b.value);
+  }catch(e){}
 }
-
-function playBuffer(buffer, trimEnd=0){
+function playBuffer(buf,trim=0){
   try{
-    const ctx = getCtx();
-    const src = ctx.createBufferSource();
-    src.buffer = buffer;
-    const gain = ctx.createGain();
-    gain.gain.value = 0.85;
+    const ctx=getCtx(),src=ctx.createBufferSource(); src.buffer=buf;
+    const gain=ctx.createGain(); gain.gain.value=0.85;
     src.connect(gain); gain.connect(ctx.destination);
-    const dur = trimEnd > 0 ? Math.min(trimEnd, buffer.duration) : buffer.duration;
-    src.start(0);
-    // for kitten sound we only want first second
-    if(trimEnd > 0) src.stop(ctx.currentTime + dur);
-  } catch(e){}
+    src.start(0); if(trim>0) src.stop(ctx.currentTime+trim);
+  }catch(e){}
 }
-
 function playGoodSynth(){
   try{
-    const ctx = getCtx();
-    const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(320,now);
-    osc.frequency.linearRampToValueAtTime(580,now+0.1);
-    osc.frequency.linearRampToValueAtTime(480,now+0.22);
-    osc.frequency.linearRampToValueAtTime(540,now+0.32);
-    osc.frequency.linearRampToValueAtTime(400,now+0.5);
-    gain.gain.setValueAtTime(0,now);
-    gain.gain.linearRampToValueAtTime(0.22,now+0.04);
-    gain.gain.linearRampToValueAtTime(0.18,now+0.28);
-    gain.gain.linearRampToValueAtTime(0,now+0.56);
-    osc.start(now); osc.stop(now+0.6);
-    // purr layer
-    const o2 = ctx.createOscillator(); const g2 = ctx.createGain();
-    o2.connect(g2); g2.connect(ctx.destination);
-    o2.type='sawtooth'; o2.frequency.value=26;
-    g2.gain.setValueAtTime(0,now+0.1);
-    g2.gain.linearRampToValueAtTime(0.07,now+0.2);
-    g2.gain.linearRampToValueAtTime(0.07,now+0.48);
-    g2.gain.linearRampToValueAtTime(0,now+0.7);
-    o2.start(now+0.1); o2.stop(now+0.75);
-  } catch(e){}
+    const ctx=getCtx(),now=ctx.currentTime;
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);o.type='sine';
+    o.frequency.setValueAtTime(320,now);o.frequency.linearRampToValueAtTime(580,now+.1);
+    o.frequency.linearRampToValueAtTime(480,now+.22);o.frequency.linearRampToValueAtTime(540,now+.32);
+    o.frequency.linearRampToValueAtTime(400,now+.5);
+    g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.22,now+.04);
+    g.gain.linearRampToValueAtTime(.18,now+.28);g.gain.linearRampToValueAtTime(0,now+.56);
+    o.start(now);o.stop(now+.6);
+    const o2=ctx.createOscillator(),g2=ctx.createGain();
+    o2.connect(g2);g2.connect(ctx.destination);o2.type='sawtooth';o2.frequency.value=26;
+    g2.gain.setValueAtTime(0,now+.1);g2.gain.linearRampToValueAtTime(.07,now+.2);
+    g2.gain.linearRampToValueAtTime(.07,now+.48);g2.gain.linearRampToValueAtTime(0,now+.7);
+    o2.start(now+.1);o2.stop(now+.75);
+  }catch(e){}
 }
-
 function playBadSynth(){
   try{
-    const ctx = getCtx();
-    const now = ctx.currentTime;
-    // noise hiss burst
-    const bufSize = Math.floor(ctx.sampleRate*0.55);
-    const buf = ctx.createBuffer(1,bufSize,ctx.sampleRate);
-    const d = buf.getChannelData(0);
-    for(let i=0;i<bufSize;i++) d[i]=(Math.random()*2-1)*0.6;
-    const src = ctx.createBufferSource(); src.buffer=buf;
-    const filt = ctx.createBiquadFilter(); filt.type='bandpass'; filt.frequency.value=3200; filt.Q.value=0.7;
-    const gain = ctx.createGain();
-    src.connect(filt); filt.connect(gain); gain.connect(ctx.destination);
-    gain.gain.setValueAtTime(0.45,now); gain.gain.linearRampToValueAtTime(0.08,now+0.55);
-    src.start(now);
-    // low growl
-    const osc = ctx.createOscillator(); const g2 = ctx.createGain();
-    osc.connect(g2); g2.connect(ctx.destination);
-    osc.type='sawtooth'; osc.frequency.setValueAtTime(130,now); osc.frequency.linearRampToValueAtTime(75,now+0.45);
-    g2.gain.setValueAtTime(0.18,now); g2.gain.linearRampToValueAtTime(0,now+0.5);
-    osc.start(now); osc.stop(now+0.55);
-  } catch(e){}
+    const ctx=getCtx(),now=ctx.currentTime;
+    const bsz=Math.floor(ctx.sampleRate*.55),buf=ctx.createBuffer(1,bsz,ctx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<bsz;i++) d[i]=(Math.random()*2-1)*.6;
+    const src=ctx.createBufferSource();src.buffer=buf;
+    const filt=ctx.createBiquadFilter();filt.type='bandpass';filt.frequency.value=3200;filt.Q.value=.7;
+    const gain=ctx.createGain();src.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
+    gain.gain.setValueAtTime(.45,now);gain.gain.linearRampToValueAtTime(.08,now+.55);src.start(now);
+    const osc=ctx.createOscillator(),g2=ctx.createGain();
+    osc.connect(g2);g2.connect(ctx.destination);osc.type='sawtooth';
+    osc.frequency.setValueAtTime(130,now);osc.frequency.linearRampToValueAtTime(75,now+.45);
+    g2.gain.setValueAtTime(.18,now);g2.gain.linearRampToValueAtTime(0,now+.5);
+    osc.start(now);osc.stop(now+.55);
+  }catch(e){}
+}
+function playGood(){ if(goodAudio) playBuffer(goodAudio,1); else playGoodSynth(); }
+function playBad(){ if(badAudio) playBuffer(badAudio); else playBadSynth(); }
+
+/* ROAMING CATS */
+const ROAM_COLORS=['#ff9f43','#a29bfe','#fd79a8','#55efc4','#74b9ff','#fdcb6e'];
+const ROAM_SAYINGS=['Meow!','Purrr\u2026','Mrrrow!','Read it!','Mew mew!','*yawn*','You got this!','Mrrp?','Purrfect!'];
+const DECO_EMOJIS=['\u{1F431}','\u{1F63A}','\u{1F638}','\u{1F43E}','\u{1F63B}','\u{1F408}'];
+let roamCats=[], roamRaf=null, decoIdx=0;
+
+function makeCatSVG(color, pose){
+  const p='#fab1a0',c=color;
+  if(pose==='walk') return `<svg width="46" height="34" viewBox="0 0 46 34" xmlns="http://www.w3.org/2000/svg"><ellipse cx="27" cy="21" rx="15" ry="9" fill="${c}"/><circle cx="13" cy="13" r="11" fill="${c}"/><polygon points="5,7 2,0 11,5" fill="${c}"/><polygon points="21,7 24,0 15,5" fill="${c}"/><polygon points="5.5,6.5 3,1 11,5" fill="${p}"/><polygon points="20.5,6.5 23,1 15,5" fill="${p}"/><ellipse cx="10" cy="11" rx="3.5" ry="4" fill="white"/><ellipse cx="16" cy="11" rx="3.5" ry="4" fill="white"/><ellipse cx="10.5" cy="11.5" rx="2.2" ry="2.8" fill="#2d3436"/><ellipse cx="16.5" cy="11.5" rx="2.2" ry="2.8" fill="#2d3436"/><circle cx="11.5" cy="10.5" r=".9" fill="white"/><circle cx="17.5" cy="10.5" r=".9" fill="white"/><ellipse cx="13" cy="16" rx="2" ry="1.4" fill="${p}"/><path d="M11 17.5 Q13 20 15 17.5" stroke="#ee5a24" stroke-width="1" fill="none" stroke-linecap="round"/><line x1="2" y1="14" x2="9" y2="15.5" stroke="#b2bec3" stroke-width=".8" stroke-linecap="round"/><line x1="1.5" y1="16" x2="9" y2="16.5" stroke="#b2bec3" stroke-width=".8" stroke-linecap="round"/><line x1="24" y1="14" x2="17" y2="15.5" stroke="#b2bec3" stroke-width=".8" stroke-linecap="round"/><line x1="24.5" y1="16" x2="17" y2="16.5" stroke="#b2bec3" stroke-width=".8" stroke-linecap="round"/><ellipse cx="14" cy="29" rx="5" ry="3.5" fill="${c}"/><ellipse cx="22" cy="30" rx="5" ry="3.5" fill="${c}"/><ellipse cx="32" cy="29" rx="5" ry="3.5" fill="${c}"/><ellipse cx="39" cy="30" rx="4.5" ry="3" fill="${c}"/><path d="M38 19 Q46 15 45 8" stroke="${c}" stroke-width="4.5" fill="none" stroke-linecap="round"/></svg>`;
+  if(pose==='stretch') return `<svg width="54" height="28" viewBox="0 0 54 28" xmlns="http://www.w3.org/2000/svg"><ellipse cx="32" cy="18" rx="19" ry="8" fill="${c}"/><circle cx="10" cy="12" r="10" fill="${c}"/><polygon points="3,6 0,0 8,5" fill="${c}"/><polygon points="17,6 20,0 12,5" fill="${c}"/><polygon points="3.5,5.5 1,1 8,5" fill="${p}"/><polygon points="16.5,5.5 19,1 12,5" fill="${p}"/><ellipse cx="7" cy="10" rx="3.2" ry="3.8" fill="white"/><ellipse cx="13" cy="10" rx="3.2" ry="3.8" fill="white"/><ellipse cx="7.5" cy="10.5" rx="2" ry="2.5" fill="#2d3436"/><ellipse cx="13.5" cy="10.5" rx="2" ry="2.5" fill="#2d3436"/><ellipse cx="10" cy="15" rx="2" ry="1.3" fill="${p}"/><line x1="1" y1="13" x2="7" y2="14" stroke="#b2bec3" stroke-width=".8" stroke-linecap="round"/><line x1="1" y1="15" x2="7" y2="15.5" stroke="#b2bec3" stroke-width=".8" stroke-linecap="round"/><ellipse cx="20" cy="24" rx="4.5" ry="3" fill="${c}"/><ellipse cx="29" cy="25" rx="4.5" ry="3" fill="${c}"/><ellipse cx="43" cy="24" rx="4.5" ry="3" fill="${c}"/><ellipse cx="50" cy="25" rx="4" ry="3" fill="${c}"/><path d="M48 16 Q54 11 52 5" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`;
+  // sit
+  return `<svg width="40" height="50" viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg"><ellipse cx="20" cy="37" rx="14" ry="10" fill="${c}"/><circle cx="20" cy="18" r="13" fill="${c}"/><polygon points="9,10 5,1 15,7" fill="${c}"/><polygon points="31,10 35,1 25,7" fill="${c}"/><polygon points="9.5,9.5 6,2 15,7" fill="${p}"/><polygon points="30.5,9.5 34,2 25,7" fill="${p}"/><ellipse cx="16" cy="16" rx="4" ry="4.5" fill="white"/><ellipse cx="24" cy="16" rx="4" ry="4.5" fill="white"/><ellipse cx="16.5" cy="16.5" rx="2.5" ry="3" fill="#2d3436"/><ellipse cx="24.5" cy="16.5" rx="2.5" ry="3" fill="#2d3436"/><circle cx="17.5" cy="15.5" r="1" fill="white"/><circle cx="25.5" cy="15.5" r="1" fill="white"/><ellipse cx="20" cy="22" rx="2.2" ry="1.6" fill="${p}"/><path d="M17.5 24 Q20 27.5 22.5 24" stroke="#ee5a24" stroke-width="1.2" fill="none" stroke-linecap="round"/><line x1="4" y1="20" x2="14" y2="21.5" stroke="#b2bec3" stroke-width="1" stroke-linecap="round"/><line x1="3" y1="22.5" x2="14" y2="23" stroke="#b2bec3" stroke-width="1" stroke-linecap="round"/><line x1="36" y1="20" x2="26" y2="21.5" stroke="#b2bec3" stroke-width="1" stroke-linecap="round"/><line x1="37" y1="22.5" x2="26" y2="23" stroke="#b2bec3" stroke-width="1" stroke-linecap="round"/><ellipse cx="11" cy="46" rx="6" ry="4" fill="${c}"/><ellipse cx="29" cy="46" rx="6" ry="4" fill="${c}"/><path d="M31 34 Q40 29 39 20" stroke="${c}" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M14 37 Q20 40 26 37" stroke="#ee5a24" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".4"/></svg>`;
 }
 
-function playGood(){
-  if(goodAudio) playBuffer(goodAudio, 1.0); // first second of Kitten SFX
-  else playGoodSynth();
+// Each cat patrols one edge of the screen.
+// edge: 0=top, 1=right, 2=bottom, 3=left
+// pos: 0..1 progress along that edge
+function spawnRoamCats(){
+  const layer=document.getElementById('roamLayer'); layer.innerHTML=''; roamCats=[];
+  // Use walk pose on horizontal edges, sit on vertical edges
+  const edgePoses=['walk','stretch','walk','sit'];
+  const count=4;
+  for(let i=0;i<count;i++){
+    const edge=i; // assign one cat per edge
+    const pose=edgePoses[edge];
+    const el=document.createElement('div'); el.className='roam-cat';
+    const color=ROAM_COLORS[i%ROAM_COLORS.length];
+    el.innerHTML=makeCatSVG(color,pose);
+    layer.appendChild(el);
+    const w=pose==='stretch'?54:pose==='walk'?46:40;
+    const h=pose==='stretch'?28:pose==='walk'?34:50;
+    const spd=0.0015+Math.random()*0.001; // fraction of edge per frame
+    roamCats.push({
+      el,w,h,edge,
+      pos:Math.random(), // 0..1 along the edge
+      spd: (Math.random()<0.5?1:-1)*spd,
+      dir:1,
+      nextBubble:Date.now()+4000+Math.random()*8000
+    });
+  }
+  if(roamRaf) cancelAnimationFrame(roamRaf);
+  animateRoam();
 }
 
-function playBad(){
-  if(badAudio) playBuffer(badAudio);
-  else playBadSynth();
-}
+// BORDER is how many px from screen edge the cats hug
+const BORDER = 6;
 
-/* ═══════════════════════════════════════════════════════
-   PARTICLES
-═══════════════════════════════════════════════════════ */
-function particles(x, y, ok){
-  const set = ok ? ['🐾','⭐','✨','🐱','💛'] : ['😾','💢','🙀'];
-  const n = ok ? 9 : 4;
-  for(let i=0;i<n;i++){
-    setTimeout(()=>{
-      const el=document.createElement('div'); el.className='particle';
-      el.textContent=set[Math.floor(Math.random()*set.length)];
-      el.style.left=(x+(Math.random()-.5)*90)+'px';
-      el.style.top=y+'px';
-      el.style.animationDuration=(.7+Math.random()*.5)+'s';
-      el.style.animationDelay=(Math.random()*.12)+'s';
-      document.body.appendChild(el);
-      setTimeout(()=>el.remove(),1500);
-    },i*38);
+function edgeToXY(edge, pos, W, H, w, h){
+  // Returns {x, y, dir} — dir=1 means facing right, -1 facing left
+  switch(edge){
+    case 0: // top — walk left to right along top
+      return {x: pos*(W-w), y: BORDER, dir: 1};
+    case 1: // right — walk top to bottom along right
+      return {x: W-w-BORDER, y: pos*(H-h), dir: 1};
+    case 2: // bottom — walk right to left along bottom
+      return {x: (1-pos)*(W-w), y: H-h-BORDER, dir: -1};
+    case 3: // left — walk bottom to top along left
+      return {x: BORDER, y: (1-pos)*(H-h), dir: 1};
   }
 }
 
+function animateRoam(){
+  const W=window.innerWidth,H=window.innerHeight,now=Date.now();
+  roamCats.forEach(cat=>{
+    cat.pos += cat.spd;
+    // bounce at ends of edge
+    if(cat.pos>1){cat.pos=1;cat.spd=-Math.abs(cat.spd);}
+    if(cat.pos<0){cat.pos=0;cat.spd=Math.abs(cat.spd);}
+    const {x,y,dir}=edgeToXY(cat.edge,cat.pos,W,H,cat.w,cat.h);
+    // on vertical edges, always face inward; on horizontal, face direction of travel
+    let facingDir = dir;
+    if(cat.edge===0) facingDir = cat.spd>0?1:-1;
+    if(cat.edge===2) facingDir = cat.spd>0?-1:1;
+    const flip=facingDir<0?'scaleX(-1)':'';
+    cat.el.style.transform=`translate(${Math.round(x)}px,${Math.round(y)}px) ${flip}`;
+    if(now>cat.nextBubble){
+      cat.nextBubble=now+8000+Math.random()*10000;
+      spawnBubble({...cat,x,y}); playTinyMeow();
+    }
+  });
+  roamRaf=requestAnimationFrame(animateRoam);
+}
+
+function spawnBubble(cat){
+  const b=document.createElement('div'); b.className='cat-bubble';
+  b.textContent=ROAM_SAYINGS[Math.floor(Math.random()*ROAM_SAYINGS.length)];
+  const bx=Math.max(4,Math.min(window.innerWidth-120,cat.x+cat.w/2-40));
+  b.style.left=bx+'px'; b.style.top=Math.max(8,cat.y-36)+'px';
+  document.body.appendChild(b); setTimeout(()=>b.remove(),2900);
+}
+
+function playTinyMeow(){
+  try{
+    const ctx=getCtx(),now=ctx.currentTime;
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);o.type='sine';
+    o.frequency.setValueAtTime(260,now);o.frequency.linearRampToValueAtTime(420,now+.07);
+    o.frequency.linearRampToValueAtTime(330,now+.18);
+    g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.055,now+.025);
+    g.gain.linearRampToValueAtTime(0,now+.22);
+    o.start(now);o.stop(now+.25);
+  }catch(e){}
+}
+
+function purrHeroCat(el){
+  // squish animation
+  el.classList.remove('squish');
+  void el.offsetWidth; // reflow to restart animation
+  el.classList.add('squish');
+  setTimeout(()=>el.classList.remove('squish'), 400);
+  // play real kitten sound if loaded, otherwise a longer purr synth
+  if(goodAudio){
+    playBuffer(goodAudio, 1);
+  } else {
+    try{
+      const ctx=getCtx(),now=ctx.currentTime;
+      // meow
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);o.type='sine';
+      o.frequency.setValueAtTime(300,now);
+      o.frequency.linearRampToValueAtTime(600,now+.12);
+      o.frequency.linearRampToValueAtTime(450,now+.28);
+      o.frequency.linearRampToValueAtTime(520,now+.38);
+      o.frequency.linearRampToValueAtTime(380,now+.55);
+      g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.22,now+.05);
+      g.gain.linearRampToValueAtTime(.18,now+.3);g.gain.linearRampToValueAtTime(0,now+.6);
+      o.start(now);o.stop(now+.65);
+      // purr rumble underneath
+      const o2=ctx.createOscillator(),g2=ctx.createGain();
+      o2.connect(g2);g2.connect(ctx.destination);o2.type='sawtooth';o2.frequency.value=28;
+      g2.gain.setValueAtTime(0,now+.1);g2.gain.linearRampToValueAtTime(.09,now+.2);
+      g2.gain.linearRampToValueAtTime(.09,now+.55);g2.gain.linearRampToValueAtTime(0,now+.8);
+      o2.start(now+.1);o2.stop(now+.85);
+    }catch(e){}
+  }
+}
+
+
+function particles(x,y,ok){
+  const set=ok?['\u{1F43E}','\u2B50','\u2728','\u{1F431}','\u{1F49B}']:['\u{1F63E}','\u{1F4A2}','\u{1F640}'];
+  const n=ok?9:4;
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const el=document.createElement('div');el.className='particle';
+      el.textContent=set[Math.floor(Math.random()*set.length)];
+      el.style.left=(x+(Math.random()-.5)*90)+'px';el.style.top=y+'px';
+      el.style.animationDuration=(.7+Math.random()*.5)+'s';
+      el.style.animationDelay=(Math.random()*.12)+'s';
+      document.body.appendChild(el);setTimeout(()=>el.remove(),1500);
+    },i*38);
+  }
+}
 function confetti(){
   const c=document.getElementById('confettiCont');
-  const set=['🐾','⭐','✨','🎉','💛','🐱','🌟'];
+  const set=['\u{1F43E}','\u2B50','\u2728','\u{1F389}','\u{1F49B}','\u{1F431}','\u{1F31F}'];
   for(let i=0;i<35;i++){
-    const el=document.createElement('div'); el.className='conf';
+    const el=document.createElement('div');el.className='conf';
     el.textContent=set[Math.floor(Math.random()*set.length)];
     el.style.left=Math.random()*100+'vw';
     el.style.animationDuration=(1.5+Math.random()*1.5)+'s';
     el.style.animationDelay=(Math.random()*.9)+'s';
-    c.appendChild(el);
-    setTimeout(()=>el.remove(),3600);
+    c.appendChild(el);setTimeout(()=>el.remove(),3600);
   }
 }
 
-/* ═══════════════════════════════════════════════════════
-   HOME
-═══════════════════════════════════════════════════════ */
+/* HOME */
 function renderHome(){
-  const grid=document.getElementById('catGrid');
-  grid.innerHTML='';
+  const grid=document.getElementById('catGrid'); grid.innerHTML='';
   CATS.forEach(cat=>{
     const words=cat.words;
     const correct=words.filter(w=>wordStatus(cat.id,w.w)==='correct').length;
     const mastered=words.filter(w=>wordStatus(cat.id,w.w)==='mastered').length;
     const pct=Math.round(((correct+mastered)/words.length)*100);
-    const card=document.createElement('button');
-    card.className='c-card';
-    card.innerHTML=`
-      <div style="position:absolute;top:0;left:0;right:0;height:4px;background:${cat.bar};border-radius:20px 20px 0 0"></div>
-      <span class="cc-emo">${cat.emoji}</span>
-      <span class="cc-name">${cat.name}</span>
-      <span class="cc-cnt">${words.length} words</span>
-      <div class="cc-bar"><div class="cc-fill" style="width:${pct}%;background:${cat.bar}"></div></div>
-    `;
+    const card=document.createElement('button'); card.className='c-card';
+    card.innerHTML=`<div style="position:absolute;top:0;left:0;right:0;height:4px;background:${cat.bar};border-radius:20px 20px 0 0"></div><span class="cc-emo">${cat.emoji}</span><span class="cc-name">${cat.name}</span><span class="cc-cnt">${words.length} words</span><div class="cc-bar"><div class="cc-fill" style="width:${pct}%;background:${cat.bar}"></div></div>`;
     card.onclick=()=>startCategory(cat.id);
     grid.appendChild(card);
   });
-
   const s=allWordStatuses();
   document.getElementById('sCorrect').textContent=s.correct;
   document.getElementById('sPractice').textContent=s.wrong;
   document.getElementById('sMastered').textContent=s.mastered;
-
   const missed=getMissed();
   const btn=document.getElementById('btnMissed');
   btn.disabled=missed.length===0;
-  btn.textContent=missed.length>0
-    ? `🐾 Practice ${missed.length} missed word${missed.length!==1?'s':''}`
-    : '🐾 No missed words yet';
+  btn.textContent=missed.length>0?`\u{1F43E} Practice ${missed.length} missed word${missed.length!==1?'s':''}`:`\u{1F43E} No missed words yet`;
 }
-
 function getMissed(){
   const out=[];
-  CATS.forEach(cat=>{
-    cat.words.forEach(wObj=>{
-      if(wordStatus(cat.id,wObj.w)==='wrong') out.push({...wObj, catId:cat.id});
-    });
-  });
+  CATS.forEach(cat=>cat.words.forEach(wObj=>{
+    if(wordStatus(cat.id,wObj.w)==='wrong') out.push({...wObj,catId:cat.id});
+  }));
   return out;
 }
 
-/* ═══════════════════════════════════════════════════════
-   SESSION
-═══════════════════════════════════════════════════════ */
-let S = { catId:null, queue:[], idx:0, correct:[], wrong:[], skipped:[] };
-
+/* SESSION */
+let S={catId:null,queue:[],idx:0,correct:[],wrong:[],skipped:[]};
 function startCategory(catId){
   const cat=CATS.find(c=>c.id===catId);
-  const queue=[...cat.words].sort(()=>Math.random()-.5);
-  S={catId, queue, idx:0, correct:[], wrong:[], skipped:[]};
+  S={catId,queue:[...cat.words].sort(()=>Math.random()-.5),idx:0,correct:[],wrong:[],skipped:[]};
   document.getElementById('playLbl').textContent=cat.name;
-  buildPaws();
-  renderCard();
-  showScreen('play');
+  buildPaws(); renderCard(); showScreen('play');
 }
-
 function startMissed(){
   const missed=getMissed().sort(()=>Math.random()-.5);
   if(!missed.length) return;
-  S={catId:'__missed__', queue:missed, idx:0, correct:[], wrong:[], skipped:[]};
-  document.getElementById('playLbl').textContent='🐾 Missed Words';
-  buildPaws();
-  renderCard();
-  showScreen('play');
+  S={catId:'__missed__',queue:missed,idx:0,correct:[],wrong:[],skipped:[]};
+  document.getElementById('playLbl').textContent='\u{1F43E} Missed Words';
+  buildPaws(); renderCard(); showScreen('play');
 }
-
 function buildPaws(){
   const row=document.getElementById('pawsRow');
-  const n=Math.min(S.queue.length,20);
-  row.innerHTML='';
+  const n=Math.min(S.queue.length,20); row.innerHTML='';
   for(let i=0;i<n;i++){
-    const p=document.createElement('span'); p.className='paw'; p.id='paw'+i; p.textContent='🐾';
+    const p=document.createElement('span');p.className='paw';p.id='paw'+i;p.textContent='\u{1F43E}';
     row.appendChild(p);
   }
 }
-
 function updatePaw(idx,ok){
   const p=document.getElementById('paw'+idx);
-  if(!p)return;
-  p.classList.add(ok?'ok':'ng');
+  if(p) p.classList.add(ok?'ok':'ng');
 }
-
 function renderCard(){
-  const {queue,idx}=S;
-  const total=queue.length;
-  const card=queue[idx];
+  const {queue,idx}=S,total=queue.length,card=queue[idx];
   const catId=card.catId||S.catId;
   const cat=CATS.find(c=>c.id===catId);
   document.getElementById('playCnt').textContent=`${idx+1} / ${total}`;
@@ -845,43 +808,32 @@ function renderCard(){
   document.getElementById('cardWord').textContent=card.w;
   document.getElementById('cardHint').textContent=card.h||'';
 }
-
 function mark(ok){
   const card=S.queue[S.idx];
   const catId=card.catId||S.catId;
   const fc=document.getElementById('flashcard');
   const rect=fc.getBoundingClientRect();
-  const cx=rect.left+rect.width/2, cy=rect.top+rect.height/2;
-
-  logResult(catId, card.w, ok);
-
+  const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
+  logResult(catId,card.w,ok);
   if(ok){
-    S.correct.push(card);
-    playGood();
-    fc.classList.add('anim-ok');
-    particles(cx,cy,true);
-    updatePaw(S.idx,true);
+    S.correct.push(card); playGood();
+    fc.classList.add('anim-ok'); particles(cx,cy,true); updatePaw(S.idx,true);
     setTimeout(()=>{fc.classList.remove('anim-ok');advance();},480);
   } else {
-    S.wrong.push(card);
-    playBad();
+    S.wrong.push(card); playBad();
     fc.classList.add('anim-ng');
-    const h=document.getElementById('hissOverlay');
-    h.classList.add('show');
-    particles(cx,cy,false);
-    updatePaw(S.idx,false);
+    const h=document.getElementById('hissOverlay'); h.classList.add('show');
+    particles(cx,cy,false); updatePaw(S.idx,false);
     setTimeout(()=>h.classList.remove('show'),550);
     setTimeout(()=>{fc.classList.remove('anim-ng');advance();},440);
   }
 }
-
 function skipCard(){
   S.skipped.push(S.queue[S.idx]);
   const fc=document.getElementById('flashcard');
   fc.classList.add('anim-next');
   setTimeout(()=>{fc.classList.remove('anim-next');advance();},290);
 }
-
 function advance(){
   S.idx++;
   if(S.idx>=S.queue.length){showResults();return;}
@@ -890,90 +842,62 @@ function advance(){
   setTimeout(()=>{fc.classList.remove('anim-next');renderCard();},155);
 }
 
-/* ═══════════════════════════════════════════════════════
-   RESULTS
-═══════════════════════════════════════════════════════ */
+/* RESULTS */
 function showResults(){
-  const {correct,wrong,queue}=S;
-  const total=queue.length;
+  const {correct,wrong,queue}=S,total=queue.length;
   const pct=total>0?Math.round((correct.length/total)*100):0;
-
-  document.getElementById('resCat').textContent=pct===100?'🎉':pct>=80?'😸':'😺';
-  document.getElementById('resTitle').textContent=pct===100?'🌟 Purrfect!':pct>=80?'😸 Great job!':pct>=60?'😺 Good try!':'😿 Keep going!';
+  document.getElementById('resCat').textContent=pct===100?'\u{1F389}':pct>=80?'\u{1F638}':'\u{1F63A}';
+  document.getElementById('resTitle').textContent=pct===100?'\u{1F31F} Purrfect!':pct>=80?'\u{1F638} Great job!':pct>=60?'\u{1F63A} Good try!':'\u{1F63F} Keep going!';
   document.getElementById('resSub').textContent=`${correct.length} of ${total} words correct`;
   document.getElementById('scorePct').textContent=pct+'%';
-
   if(pct===100) confetti();
-
   const list=document.getElementById('resList'); list.innerHTML='';
-
   if(correct.length){
-    const h=document.createElement('p'); h.className='res-sec'; h.textContent='✓ Got it'; list.appendChild(h);
-    correct.forEach(c=>{
-      const r=document.createElement('div'); r.className='res-row';
-      r.innerHTML=`<span class="res-word">${c.w}</span><div class="res-dot" style="background:#55efc4"></div>`;
-      list.appendChild(r);
-    });
+    const h=document.createElement('p');h.className='res-sec';h.textContent='\u2713 Got it';list.appendChild(h);
+    correct.forEach(c=>{const r=document.createElement('div');r.className='res-row';r.innerHTML=`<span class="res-word">${c.w}</span><div class="res-dot" style="background:#55efc4"></div>`;list.appendChild(r);});
   }
   if(wrong.length){
-    const h=document.createElement('p'); h.className='res-sec'; h.textContent='✗ Keep practicing'; list.appendChild(h);
-    wrong.forEach(c=>{
-      const r=document.createElement('div'); r.className='res-row';
-      r.innerHTML=`<span class="res-word">${c.w}</span><div class="res-dot" style="background:#fab1a0"></div>`;
-      list.appendChild(r);
-    });
+    const h=document.createElement('p');h.className='res-sec';h.textContent='\u2717 Keep practicing';list.appendChild(h);
+    wrong.forEach(c=>{const r=document.createElement('div');r.className='res-row';r.innerHTML=`<span class="res-word">${c.w}</span><div class="res-dot" style="background:#fab1a0"></div>`;list.appendChild(r);});
   }
-
   const da=document.getElementById('drillArea');
   da.innerHTML=wrong.length
-    ? `<button class="btn-primary" style="background:#e17055;box-shadow:0 4px 0 #d63031;margin-bottom:8px" onclick="drillMissed()">🐾 Practice ${wrong.length} missed now</button>`
-    : `<div class="perfect-banner">🌟 No missed words — Kate's amazing!</div>`;
-
+    ?`<button class="btn-primary" style="background:#e17055;box-shadow:0 4px 0 #d63031;margin-bottom:8px" onclick="drillMissed()">\u{1F43E} Practice ${wrong.length} missed now</button>`
+    :`<div class="perfect-banner">\u{1F31F} No missed words \u2014 Kate's amazing!</div>`;
   showScreen('results');
 }
-
 function drillMissed(){
   const missed=S.wrong.map(w=>({...w,catId:w.catId||S.catId})).sort(()=>Math.random()-.5);
   S={catId:'__missed__',queue:missed,idx:0,correct:[],wrong:[],skipped:[]};
-  document.getElementById('playLbl').textContent='🐾 Missed Words';
-  buildPaws(); renderCard(); showScreen('play');
+  document.getElementById('playLbl').textContent='\u{1F43E} Missed Words';
+  buildPaws();renderCard();showScreen('play');
 }
-
 function playAgain(){
-  if(S.catId==='__missed__') startMissed();
-  else startCategory(S.catId);
+  if(S.catId==='__missed__') startMissed(); else startCategory(S.catId);
 }
 
-/* ═══════════════════════════════════════════════════════
-   GALLERY
-═══════════════════════════════════════════════════════ */
+/* GALLERY */
 function showGallery(){
   const content=document.getElementById('galleryContent'); content.innerHTML='';
   let total=0;
   CATS.forEach(cat=>{
     const words=cat.words.filter(w=>wordStatus(cat.id,w.w)==='mastered');
-    if(!words.length) return;
-    total+=words.length;
-    const sec=document.createElement('div'); sec.className='m-section';
+    if(!words.length) return; total+=words.length;
+    const sec=document.createElement('div');sec.className='m-section';
     sec.innerHTML=`<div class="m-sec-hd"><span>${cat.emoji}</span>${cat.name}</div>`;
-    const wrap=document.createElement('div'); wrap.className='m-wrap';
+    const wrap=document.createElement('div');wrap.className='m-wrap';
     words.forEach((word,i)=>{
-      const chip=document.createElement('div'); chip.className='m-chip';
-      chip.style.animationDelay=(i*.04)+'s';
-      chip.textContent='⭐ '+word.w;
+      const chip=document.createElement('div');chip.className='m-chip';
+      chip.style.animationDelay=(i*.04)+'s';chip.textContent='\u2B50 '+word.w;
       wrap.appendChild(chip);
     });
-    sec.appendChild(wrap); content.appendChild(sec);
+    sec.appendChild(wrap);content.appendChild(sec);
   });
-  if(!total){
-    content.innerHTML='<div class="g-empty"><div class="g-empty-cat">😿</div><p>No mastered words yet!</p><p style="font-size:.75rem;margin-top:.25rem">Get a word right 10 times in a row to master it!</p></div>';
-  }
+  if(!total) content.innerHTML='<div class="g-empty"><div class="g-empty-cat">\u{1F63F}</div><p>No mastered words yet!</p><p style="font-size:.75rem;margin-top:.25rem">Get a word right 10 times in a row to master it!</p></div>';
   showScreen('gallery');
 }
 
-/* ═══════════════════════════════════════════════════════
-   LOOKUP — per-word stats with timeline
-═══════════════════════════════════════════════════════ */
+/* LOOKUP */
 function showLookup(){
   document.getElementById('searchInput').value='';
   document.getElementById('lookupResult').innerHTML='';
@@ -981,209 +905,111 @@ function showLookup(){
   showScreen('lookup');
   setTimeout(()=>document.getElementById('searchInput').focus(),180);
 }
-
 function onSearch(val){
   const q=val.trim().toLowerCase();
   document.getElementById('lookupResult').innerHTML='';
   buildLookupList(q);
   if(q){
-    // find exact match first
     for(const cat of CATS){
       const found=cat.words.find(w=>w.w.toLowerCase()===q);
-      if(found){ renderWordCard(cat, found); return; }
+      if(found){renderWordCard(cat,found);return;}
     }
   }
 }
-
 function buildLookupList(q){
-  const list=document.getElementById('lookupList'); list.innerHTML='';
+  const list=document.getElementById('lookupList');list.innerHTML='';
   const results=[];
-  CATS.forEach(cat=>{
-    cat.words.forEach(wObj=>{
-      if(!q || wObj.w.toLowerCase().includes(q)){
-        const h=getHistory(cat.id,wObj.w);
-        if(h.length>0 || q){ // show unseen only when searching
-          results.push({cat,wObj,h});
-        }
-      }
-    });
-  });
-  // sort: practised words first (most recent), then alphabetical
+  CATS.forEach(cat=>cat.words.forEach(wObj=>{
+    if(!q||wObj.w.toLowerCase().includes(q)){
+      const h=getHistory(cat.id,wObj.w);
+      if(h.length>0||q) results.push({cat,wObj,h});
+    }
+  }));
   results.sort((a,b)=>{
-    const ta=a.h.length?a.h[a.h.length-1].ts:0;
-    const tb=b.h.length?b.h[b.h.length-1].ts:0;
+    const ta=a.h.length?a.h[a.h.length-1].ts:0,tb=b.h.length?b.h[b.h.length-1].ts:0;
     if(ta!==tb) return tb-ta;
     return a.wObj.w.localeCompare(b.wObj.w);
   });
   results.slice(0,40).forEach(({cat,wObj,h})=>{
     const status=wordStatus(cat.id,wObj.w);
     const dotColor=status==='mastered'?'#6c5ce7':status==='correct'?'#00b894':status==='wrong'?'#e17055':'#dfe6e9';
-    const totalOk=h.filter(e=>e.r===1).length;
-    const totalAll=h.length;
+    const totalOk=h.filter(e=>e.r===1).length,totalAll=h.length;
     const sk=streakCount(cat.id,wObj.w);
-    const pctTxt=status==='mastered'?'⭐':status==='unseen'?'unseen':sk>0?`🔥${sk}`:totalAll>0?`${totalOk}/${totalAll}`:'—';
-    const row=document.createElement('div'); row.className='ll-row';
-    row.innerHTML=`
-      <span class="ll-word">${wObj.w}</span>
-      <div class="ll-meta">
-        <span class="ll-pct">${pctTxt}</span>
-        <div class="ll-dot" style="background:${dotColor}"></div>
-      </div>
-    `;
-    row.onclick=()=>{
-      document.getElementById('searchInput').value=wObj.w;
-      document.getElementById('lookupResult').innerHTML='';
-      renderWordCard(cat,wObj);
-    };
+    const pctTxt=status==='mastered'?'\u2B50':status==='unseen'?'unseen':sk>0?`\u{1F525}${sk}`:totalAll>0?`${totalOk}/${totalAll}`:'—';
+    const row=document.createElement('div');row.className='ll-row';
+    row.innerHTML=`<span class="ll-word">${wObj.w}</span><div class="ll-meta"><span class="ll-pct">${pctTxt}</span><div class="ll-dot" style="background:${dotColor}"></div></div>`;
+    row.onclick=()=>{document.getElementById('searchInput').value=wObj.w;document.getElementById('lookupResult').innerHTML='';renderWordCard(cat,wObj);};
     list.appendChild(row);
   });
 }
-
-function renderWordCard(cat, wObj){
-  const result=document.getElementById('lookupResult');
-  result.innerHTML='';
-  const h=getHistory(cat.id, wObj.w);
-
-  const totalOk=h.filter(e=>e.r===1).length;
-  const totalNg=h.filter(e=>e.r===0).length;
-  const totalAll=h.length;
+function renderWordCard(cat,wObj){
+  const result=document.getElementById('lookupResult');result.innerHTML='';
+  const h=getHistory(cat.id,wObj.w);
+  const totalOk=h.filter(e=>e.r===1).length,totalNg=h.filter(e=>e.r===0).length,totalAll=h.length;
   const pct=totalAll>0?Math.round((totalOk/totalAll)*100):null;
-  const streak=streakCount(cat.id, wObj.w);
-  const status=wordStatus(cat.id, wObj.w);
-
-  // trend: compare last-5 vs previous-5
-  let trend='', trendColor='', trendIcon='';
+  const streak=streakCount(cat.id,wObj.w),status=wordStatus(cat.id,wObj.w);
+  let trend='',trendColor='',trendIcon='';
   if(h.length>=4){
     const half=Math.min(5,Math.floor(h.length/2));
-    const recent=h.slice(-half);
-    const older=h.slice(-half*2,-half);
-    const recentPct=recent.filter(e=>e.r===1).length/recent.length;
-    const olderPct=older.length?older.filter(e=>e.r===1).length/older.length:null;
-    if(olderPct!==null){
-      const diff=recentPct-olderPct;
-      if(diff>=0.25){trend='Improving 🚀';trendColor='#00b894';}
-      else if(diff<=-0.25){trend='Needs work 😿';trendColor='#e17055';}
-      else{trend='Steady 😺';trendColor='#a29bfe';}
-      trendIcon=diff>=0.25?'↑':diff<=-0.25?'↓':'→';
+    const recent=h.slice(-half),older=h.slice(-half*2,-half);
+    const rp=recent.filter(e=>e.r===1).length/recent.length;
+    const op=older.length?older.filter(e=>e.r===1).length/older.length:null;
+    if(op!==null){
+      const diff=rp-op;
+      if(diff>=.25){trend='Improving \u{1F680}';trendColor='#00b894';trendIcon='\u2191';}
+      else if(diff<=-.25){trend='Needs work \u{1F63F}';trendColor='#e17055';trendIcon='\u2193';}
+      else{trend='Steady \u{1F63A}';trendColor='#a29bfe';trendIcon='\u2192';}
     }
   }
-
   const lastSeen=h.length?timeAgo(h[h.length-1].ts):'Never';
-
-  const card=document.createElement('div'); card.className='word-card';
-
-  // streak pips toward mastery
-  const streakPips = status === 'mastered'
-    ? `<div style="font-size:.72rem;font-weight:700;color:#6c5ce7;margin-bottom:.65rem">⭐ Mastered — 10 in a row!</div>`
-    : streak > 0
-      ? (() => {
-          const pips = Array.from({length: MASTERED_STREAK}, (_,i) =>
-            `<div style="width:18px;height:18px;border-radius:50%;background:${i<streak?'#00b894':'#e8e8e8'};border:2px solid ${i<streak?'#007a55':'#ccc'};display:inline-flex;align-items:center;justify-content:center;font-size:.6rem">${i<streak?'✓':''}</div>`
-          ).join('');
-          return `<div style="margin-bottom:.65rem"><div style="font-size:.65rem;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px">Streak to mastery: ${streak}/${MASTERED_STREAK}</div><div style="display:flex;flex-wrap:wrap;gap:3px">${pips}</div></div>`;
-        })()
-      : '';
-
-  let statsHtml=`
-    <div class="wc-top">
-      <span class="wc-word">${wObj.w}</span>
-      <span class="wc-cat" style="background:${cat.bar}">${cat.name}</span>
-    </div>
-    ${trend?`<div class="trend-badge" style="background:${trendColor}22;color:${trendColor}">${trendIcon} ${trend}</div>`:''}
-    ${streakPips}
-    <div class="wc-stats">
-      <div class="wc-stat">
-        <span class="wc-stat-n" style="color:${pct!==null?(pct>=70?'#00b894':'#e17055'):'#b2bec3'}">${pct!==null?pct+'%':'—'}</span>
-        <span class="wc-stat-l">accuracy</span>
-      </div>
-      <div class="wc-stat">
-        <span class="wc-stat-n" style="color:#00b894">${totalOk}</span>
-        <span class="wc-stat-l">correct</span>
-      </div>
-      <div class="wc-stat">
-        <span class="wc-stat-n" style="color:#e17055">${totalNg}</span>
-        <span class="wc-stat-l">missed</span>
-      </div>
-      <div class="wc-stat">
-        <span class="wc-stat-n" style="color:var(--muted);font-size:.78rem">${lastSeen}</span>
-        <span class="wc-stat-l">last seen</span>
-      </div>
-    </div>
-  `;
-
-  if(h.length){
-    statsHtml+=`<div class="wc-timeline-hd">History (newest first)</div><div class="timeline">`;
-    const rev=[...h].reverse();
-    rev.slice(0,20).forEach(entry=>{
-      const ok=entry.r===1;
-      statsHtml+=`
-        <div class="tl-row">
-          <div class="tl-dot" style="background:${ok?'#55efc4':'#fab1a0'}"></div>
-          <span class="tl-label" style="color:${ok?'#005a3e':'#c0392b'}">${ok?'✓ Got it':'✗ Missed'}</span>
-          <span class="tl-time">${timeAgo(entry.ts)}</span>
-        </div>
-      `;
-    });
-    statsHtml+='</div>';
-  } else {
-    statsHtml+=`<div class="wc-no-data">No practice history yet 🐱</div>`;
-  }
-
-  card.innerHTML=statsHtml;
+  const streakPips=status==='mastered'
+    ?`<div style="font-size:.72rem;font-weight:700;color:#6c5ce7;margin-bottom:.65rem">\u2B50 Mastered \u2014 10 in a row!</div>`
+    :streak>0?`<div style="margin-bottom:.65rem"><div style="font-size:.65rem;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px">Streak to mastery: ${streak}/${MASTERED_STREAK}</div><div style="display:flex;flex-wrap:wrap;gap:3px">${Array.from({length:MASTERED_STREAK},(_,i)=>`<div style="width:18px;height:18px;border-radius:50%;background:${i<streak?'#00b894':'#e8e8e8'};border:2px solid ${i<streak?'#007a55':'#ccc'};display:inline-flex;align-items:center;justify-content:center;font-size:.6rem;color:white">${i<streak?'\u2713':''}</div>`).join('')}</div></div>`:'' ;
+  const card=document.createElement('div');card.className='word-card';
+  card.innerHTML=`<div class="wc-top"><span class="wc-word">${wObj.w}</span><span class="wc-cat" style="background:${cat.bar}">${cat.name}</span></div>${trend?`<div class="trend-badge" style="background:${trendColor}22;color:${trendColor}">${trendIcon} ${trend}</div>`:''}${streakPips}<div class="wc-stats"><div class="wc-stat"><span class="wc-stat-n" style="color:${pct!==null?(pct>=70?'#00b894':'#e17055'):'#b2bec3'}">${pct!==null?pct+'%':'—'}</span><span class="wc-stat-l">accuracy</span></div><div class="wc-stat"><span class="wc-stat-n" style="color:#00b894">${totalOk}</span><span class="wc-stat-l">correct</span></div><div class="wc-stat"><span class="wc-stat-n" style="color:#e17055">${totalNg}</span><span class="wc-stat-l">missed</span></div><div class="wc-stat"><span class="wc-stat-n" style="color:var(--muted);font-size:.78rem">${lastSeen}</span><span class="wc-stat-l">last seen</span></div></div>${h.length?`<div class="wc-timeline-hd">History (newest first)</div><div class="timeline">${[...h].reverse().slice(0,20).map(e=>`<div class="tl-row"><div class="tl-dot" style="background:${e.r?'#55efc4':'#fab1a0'}"></div><span class="tl-label" style="color:${e.r?'#005a3e':'#c0392b'}">${e.r?'\u2713 Got it':'\u2717 Missed'}</span><span class="tl-time">${timeAgo(e.ts)}</span></div>`).join('')}</div>`:'<div class="wc-no-data">No practice history yet \u{1F431}</div>'}`;
   result.appendChild(card);
 }
-
 function timeAgo(ts){
-  const diff=Date.now()-ts;
-  const m=Math.floor(diff/60000);
-  const h=Math.floor(diff/3600000);
-  const d=Math.floor(diff/86400000);
-  if(m<1) return 'just now';
-  if(m<60) return m+'m ago';
-  if(h<24) return h+'h ago';
-  if(d===1) return 'yesterday';
-  if(d<7) return d+'d ago';
-  if(d<30) return Math.floor(d/7)+'w ago';
-  return Math.floor(d/30)+'mo ago';
+  const d=Date.now()-ts,m=Math.floor(d/60000),hr=Math.floor(d/3600000),dy=Math.floor(d/86400000);
+  if(m<1) return 'just now';if(m<60) return m+'m ago';if(hr<24) return hr+'h ago';
+  if(dy===1) return 'yesterday';if(dy<7) return dy+'d ago';
+  if(dy<30) return Math.floor(dy/7)+'w ago';return Math.floor(dy/30)+'mo ago';
 }
 
-/* ═══════════════════════════════════════════════════════
-   NAVIGATION
-═══════════════════════════════════════════════════════ */
-function goHome(){ renderHome(); showScreen('home'); }
+/* NAV */
+function goHome(){renderHome();showScreen('home');}
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  // roaming cats only on home screen
+  const layer=document.getElementById('roamLayer');
+  if(id==='home'){
+    layer.style.display='';
+    if(!roamRaf) animateRoam();
+  } else {
+    layer.style.display='none';
+    if(roamRaf){cancelAnimationFrame(roamRaf);roamRaf=null;}
+  }
 }
-
 function toggleFS(){
-  const el=document.documentElement;
-  const btn=document.getElementById('fsBtn');
+  const el=document.documentElement,btn=document.getElementById('fsBtn');
   if(!document.fullscreenElement){
     (el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen).call(el);
-    btn.textContent='⛶ Exit';
+    btn.textContent='\u29c6 Exit';
   } else {
     (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
-    btn.textContent='⛶';
+    btn.textContent='\u29c6';
   }
 }
-document.addEventListener('fullscreenchange',()=>{
-  if(!document.fullscreenElement) document.getElementById('fsBtn').textContent='⛶';
-});
-
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement) document.getElementById('fsBtn').textContent='\u29c6';});
 function resetAll(){
-  if(confirm("Reset all of Kate's progress? This cannot be undone.")){
-    progress={};
-    save();
-    renderHome();
-  }
+  if(confirm("Reset all of Kate's progress? This cannot be undone.")){progress={};save();renderHome();}
 }
 
-/* ═══════════════════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════════════════ */
+/* INIT */
 renderHome();
 tryLoadAudio();
+spawnRoamCats();
 </script>
 </body>
 </html>
