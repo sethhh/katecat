@@ -407,8 +407,8 @@ const CATS = [
       'go','goes','went','gone','so','all','if','one','about',
       // can could / there
       'can','could','there',
-      // know / get got gets
-      'know','get','got','gets',
+      // know knew known / get got gets
+      'know','knew','known','get','got','gets',
       // like liked likes / when
       'like','liked','likes','when',
       // think thought thinks / make made makes
@@ -417,8 +417,8 @@ const CATS = [
       'see','saw','seen','what','up','some','out',
       // good better best / people / take took takes / no / well / because / very / just
       'good','better','best','people','take','took','takes','no','well','because','very','just',
-      // come came comes / use used / now / then / into / only
-      'come','came','comes','use','used','now','then','into','only',
+      // come came comes / use used uses / now / then / into / only
+      'come','came','comes','use','used','uses','now','then','into','only',
       // look looked looks / want wanted wants / give gave gives / new
       'look','looked','looks','want','wanted','wants','give','gave','gives','new',
       // find found finds / any / after / where / should
@@ -557,7 +557,7 @@ function saveCustom(){ localStorage.setItem('katecat_custom', JSON.stringify(cus
 
 function addCustomWord(){
   const input = document.getElementById('addWordInput');
-  const w = input.value.trim().toLowerCase().replace(/[^a-z']/g,'');
+  const w = input.value.trim();
   if(!w) return;
   if(!customWords.includes(w)){
     customWords.push(w);
@@ -585,12 +585,13 @@ function renderCustomList(){
   }
   empty.style.display = 'none';
   btn.disabled = false;
-  customWords.forEach(w => {
+  customWords.forEach((w, idx) => {
     const status = wordStatus(CUSTOM_CAT_ID, w);
     const dotColor = status==='mastered'?'#6c5ce7':status==='correct'?'#00b894':status==='wrong'?'#e17055':'#dfe6e9';
     const chip = document.createElement('div');
     chip.className = 'custom-chip';
-    chip.innerHTML = `<span class="custom-chip-word">${w}</span><div class="custom-chip-status" style="background:${dotColor}"></div><button class="custom-chip-del" onclick="removeCustomWord('${w}')" title="Remove">✕</button>`;
+    chip.innerHTML = `<span class="custom-chip-word">${w}</span><div class="custom-chip-status" style="background:${dotColor}"></div><button class="custom-chip-del" title="Remove">✕</button>`;
+    chip.querySelector('.custom-chip-del').addEventListener('click', () => removeCustomWord(w));
     list.appendChild(chip);
   });
 }
