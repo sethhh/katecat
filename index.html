@@ -76,12 +76,12 @@ button{font-family:'Andika',sans-serif;cursor:pointer}
 .paws-row{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;padding:.35rem 1rem;flex-shrink:0}
 .paw{font-size:.9rem;opacity:.18;transition:opacity .3s}
 .paw.ok{opacity:1}.paw.ng{opacity:1;filter:grayscale(1) opacity(.45)}
-.card-zone{flex:1;display:flex;align-items:center;justify-content:center;padding:.4rem 1.25rem;width:100%;position:relative}
-.flashcard{background:var(--white);border-radius:30px;width:100%;max-width:360px;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 7px 0 rgba(0,0,0,.07),0 2px 20px rgba(0,0,0,.06);padding:1.75rem 1.5rem;position:relative;will-change:transform}
+.card-zone{flex:1;display:flex;align-items:center;justify-content:center;padding:.4rem .75rem;width:100%;position:relative}
+.flashcard{background:var(--white);border-radius:30px;width:100%;max-width:560px;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 7px 0 rgba(0,0,0,.07),0 2px 20px rgba(0,0,0,.06);padding:1.75rem 1.25rem;position:relative;will-change:transform}
 .card-ears{position:absolute;top:-14px;width:100%;display:flex;justify-content:space-between;padding:0 28px;pointer-events:none}
 .ear{width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:22px solid var(--white)}
 .card-tag-lbl{font-size:.6rem;font-weight:700;letter-spacing:.1em;color:var(--light);text-transform:uppercase;margin-bottom:.65rem}
-.card-word{font-family:'Andika',sans-serif;font-size:clamp(2.8rem,14vw,5rem);font-weight:700;color:var(--ink);line-height:1;text-align:center;word-break:break-word}
+.card-word{font-family:'Andika',sans-serif;font-size:clamp(1.6rem,8vw,5rem);font-weight:700;color:var(--ink);line-height:1.3;text-align:center;white-space:nowrap;width:100%;display:block;padding-bottom:0.15em}
 .card-hint{margin-top:.55rem;font-size:.75rem;color:var(--light);text-align:center;font-weight:700}
 .flashcard.anim-ok{animation:okPop .48s cubic-bezier(.34,1.56,.64,1) forwards}
 .flashcard.anim-ng{animation:ngShake .42s ease forwards}
@@ -435,6 +435,161 @@ const CATS = [
       'help','helped','helps','play','played','plays','let','lets','run','ran','runs',
       // love loved loves / open opened opens
       'love','loved','loves','open','opened','opens',
+    ]
+  },
+  { id:'reading', name:'Reading Words', emoji:'📖', color:'#fdcb6e', bar:'#d35400',
+    words:[
+      'such','last','lasted','lasting','child','children','telling','really','calling','before',
+      'through','shown','life','lives','change','changed','changes','changing','place','places',
+      'between','feeling','still','problem','problems','writing','lot','lots','great','try',
+      'tried','tries','trying','leave','left','leaves','leaving','both','own','part',
+      'parts','asking','meet','met','meets','meeting','start','started','starts','starting',
+      'talk','talked','talks','talking','something','another','old','older','oldest','each',
+      'school','schools','late','later','latest','high','higher','highest','different','next',
+      'end','ended','ends','ending','live','lived','living','why','while','world',
+      'week','weeks','might','must','home','homes','never','house','houses','report',
+      'reports','reported','reporting','group','groups','woman','women','around','book','books',
+      'family','families','kind','kinder','kindest','keeping','hear','heard','hears','hearing',
+      'during','set','sets','setting','small','smaller','smallest','follow','followed','follows',
+      'following','turn','turned','turns','turning','bring','brought','brings','bringing','early',
+      'earlier','earliest','hand','hands','move','moved','moves','moving','money','fact',
+      'facts','name','named','names','friend','friends','month','months','large','larger',
+      'largest','without','word','words','pay','paid','pays','paying','build','built',
+      'builds','building','hold','held','holds','holding','against','believe','believed','believes',
+      'believing','second','though','job','jobs','plan','planned','plans','planning','away',
+      'happen','happened','happens','happening','young','younger','youngest','close','closed','closes',
+      'closing','lead','led','leads','leading','buy','bought','buys','buying','understand',
+      'understood','thank','thanked','thanks','thanking','far','farther','farthest','today','face',
+      'faced','faces','hope','hoped','hopes','hoping','idea','ideas','less','room',
+      'rooms','until','head','heads','car','cars','learn','learned','learns','learning',
+      'once','enough','bad','worse','worst','night','nights','line','lines','side',
+      'sides','sure','speak','spoke','spoken','speaks','speaking','possible','actually','together',
+      'hard','harder','hardest','story','stories','almost','stand','stood','stands','standing',
+      'whole','yet','care','cared','cares','caring','fall','fell','fallen','falls',
+      'falling','deal','dealt','deals','dealing','water','send','sent','sends','sending',
+      'soon','watch','watched','watches','watching','probably','past','grow','grew','grown',
+      'grows','growing','nothing','return','returned','returns','returning','mother','mothers','mind',
+      'minds','stay','stayed','stays','staying','stop','stopped','stops','stopping','light',
+      'lights','lit','remember','remembered','remembers','share','shared','shares','sharing','answer',
+      'answered','answers','answering','letter','letters','class','classes','town','towns','half',
+      'minute','minutes','food','foods','break','broke','broken','breaks','breaking','clear',
+      'clearer','clearest','clearly','top','tops','win','won','wins','winning','color',
+      'colors','colored','reach','reached','reaches','reaching','note','notes','noted','drive',
+      'drove','driven','drives','driving','sound','sounds','sounded','eye','eyes','music',
+      'game','games','free','freed','freely','moment','moments','body','bodies','wait',
+      'waited','waits','waiting','team','teams','easy','easier','easiest','easily','full',
+      'fully','black','add','added','adds','adding','rule','rules','ruled','pass',
+      'passed','passes','passing','short','shorter','shortest','agree','agreed','agrees','agreeing',
+      'everything','cover','covered','covers','covering','paper','papers','near','nearer','nearest',
+      'nearly','morning','mornings','shop','shopped','shops','shopping','someone','above','sometimes',
+      'carry','carried','carries','carrying','choose','chose','chosen','choosing','father','fathers',
+      'table','tables','die','died','dies','dying','cut','cuts','cutting','strong',
+      'stronger','strongest','strongly','rise','rose','risen','rises','rising','girl','girls',
+      'maybe','else','join','joined','joins','joining','please','health','healthy','eat',
+      'ate','eaten','eats','eating','step','stepped','steps','stepping','phone','phones',
+      'draw','drew','drawn','draws','drawing','white','practice','practiced','practices','practicing',
+      'raise','raised','raises','raising','front','fronts','explain','explained','explains','explaining',
+      'door','doors','outside','behind','teacher','teachers','land','landed','lands','landing',
+      'finally','sign','signed','signs','signing','travel','traveled','travels','traveling','enjoy',
+      'enjoyed','enjoys','enjoying','nice','nicer','nicest','picture','pictures','point','points',
+      'pointed','number','numbers','mean','meant','means','meaning','even','may','year',
+      'years','other','others','than','also','over','who','which','work','worked',
+      'works','working',
+    ]
+  },
+  { id:'complex', name:'Complex Words', emoji:'🧩', color:'#fd79a8', bar:'#8e44ad',
+    words:[
+      'basket','blanket','button','cabin','candle','carpet','carrot','cotton','custom','dentist',
+      'dinner','dragon','fabric','falcon','finger','flannel','fossil','frozen','garden','goblin',
+      'golden','hamlet','happen','helmet','hidden','kitten','lemon','lesson','melon','mitten',
+      'napkin','often','parrot','pencil','picnic','pilgrim','planet','plastic','pocket','pollen',
+      'popcorn','puppet','rabbit','raven','ribbon','rocket','salad','salmon','sandwich','seven',
+      'signal','sister','sixteen','sixty','socket','spider','static','subject','sudden','summit',
+      'sunburn','sunset','tablet','talent','target','temper','tennis','thicket','ticket','tinsel',
+      'tractor','traffic','trumpet','tumble','tunnel','velvet','walnut','walrus','wicker','wisdom',
+      'witness','wooden','yellow','yogurt','zipper','sultan','topple','turban','public','pumpkin',
+      'splendid','stamper','vintage','victim','wampum','wintry','address','blister','blossom','broccoli',
+      'broker','brother','cluster','clamber','clatter','clover','cobblestone','cracker','cradle','crisper',
+      'crossword','dresser','drifted','droplet','drummer','flutter','freckle','freshly','frizzy','frosted',
+      'glimmer','glitter','glossy','grapple','gravel','grinder','gristle','grizzly','grudge','grumble',
+      'granted','printer','problem','proceed','product','project','proper','prosper','protein','protest',
+      'plunder','plaster','plenty','plodded','plunger','platter','slender','slipper','sloshed','slugger',
+      'slumber','smarter','smelter','smuggle','sniffle','snapper','snippet','snowflake','snuggle','splatter',
+      'splinter','spotted','springer','sprinkle','sprocket','squander','squiggle','stagger','starfish','sterile',
+      'sticker','straddle','strangle','strap','stream','stretch','stride','strike','string','stripe',
+      'struggle','stubborn','stumble','stumped','swindle','swivel','throbbing','thunder','tremble','trickle',
+      'trigger','trimmer','triplet','trotted','trusty','twinkle','twitter','twisted','wrangle','wrapper',
+      'wrestle','wriggle','wrinkle','wrongful','action','addition','adoption','adventure','afternoon','against',
+      'almost','already','although','baker','beautiful','bedroom','before','between','bigger','bolder',
+      'bothered','broken','bumper','careful','careless','catcher','cheerful','chiller','cleaner','clearly',
+      'cloudy','coldness','colorful','coming','confuse','contest','cooking','corner','counted','crawling',
+      'creature','curly','danger','darkened','darkest','deeply','dirtier','dirtiest','dirtiness','dizzy',
+      'doubtful','dragging','dreaming','drifting','drippy','drizzly','duster','eagerly','earliest','easier',
+      'eastern','evening','excitement','faithful','fearless','feverish','fighter','filling','flipper','floating',
+      'fluffy','focused','fondness','footprint','forgetful','formation','freely','freshness','frightened','frothy',
+      'fuzzy','gifted','glider','glowing','graceful','greedily','greedy','gripping','groaning','grossly',
+      'grouchy','grumpy','guessing','guilty','handful','happily','happiest','happiness','harder','hardest',
+      'harmless','harmful','harvest','helper','helpful','helpless','highest','hissing','hopeful','hopeless',
+      'hottest','hunter','invention','joyful','joyless','joyous','jumping','kindly','kindness','knowing',
+      'landed','largely','lasting','laughter','lazily','leader','leaking','lifeless','lighter','lightly',
+      'likely','loudly','loudness','lower','lowest','lucky','madness','marker','matching','mention',
+      'message','mightier','mighty','mindful','mindless','misty','mixture','modern','motion','muddy',
+      'nearly','neatly','neatness','noisily','noisy','notice','notion','nursing','oddly','oldest',
+      'option','outside','package','painful','painless','painter','painting','peaceful','peacefully','pending',
+      'pincher','pitcher','planner','plodding','plotted','pointer','portion','poster','powerful','powerless',
+      'printed','proudly','puffer','puffy','pulling','punching','pushing','puzzle','quickly','quieter',
+      'quietly','quietness','rainy','ranger','reaching','reader','recently','reminder','report','resting',
+      'rider','risky','rougher','roughly','roughness','rounded','runner','rushing','sadder','saddest',
+      'sadly','sadness','safely','section','sender','sharper','sharply','shelter','shining','shiver',
+      'shorter','sickness','silly','singer','sitting','slowly','slowness','smaller','smartly','smoky',
+      'sneaker','snowfall','soften','softly','softness','somehow','sooner','soreness','sorrow','sounded',
+      'sounder','speaker','splashing','spotless','spotter','starter','stated','statement','steadily','steadiness',
+      'steady','stiffness','storage','stranger','streamer','stronger','strongly','stumbling','sunlight','sunniest',
+      'sunny','supporter','supposed','swiftly','swiftness','swimmer','taller','tallest','tasteful','teacher',
+      'teaching','tender','thankful','thankless','thicker','thinker','thoughtful','thoughtless','tighter','timer',
+      'tireless','tougher','tracker','training','traveler','truly','unable','unfair','unkind','unlucky',
+      'useful','useless','walking','warmer','warmest','warmly','warmth','watcher','wealthy','weaker',
+      'western','wider','wildly','willing','winder','winner','wishing','wonderful','worker','working',
+      'worrier','yelling','younger','decode','deflate','delay','depend','derail','describe','deserve',
+      'despite','detail','detour','direct','discard','disclose','discolor','discover','discuss','disguise',
+      'dislike','dismay','dismiss','disorder','display','disprove','disrupt','distort','distrust','divide',
+      'encode','enforce','enlarge','entire','escape','exclude','exclaim','explain','explore','expose',
+      'extinct','extreme','forecast','forgive','forget','forsake','ignore','impress','improve','include',
+      'increase','indeed','instead','intend','involve','mislead','mismatch','misspell','mistake','misuse',
+      'obtain','offend','outline','outrun','outshine','overcome','overhear','overlap','overthrow','predict',
+      'prefer','prepare','preserve','pretend','prevent','preview','propose','protect','provide','rebuild',
+      'recall','reclaim','recount','recover','reduce','refill','regain','release','remain','remove',
+      'rename','repair','replace','rescue','return','retold','reuse','rewrite','surround','survive',
+      'unclear','unclog','uncover','undo','unhappy','unknown','unlock','unpack','unsafe','unstack',
+      'untie','unusual','unwrap','update','uphill','uplift','upset','undergo','understand','unlike',
+      'unlikely','untangle','abandon','absolute','amazing','animal','anybody','beginning','calendar','camera',
+      'canyons','cardinal','carefully','certainly','champion','character','children','cinema','cinnamon','coconut',
+      'commander','community','computer','continue','correction','covering','customer','dangerous','december','delicate',
+      'detective','different','difficult','direction','dinosaur','disaster','discovery','document','elephant','emergency',
+      'emperor','envelope','especially','everyone','example','excellent','exciting','exercise','experiment','exploding',
+      'exploring','fantastic','feather','finally','fireplace','following','furniture','gardening','generous','gigantic',
+      'government','grasshopper','gravity','groceries','hamburger','happening','helicopter','hibernate','horizon','hurricane',
+      'imagine','important','impression','incident','inspiration','janitor','jellyfish','journey','kangaroo','knowledge',
+      'library','listening','mammoth','marvelous','material','medicine','memory','messenger','million','minerals',
+      'miracle','motorcycle','mountain','museum','national','neighbor','november','octopus','paradise','paragraph',
+      'permission','photograph','populate','possible','potato','president','printout','probably','tomorrow','tropical',
+      'umbrella','vegetables','violin','visitor','volcano','whatever','whenever','wilderness','acts','adrift',
+      'ancient','attempt','attract','bilge','bounds','bridge','brought','bulge','bumps','bunch',
+      'burns','bursts','camped','caught','clamps','clench','clenched','clinch','couch','counts',
+      'crunch','crunched','depths','drifts','drought','dunce','dwell','dwelt','facts','faults',
+      'fenced','fetch','fetched','filth','flinch','flinched','flounce','folded','forced','fragments',
+      'fringed','fronts','grasped','grunge','gulch','gulped','gust','hatch','hatched','health',
+      'hinged','hitch','hitched','hounds','inch','itch','itched','jolt','jolts','judged',
+      'jumps','kelp','latch','latched','launch','launched','ledge','length','loft','lunge',
+      'lunged','match','matched','melt','melts','merged','mince','minced','mist','mulch',
+      'munch','munched','notch','notched','nudge','nudged','nymph','patch','patched','perch',
+      'perched','pinch','pinched','plunge','plunged','pouch','pounce','pounds','prince','prompt',
+      'punch','punched','purge','purged','quench','quenched','ranch','ranged','reach','reached',
+      'ridge','rinse','rinsed','scrunch','scrunched','search','searched','sketch','sketched','skulk',
+      'slept','sludge','slung','smudge','snatch','snatched','speech','stench','stitch','stitched',
+      'strength','stretched','switch','switched','teach','taught','tempt','tenth','thatch','torch',
+      'torched','touch','trench','trudge','twitch','twitched','urge','urged','vaulted','vouch',
+      'watch','watched','wedge','wrench','wrenched',
     ]
   },
   { id:'longvowel', name:'Long Vowels', emoji:'🦋', color:'#fd79a8', bar:'#e84393',
@@ -849,7 +1004,19 @@ function renderCard(){
   document.getElementById('playCnt').textContent=`${idx+1} / ${total}`;
   document.getElementById('progFill').style.width=((idx/total)*100)+'%';
   document.getElementById('cardTag').textContent=cat?cat.name.toUpperCase():(catId===CUSTOM_CAT_ID?'MY WORDS':'');
-  document.getElementById('cardWord').textContent=card.w;
+  const wordEl=document.getElementById('cardWord');
+  wordEl.textContent=card.w;
+  wordEl.style.fontSize='';
+  // shrink font until word fits on one line
+  requestAnimationFrame(()=>{
+    const container=wordEl.parentElement;
+    let size=parseFloat(getComputedStyle(wordEl).fontSize);
+    const minSize=18;
+    while(wordEl.scrollWidth>container.clientWidth-40 && size>minSize){
+      size-=1;
+      wordEl.style.fontSize=size+'px';
+    }
+  });
   document.getElementById('cardHint').textContent=card.h||'';
 }
 function mark(ok){
